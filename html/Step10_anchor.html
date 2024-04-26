@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step10_anchor.html</title>
+    <style>
+        .container{
+            width: 768px;
+            /* 2개의 값 : top. bottom과 left, right 값을 한번에 지정 */
+            margin: 0 auto;
+        }
+        .card{
+            border: 2px solid #6A9955;
+            border-radius: 10px;
+            width: 300px;
+        }
+        /* !자식과 자손의 차이 */
+        .card img{
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>a(anchor) element is used to perfoming hyperlink, bookmark, js</h3>
+        <a href="hello.html">hello.html</a><br>
+        <a href="https://github.com">git</a><br>
+        <!-- link on image -->
+        <a href="https://github.com"><img src="images/git.png" style="width: 150px;"></a><br>
+        <!-- 
+            link on entire div
+
+            inline요소는 원래 block요소를 자식으로 가질 수 없다.
+            단, a요소는 예외적으로 div같은 block요소를 자식으로 가질 수 있다.
+         -->
+         <a href="hello.html">
+            <div class="card">
+                <h3>bla bla...</h3>
+                <p>
+                    <img src="images/3.png" alt=""><br>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat aperiam odit consequuntur natus omnis consectetur! Nam quis adipisci vel officia est? Ipsam illo veniam cumque illum aperiam, perspiciatis accusantium non!
+                </p>
+
+            </div>
+         </a>
+    </div>
+
+</body>
+</html>

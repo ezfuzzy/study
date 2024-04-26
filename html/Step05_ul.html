@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step05_ul.html</title>
+    <style>
+        .my_ul{
+            margin: 0px;
+            padding: 0px;
+            list-style-type: none;
+        }
+        .my_ul > li{
+            display: inline;
+        }
+        .links > li{
+            display: inline;
+        }
+        .links{
+            padding: 100;
+        }
+        body{
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>순서 없는 목록(unordered list) ul element</h1>
+    <h2>friends list</h2>
+    <ul> <!-- ul과 li는 한 세트이다. -->
+        <li>minjun</li>
+        <li>skull</li>
+        <li>monkey</li>
+    </ul>
+
+    <h2>friends list (apply style)</h2>
+    <ul class="my_ul">
+        <li>minjun</li>
+        <li>skull</li>
+        <li>monkey</li>
+    </ul>
+
+    <h2>shortcut list</h2>
+    <ul class="links">
+        <li><a href="https://github.com"><span><img src="images/git.png" width="40" height="40" ></span></a></li>
+        <li><a href="https://google.com"><span><img src="images/google.jpg" width="40" height="40" style="padding-left: 30px;"></span></a></li>
+        <li><a href="https://velog.io"><span><img src="images/velog.jpg" width="40" height="40" style="padding-left: 30px;"></span></a></li>
+    </ul>
+</body>
+</html>

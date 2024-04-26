@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step09_form.html</title>
+</head>
+<body>
+    <div class="container">
+        <!-- 
+            form은 클라이언트가 입력하거나 선택한 정보를 서버에 전송할 양식
+            action ="서버에 전송할 경로"
+         -->
+        <h1>writing form</h1>
+        <form action="login.jsp">
+            <label for="email">email</label>
+            <input type="text" id="email" name="names">
+            <!-- 
+                id는 js에서 필요하고  (label 요소와 짝을 이룸(동일해야함))
+                name은 서버에서 필요한 값
+             -->
+            <label for="pwd">password</label>
+            <input type="password" id="pwd" name="attribute">
+            <button type="submit">login</button>
+            <!--  submit -> action=""에 내용을 전송. (fomr 안에 있을 때) -->
+        </form>
+        <br><br>
+        <h1>writing form in format</h1>
+        <form action="login.jsp">
+            <table>
+                <tr>
+                    <td><label for="email">email</label></td>
+                    <td><input type="text" id="email" name="name"></td>
+                </tr>
+                <tr>
+                    <td><label for="pwd">password</label></td>
+                    <td><input type="password" id="pwd" name="attribute"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="submit">login</button></td>
+                </tr>
+            </table>    
+        </form>
+
+    </div>
+</body>
+</html>

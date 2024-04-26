@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step04_inlineElement.html</title>
+    <style>
+        p{
+            font-size: x-large;
+        }
+        #one{ /*#:id. /:class*/
+            color: green;
+        }
+        .text-bold{
+            font-weight: bold;
+        }
+        .block-element{
+            display: block; /*inline | block | inline-block | none | table etc.. */
+        }
+    </style>
+</head>
+<body>
+    <h1>about inlineElement</h1>
+    <span>one</span>
+    <span>two</span>
+    <span>three</span>
+    <p>my name is <span id="one">MinJun</span>...</p>
+    <p>your name is <span class="text-bold">skull</span>...</p> <!--span은 폭과 높이가 auto: 필요한 공간만 사용-->
+    <p>our name is <span class="text-bold">monkey</span>...</p> <!-- id는 독립적, class는 그룹으로 만들 수 있음-->
+    
+    <h2>기본 스타일을 가지고 있는 인라인 요소</h2>
+    <p>천리길도 <b>한걸음</b>부터</p>
+    <p>천리길도 <strong>한걸음</strong>부터</p> <!-- strong 은 b+강조의 의미-->
+    <!-- i: italic-->
+    <p>어려분 <i>즐거운</i>프로그래밍이 시작되었습니다.</p>
+    <!-- em : i+강조 >> 시각장애인들이 사용하는 스크린 리더기가 강조체가 들어간 text들은 강조해서 읽어준다.-->
+    <p>여러분 <em>즐거운 </em>프로그래밍이 시작되었습니다.</p>
+
+    <p>인라인 요소는 보통 블럭요소의 자식 요소로 포함되어 있다.</p>
+    <p>인라인 요소가 블럭요소를 자식요소로 포함 시킬수는 없다(a 요소는 예외)</p>
+    <p>
+        원한다면 인라인 요소를 블럭요소로 만들수도 있고 
+        블럭요소를 인라인 요소로 만들수도 있다.
+    </p>
+    <span class="block-element">첫번째 span</span>
+    <span class="block-element">두번째 span</span>
+    <span class="block-element">세번째 span</span> 
+
+</body>
+</html>
