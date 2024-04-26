@@ -1,3 +1,5 @@
+
+/* 기본 틀은 따로 만들어서 일괄 적용시킬 수도 있다. */
 body{
     height: 100vh;
     width: 100vw;
@@ -6,7 +8,16 @@ body{
     background-size: cover;
     padding-left: 30px;
 }
-
+fieldset{
+    font-weight: bold;
+    border-color: white;
+    border-width: 5px;
+}
+legend{
+    color: white;
+    font-weight: bold;
+    font-size: 50px;
+}
 h1{
     color: green;
 }
@@ -16,12 +27,17 @@ h2{
 h3{
     color: red;
 }
+.c{
+    color: white;
+}
 img{
     width: 200px;
 }
 #ChangeBackgroundColor{
     padding-bottom: 30px;
+    margin-right: 200px;
 }
+
 #ChangeColor{
     color: white;
     cursor: pointer;
@@ -57,7 +73,7 @@ img{
 
 
 /* 12 */
-.btn-12{
+.btn{
     position: relative;
     right: 20px;
     bottom: 20px;
@@ -69,7 +85,7 @@ img{
     -webkit-perspective: 230px;
     perspective: 230px;
 }
-.btn-12 span {
+.btn span {
     background: rgb(0,172,238);
     background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
     display: block;
@@ -88,7 +104,7 @@ img{
     -webkit-transition: all .3s;
     transition: all .3s;
 }
-.btn-12 span:nth-child(1) {
+.btn span:nth-child(1) {
     box-shadow:
     -7px -7px 20px 0px #fff9,
     -4px -4px 5px 0px #fff9,
@@ -101,7 +117,7 @@ img{
     -moz-transform-origin: 50% 50% -20px;
     transform-origin: 50% 50% -20px;
 }
-.btn-12 span:nth-child(2) {
+.btn span:nth-child(2) {
     -webkit-transform: rotateX(0deg);
     -moz-transform: rotateX(0deg);
     transform: rotateX(0deg);
@@ -109,7 +125,7 @@ img{
     -moz-transform-origin: 50% 50% -20px;
     transform-origin: 50% 50% -20px;
 }
-.btn-12:hover span:nth-child(1) {   /*호버 이벤트 발생시 */
+.btn:hover span:nth-child(1) {   /*호버 이벤트 발생시 */
     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
     7px 7px 20px 0px rgba(0,0,0,.1),
     4px 4px 5px 0px rgba(0,0,0,.1);
@@ -117,7 +133,7 @@ img{
     -moz-transform: rotateX(0deg);
     transform: rotateX(0deg);
 }
-.btn-12:hover span:nth-child(2) {   /*호버 이벤트 발생시 */
+.btn:hover span:nth-child(2) {   /*호버 이벤트 발생시 */
     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
     7px 7px 20px 0px rgba(0,0,0,.1),
     4px 4px 5px 0px rgba(0,0,0,.1);
@@ -125,9 +141,6 @@ img{
     -webkit-transform: rotateX(-90deg);
     -moz-transform: rotateX(-90deg);
     transform: rotateX(-90deg);
-}
-#apm{
-    /* padding-right: 100px; */
 }
 #input-temparture{
     width: 200px; 
@@ -147,3 +160,27 @@ img{
 .filled-inputBox{
     background-color: rgb(200, 213, 236);
 }
+
+/* media query: css로 구현할 수 있는 핵심적인 반응형 디자인   */
+
+@media(max-width:800px) {
+    h1 { 
+        color: white;
+    }
+    h2 {
+        color: blue;
+        background-color: paleturquoise;
+        display: inline;
+    }
+    fieldset {
+        color: red;
+        border-color: red;
+    }
+    legend {
+        color: purple;
+    }
+    .btn{
+        background-color: rgba(0, 183, 255, 0.87);
+    }
+  }
+  

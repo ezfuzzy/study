@@ -1,3 +1,8 @@
+function open_boj(){
+    const options = 'width=700, height=600, top=50, left=50, scrollbars=yes';
+    window.open('http://127.0.0.1:5500/html/Step05_ul.html', '_blank', options );
+
+}
 var ch = 0;
 function CMC(){
     ch %= 4; // wait 2secs ? 
@@ -70,9 +75,11 @@ function CMC_green(){
 };
 
 /*clock*/
-var Target = document.getElementById('clock');
-var Target_apm = document.getElementById('apm');
+
 function clock(){
+    var Target_clock = document.getElementById('clock');
+    var Target_apm = document.getElementById('apm');
+
     var time = new Date();
     var hours = time.getHours();
     var minutes = time.getMinutes();
@@ -82,11 +89,9 @@ function clock(){
         apm = "PM";
         hours %= 12;
     }
-    Target.innerText = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    Target_clock.innerText = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
     Target_apm.innerText = `${apm}`;
 }
-clock();
-setInterval(clock, 1000);
 
 function clear_tempartureBox(){ // temparture 입력받아서 옷 추천해주기
     var term = document.getElementById("input-temparture");
@@ -95,7 +100,10 @@ function clear_tempartureBox(){ // temparture 입력받아서 옷 추천해주�
 }
 function recommend_fashion(input_temparture){
     const options = 'width=700, height=600, top=50, left=50, scrollbars=yes';
-    if (input_temparture <=10) {
+    // alert(input_temparture); ?? 
+    if (input_temparture == null) { 
+        window.open('http://127.0.0.1:5500/html/Step05_ul.html', '_blank', options);
+    } else if (input_temparture <=10) {
         window.open('http://127.0.0.1:5500/html/Step06_ol.html', '_blank', options);
     } else {
         window.open('http://127.0.0.1:5500/html/Step07_dl.html', '_blank', options);
@@ -108,3 +116,30 @@ function CBC(input){
         input.classList.remove('filled-inputBox')
     }
 }
+
+function img_slide(){
+    console.log('123');
+    
+    var slider = document.getElementById('imgSlider');
+    slider.src = "https://picsum.photos/200/300?grayscale";
+
+    // 랜덤한 파라미터 추가하여 이미지 소스 변경
+    // const randomNumber = Math.floor(Math.random() * 1000);
+    // img.src = `https://picsum.photos/200/300?grayscale&random=${randomNumber}`;
+}
+// var cycle = 0; 병렬처리 
+// function processing-intervalJob() {
+//     if (cycle % 10 != 0) {
+//         clock();
+//     } else {
+//         img_slide();
+//     }
+//     cycle++;
+//     cycle %= 10;
+// }
+clock();
+setInterval(clock, 1000);
+img_slide();
+setinterval(img_slide,5000);
+// processing-intervalJob();
+// setinterval(processing-intervalJob, 1000);

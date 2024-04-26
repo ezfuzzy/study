@@ -13,20 +13,27 @@
 <body>
     <!-- scroll event 'https://1924.tistory.com/277' -->
     <div class="container">
-        <fieldset style="border-color: white;">
-            <legend style="color: white;">info</legend>
+        <fieldset>
+            <legend>info</legend>
             <h1>my name is fuzzy</h1> <!-- block element : always width 100% -->
             <h2>test page</h2>
         
-            <h3>html, css, javascript</h3>
-            <p style="color:aqua">front-end <br> back-end  <br> #6A9955</p><br>
+            <h3>html, css, javascript, c++(BOJ)</h3>
+            <ul class="c boj dp"> you can click this list.
+                <li id="11049" onclick="open_boj();">11049.cpp</li>
+                <li id="">2</li>
+                <li id="">3</li>
+            </ul>
+
+
         </fieldset><br>
         <div class="Frame">
-            <button class="custom-btn btn-12" onclick="CMC();"><span>What up?</span><span>fuzzy</span></button>
+            <button class="custom-btn btn" onclick="CMC();"><span>What up?</span><span>fuzzy</span></button>
         </div>
         
         <br>
-        <img src="images/t9penguino_trans.png" id="ChangeBackgroundColor" onclick="CIC_white();"><br> <!--xml: 형식이 정해진 ~ (html도 xml의 일종) -->
+        <img src="images/t9penguino_trans.png" id="ChangeBackgroundColor" onclick="CIC_white();"> <!--xml: 형식이 정해진 ~ (html도 xml의 일종) -->
+        <img id="imgSlider" src="https://picsum.photos/200/300?grayscale" alt="silde img"> <br>
         <div id="ChangeColor"  onclick="RMC();">Get black</div> <br>
         <div class="balls">
             <img src="images/b0.png" onclick="CMC_red();">
@@ -40,11 +47,12 @@
         </div>
         <div class="recommend_coordi">
             <p style="color:white">오늘 평균기온 입력하면 입을 옷 추천</p>
-            <input type="number" id="input-temparture" placeholder="Enter today's avg-temparture" min="-40" max="45">
+            <input type="number" id="input-temparture" placeholder="Enter today's avg-temparture" min="-40" max="45" value="null">
             <!-- <input type="submit" onclick="clear_tempartureBox()"> -->
             <button type="submit" id="submit-temparture" onclick="clear_tempartureBox()">today's coordi</button>
         </div><br>
         <input type="text" class="input-field" id="inputBox" oninput="CBC(this)">
+
         <!-- JavaScript 파일 연결 -->
         <script src="index.js"></script>
     </div>
