@@ -4,6 +4,8 @@ function open_boj(){
 
 }
 var ch = 0;
+// document.getElementsByClassName("custom-btn").addEventListener("click", CMC());
+// searchbox 
 function CMC(){
     ch %= 4; // wait 2secs ? 
     switch (ch) {
