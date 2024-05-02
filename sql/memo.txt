@@ -1,0 +1,188 @@
+SQL> create table members( num number primary key, name varchar2(16), addr varchar2(20) );
+
+테이블이 생성되었습니다.
+
+SQL> desc members
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ NUM                                       NOT NULL NUMBER
+ NAME                                               VARCHAR2(16)
+ ADDR                                               VARCHAR2(20)
+
+SQL> insert into members (num, name, addr) values(1, 'fuzzy', 'deokso')l
+  2  ;
+insert into members (num, name, addr) values(1, 'fuzzy', 'deokso')l
+                                                                  *
+1행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다 
+
+
+SQL> insert into members (num, name, addr) values(1, 'fuzzy', 'deokso');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> commit
+  2  ;
+
+커밋이 완료되었습니다.
+
+SQL> insert into members (num, name addr) values (2, 'jihae', 'yeongjong');
+insert into members (num, name addr) values (2, 'jihae', 'yeongjong')
+                               *
+1행에 오류:
+ORA-00917: 누락된 콤마 
+
+
+SQL> insert into members (num, name, addr) values (2, 'jihae', 'yeongjong');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select 'fuzzy' from dual
+  2  ;
+
+'FUZZY'                                                                         
+----------                                                                      
+fuzzy                                                                           
+
+SQL> select sysdate from dual;
+
+SYSDATE                                                                         
+--------                                                                        
+24/05/02                                                                        
+
+SQL> select length('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') from dual;
+
+LENGTH('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')                                     
+-------------------------------------------                                     
+                                         33                                     
+
+SQL> create table todo( num number primary key, content varchar2(16), regdate data);
+create table todo( num number primary key, content varchar2(16), regdate data)
+                                                                         *
+1행에 오류:
+ORA-00902: 데이터유형이 부적합합니다 
+
+
+SQL> create table todo( num number primary key, content varchar2(16), regdate date);
+
+테이블이 생성되었습니다.
+
+SQL> select * from all_sequences where sequence_name = 'my_seq'
+  2  ;
+
+선택된 레코드가 없습니다.
+
+SQL> select from all sequences
+  2  ;
+select from all sequences
+       *
+1행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> select * from all sequences;
+select * from all sequences
+              *
+1행에 오류:
+ORA-00903: 테이블명이 부적합합니다 
+
+
+SQL> select * from all_sequences;
+
+SEQUENCE_OWNER                                                                  
+------------------------------------------------------------                    
+SEQUENCE_NAME                                                 MIN_VALUE         
+------------------------------------------------------------ ----------         
+ MAX_VALUE INCREMENT_BY CY OR CACHE_SIZE LAST_NUMBER                            
+---------- ------------ -- -- ---------- -----------                            
+SYS                                                                             
+SCHEDULER$_JOBSUFFIX_S                                                1         
+1.0000E+27            1 N  N          20           1                            
+                                                                                
+XDB                                                                             
+XDB$NAMESUFF_SEQ                                                      1         
+      9999            1 Y  N          20         221                            
+
+SEQUENCE_OWNER                                                                  
+------------------------------------------------------------                    
+SEQUENCE_NAME                                                 MIN_VALUE         
+------------------------------------------------------------ ----------         
+ MAX_VALUE INCREMENT_BY CY OR CACHE_SIZE LAST_NUMBER                            
+---------- ------------ -- -- ---------- -----------                            
+                                                                                
+MDSYS                                                                           
+TMP_COORD_OPS                                                   1000000         
+   2000000            1 Y  N           0     1000000                            
+                                                                                
+MDSYS                                                                           
+SDO_IDX_TAB_SEQUENCE                                                  1         
+
+SEQUENCE_OWNER                                                                  
+------------------------------------------------------------                    
+SEQUENCE_NAME                                                 MIN_VALUE         
+------------------------------------------------------------ ----------         
+ MAX_VALUE INCREMENT_BY CY OR CACHE_SIZE LAST_NUMBER                            
+---------- ------------ -- -- ---------- -----------                            
+1.0000E+27            1 Y  N          20           1                            
+                                                                                
+MDSYS                                                                           
+SAMPLE_SEQ                                                            1         
+1.0000E+27            1 N  N          20           1                            
+                                                                                
+FLOWS_020100                                                                    
+
+SEQUENCE_OWNER                                                                  
+------------------------------------------------------------                    
+SEQUENCE_NAME                                                 MIN_VALUE         
+------------------------------------------------------------ ----------         
+ MAX_VALUE INCREMENT_BY CY OR CACHE_SIZE LAST_NUMBER                            
+---------- ------------ -- -- ---------- -----------                            
+WWV_SEQ                                                               1         
+1.0000E+27            1 N  N          20       69361                            
+                                                                                
+FLOWS_020100                                                                    
+WWV_FLOW_SESSION_SEQ                                                  1         
+1.0000E+27            1 N  N          20           1                            
+                                                                                
+
+SEQUENCE_OWNER                                                                  
+------------------------------------------------------------                    
+SEQUENCE_NAME                                                 MIN_VALUE         
+------------------------------------------------------------ ----------         
+ MAX_VALUE INCREMENT_BY CY OR CACHE_SIZE LAST_NUMBER                            
+---------- ------------ -- -- ---------- -----------                            
+FUZZY                                                                           
+MY_SEQ                                                                1         
+1.0000E+27            1 N  N          20           1                            
+                                                                                
+
+8 개의 행이 선택되었습니다.
+
+SQL> insert into todo (num,content, date) values (1, sql, sysdate);
+insert into todo (num,content, date) values (1, sql, sysdate)
+                               *
+1행에 오류:
+ORA-01747: 열명을 올바르게 지정해 주십시오 
+
+
+SQL> insert into todo (num,content, regdate) values (1, sql, sysdate);
+insert into todo (num,content, regdate) values (1, sql, sysdate)
+                                                   *
+1행에 오류:
+ORA-00984: 열을 사용할 수 없습니다 
+
+
+SQL> insert into todo (num,content, regdate) values (1, 'sql', sysdate);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into todo (num,content, regdate) values (2, 'c++', sysdate);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> commit
+  2  ;
+
+커밋이 완료되었습니다.
+
+SQL> spool off
