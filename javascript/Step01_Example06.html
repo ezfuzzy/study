@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Step01_Example.html</title>
+    <style>
+        #box { height: 130; width: 200; border:1px solid blue; background-color: yellowgreen; font-weight: 600;  cursor:pointer; transition: all 5s linear}
+        /* transition : animation */
+    </style>
 </head>
 <body>
-    <input type="text" id="inputText">
-    <button onclick="send()">전송</button>
-    <p id="result">xxx</p>
-    <script>
-        
+    <div id="box" onclick="jjan()"> HAWEI
+        <input type="text" id="inputText">
+        <button onclick="send()">전송</button>
+        <p id="result">xxx</p>
+    </div>
+    <script>        
         function send(){
-            //1. input 요소에 입력한 value 값을 읽어와서 변수에 담는다.
             let msg = document.querySelector("#inputText").value;
-            //2. 변수에 담긴 문자열을 p 요소의 innerText 로 넣어준다
-            // document.querySelector("#result").innerText=msg;
             document.getElementById("result").innerText=msg;
         }
+        document.getElementById("box").addEventListener("click", function(){
+            document.getElementById("box").style.width="200px";
+            document.getElementById("box").style.backgroundColor="yellow";
+            document.getElementById("box").style.marginLeft="200px";
+        })
+        
     </script>
 </body>
 </html>
