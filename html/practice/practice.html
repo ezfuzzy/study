@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>채팅방 이름 변경</title>
+<style>
+    /* 모달 스타일 */
+    .modal {
+        display: none; /* 초기에는 숨겨진 상태 */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+    }
+
+    /* 모달 내용 스타일 */
+    .modal-content {
+        background-color: #fefefe;
+        border-radius: px;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    /* 닫기 버튼 스타일 */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<!-- 채팅방 이름 표시 -->
+<h2 id="roomName">채팅방 이름</h2>
+<!-- 이름 변경 모달 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>채팅방 이름 변경</h3>
+        
+        <input type="text" id="newName" placeholder="새로운 이름 입력">
+        <button id="changeBtn">변경</button>
+    </div>
+</div>
+
+<script>
+// 모달 요소 가져오기
+var modal = document.getElementById("myModal");
+
+// 모달 닫기 버튼 가져오기
+var span = document.getElementsByClassName("close")[0];
+
+// 모달 열기 함수
+function openModal() {
+    modal.style.display = "block";
+}
+
+// 모달 닫기 함수
+function closeModal() {
+    modal.style.display = "none";
+}
+
+// 채팅방 이름 변경 함수
+function changeName() {
+    var newName = document.getElementById("newName").value;
+    document.getElementById("roomName").innerText = newName;
+    closeModal(); // 모달 닫기
+}
+
+// 이벤트 리스너 등록
+document.getElementById("roomName").addEventListener("dblclick", openModal);
+document.getElementById("changeBtn").addEventListener("click", changeName);
+span.addEventListener("click", closeModal);
+</script>
+
+</body>
+</html>

@@ -30,6 +30,30 @@ h3{
 .c{
     color: white;
 }
+#editableTextboxBtn {
+  display: flex;
+  width: 404px;
+  height: 32px;
+  padding: 9px 5px;
+  font-size: 20px;
+  align-items: center;
+
+  background-color: aquamarine;
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#editableTextbox {
+  display: none;
+  width: 400px;
+  height: 30px;
+  font-size: 20px;
+  background-color: aquamarine;
+  border: 0px;
+  border-radius: 5px;
+  cursor: text;
+}
 img{
     width: 200px;
 }

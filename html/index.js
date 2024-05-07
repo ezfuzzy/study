@@ -3,6 +3,40 @@ function open_boj(){
     window.open('http://127.0.0.1:5500/html/Step05_ul.html', '_blank', options );
 
 }
+// document.getElementById('editableTextbox').addEventListener('click', function(){
+//   var textbox = this;
+//   textbox.disabled = true;
+// })
+document.getElementById('editableTextboxBtn').addEventListener('dblclick',()=>{
+  var textboxBtn = document.getElementById('editableTextboxBtn');
+  var textbox = document.getElementById('editableTextbox');
+  
+  textboxBtn.style.display = 'none';
+  textbox.style.display = 'flex';
+})
+document.getElementById('editableTextbox').addEventListener('dblclick', function(){
+  var textbox = this; //document.getElementById('editableTextbox');
+
+  textbox.focus();
+})
+
+document.getElementById('editableTextbox').addEventListener('blur', function() {
+  var textbox = this;
+  var textboxBtn = document.getElementById('editableTextboxBtn');
+  textboxBtn.innerText = textbox.value;
+
+  textbox.style.display = 'none';
+  textboxBtn.style.display = 'flex';
+
+  // textbox.readOnly = true;
+
+  // 텍스트박스를 수정한 후 포커스를 잃으면 읽기 전용 상태로 변경합니다.
+});
+document.getElementById('WSS').addEventListener('click', function(){
+  var textboxBtn = document.getElementById('editableTextboxBtn');
+  textboxBtn.style.display = 'none';
+  //textbox.disabled = false;
+})
 var ch = 0;
 // document.getElementsByClassName("custom-btn").addEventListener("click", CMC());
 // searchbox 
@@ -141,7 +175,7 @@ function img_slide(){
 // }
 clock();
 setInterval(clock, 1000);
-img_slide();
-setinterval(img_slide,5000);
+// img_slide();
+// setinterval(img_slide,5000);
 // processing-intervalJob();
 // setinterval(processing-intervalJob, 1000);
