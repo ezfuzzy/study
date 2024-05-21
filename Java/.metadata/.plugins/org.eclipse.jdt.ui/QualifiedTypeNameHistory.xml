@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.nio.file.FileSystemNotFoundException"/>
+    <fullyQualifiedTypeName name="java.io.PrintStream"/>
+    <fullyQualifiedTypeName name="test.mypac.SquareObj"/>
+    <fullyQualifiedTypeName name="test.main.mainClass01"/>
+    <fullyQualifiedTypeName name="test.mypac.airplane"/>
+    <fullyQualifiedTypeName name="test.mypac.Iphone"/>
+    <fullyQualifiedTypeName name="javax.sound.midi.VoiceStatus"/>
+    <fullyQualifiedTypeName name="test.mypac.Android"/>
+    <fullyQualifiedTypeName name="java.util.spi.AbstractResourceBundleProvider"/>
+    <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="test.mypac.Phone"/>
+    <fullyQualifiedTypeName name="javax.smartcardio.Card"/>
+    <fullyQualifiedTypeName name="test.auto.SprotsCar"/>
+    <fullyQualifiedTypeName name="test.auto.Engine"/>
+    <fullyQualifiedTypeName name="test.auto.Car"/>
+    <fullyQualifiedTypeName name="test.auto2.MyCar"/>
+    <fullyQualifiedTypeName name="test.Util.MyUtil"/>
+    <fullyQualifiedTypeName name="test.Util.BaseUtil"/>
+    <fullyQualifiedTypeName name="java.security.PublicKey"/>
+    <fullyQualifiedTypeName name="java.lang.Void"/>
+    <fullyQualifiedTypeName name="test.main.MainClass01"/>
+    <fullyQualifiedTypeName name="test.main.MainClass02"/>
+    <fullyQualifiedTypeName name="test.mypac.MyWeapon"/>
+    <fullyQualifiedTypeName name="test.mypac.Zoo.Monkey"/>
+    <fullyQualifiedTypeName name="test.mypac.Zoo"/>
+    <fullyQualifiedTypeName name="test.mypac.Zoo.Tiger"/>
+    <fullyQualifiedTypeName name="javax.print.attribute.SetOfIntegerSyntax"/>
+    <fullyQualifiedTypeName name="test.main.MainClass05.SeaWeapon"/>
+    <fullyQualifiedTypeName name="SpaceWeapon"/>
+    <fullyQualifiedTypeName name="test.mypac.Weapon"/>
+    <fullyQualifiedTypeName name="javax.swing.plaf.synth.SynthOptionPaneUI"/>
+    <fullyQualifiedTypeName name="java.lang.Override"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+    <fullyQualifiedTypeName name="java.util.concurrent.ForkJoinTask"/>
+    <fullyQualifiedTypeName name="test.mypac.MyRemocon"/>
+    <fullyQualifiedTypeName name="java.lang.Object"/>
+    <fullyQualifiedTypeName name="test.mypac.Remocon"/>
+    <fullyQualifiedTypeName name="test.mypac.Drill"/>
+</qualifiedTypeNameHistroy>

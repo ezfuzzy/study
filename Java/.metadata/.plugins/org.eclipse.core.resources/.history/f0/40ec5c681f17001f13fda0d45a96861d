@@ -1,0 +1,19 @@
+package test.main;
+
+public class MainClass02 {
+  public static void main(String[] args) {
+    MainClass02.test();
+    test();
+    String str = "ezezezeze";
+    MainClass02.useString(str);
+    useString(str);
+  }   
+}
+
+public static void test() {
+  System.out.println("static test() method");
+}
+
+public static void useString(String str) {
+  System.out.println("useString()" + str);
+}

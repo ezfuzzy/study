@@ -1,0 +1,11 @@
+package test.mypac;
+
+public class Iphone extends Phone {
+  public void IphoneCall() {
+    System.out.println("iphone calling ...");
+  }
+  
+  public void IphoneTakePic() {
+    System.out.println("picture taken by iphone. ");
+  }
+}

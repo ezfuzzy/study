@@ -1,0 +1,14 @@
+package test.mypac;
+
+public class airplane {
+  public String name;
+  
+  public void print() {
+    System.out.println("ang~" + name);
+  }
+  
+  public airplane getAir() {
+    airplane p1 = new airplane();
+    return p1;
+  }
+}

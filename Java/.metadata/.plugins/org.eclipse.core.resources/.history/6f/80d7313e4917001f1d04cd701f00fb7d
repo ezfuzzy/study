@@ -1,0 +1,14 @@
+package test.main;
+
+import test.mypac.Drill;
+
+public class MainClass04 {
+  public static void main(String[] args) {
+    
+  } // end of main
+  
+  public static void useDrill(Drill d) {
+    d.hole();
+    d.hole();
+  }
+}

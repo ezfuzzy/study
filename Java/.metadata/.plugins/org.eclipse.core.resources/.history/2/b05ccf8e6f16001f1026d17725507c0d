@@ -1,0 +1,12 @@
+package test.main;
+
+import test.mypac.Android;
+
+public class MainClass03 {
+  public static void main(String[] args) {
+    Android a1 = new Android();
+    
+    a1.takePicture();
+    a1.call();
+  }
+}

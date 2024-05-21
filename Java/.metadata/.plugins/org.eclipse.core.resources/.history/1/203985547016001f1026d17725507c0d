@@ -1,0 +1,9 @@
+package test.main;
+
+import test.mypac.Android;
+
+public class MainClass04 {
+  public static void main(String[] args) {
+    
+  }
+}

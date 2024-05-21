@@ -34,9 +34,32 @@ document.getElementById('editableTextbox').addEventListener('blur', function() {
 });
 document.getElementById('WSS').addEventListener('click', function(){
   var textboxBtn = document.getElementById('editableTextboxBtn');
-  textboxBtn.style.display = 'none';
+
+  if(textboxBtn.style.display === 'none'){
+    textboxBtn.style.display = 'flex';
+    this.innerText = "Hide mint area";
+  }
+  else{
+    textboxBtn.style.display = 'none';
+    this.innerText = "Reveal mint area";
+  }
   //textbox.disabled = false;
 })
+const modal = document.querySelector('.modal');
+const modalBtn = document.querySelector('.btn-open-modal');
+modalBtn.addEventListener('click', ()=>{
+  modal.style.display = "flex";
+})
+const modal_inline_closeBtn = document.querySelector('.modal_inline.close');
+modal_inline_closeBtn.addEventListener('click', ()=>{
+  modal.style.display = "none";
+})
+const modal_inline_confirmBtn = document.querySelector('.modal_inline.confirm');
+modal_inline_confirmBtn.addEventListener('click', ()=>{
+  document.querySelector('#modal_output').innerText = modal_textarea.value;
+  modal.style.display = "none";
+})
+
 var ch = 0;
 // document.getElementsByClassName("custom-btn").addEventListener("click", CMC());
 // searchbox 
@@ -179,3 +202,4 @@ setInterval(clock, 1000);
 // setinterval(img_slide,5000);
 // processing-intervalJob();
 // setinterval(processing-intervalJob, 1000);
+

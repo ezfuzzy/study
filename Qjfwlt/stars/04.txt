@@ -35,7 +35,7 @@ hanbyul : bronze
 5 : 실2
 		
 
-Platinum V Bronze V Bronze IV Diamond V Silver II
+Platinum I Bronze V Bronze IV Diamond V Silver II(실3도 됨)
 
 
 

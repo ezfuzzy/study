@@ -16,26 +16,41 @@
         <fieldset>
             <legend>info</legend>
             <h1>my name is fuzzy</h1> <!-- block element : always width 100% -->
-            <h2>test page</h2>
-        
-            <h3>html, css, javascript, c++(BOJ)</h3>
+            <div class="pre_h2"> 
+              <button id="editableTextboxBtn">DBLClick to edit whenever you want</button>
+              <input type="text" id="editableTextbox">
+            </div>
+            <div style="text-align: center;">
+              <span id="clock" style="color:rgb(255, 255, 255) ; font-size: 50px;">clock</span>
+              <span id="apm" style="color:white; font-size: 20px;">apm</span>
+            </div>
+            <h3 style="display: inline;">html, css, javascript, c++(BOJ)</h3>
             <ul class="c boj dp"> you can click this list.
-                <li id="11049" onclick="open_boj();">11049.cpp</li>
+                <li id="c11049" onclick="open_boj();">11049.cpp</li>
                 <li id="">2</li>
                 <li id="">3</li>
                 
             </ul>
-            <div> 
-              <button id="editableTextboxBtn">DBLClick to edit whenever you want</button>
-              <input type="text" id="editableTextbox">
-            </div>
+            
             <!-- <div class="relative grow overflow-hidden whitespace-nowrap">색상 변경 구문 오류<div class="absolute bottom-0 right-0 top-0 bg-gradient-to-l to-transparent from-token-sidebar-surface-secondary w-20 from-60%"></div></div> -->
 
         </fieldset><br>
         <div class="Frame">
-            <button class="custom-btn btn" onclick="CMC();"><span>What up?</span><span>fuzzy</span></button>
-            <!-- <button class="custom-btn btn"><span>What up?</span><span>fuzzy</span></button> -->
-            <button id="WSS"">new btn</button>
+          <textarea disabled id="modal_output" /></textarea> <br>
+          <button class="custom-btn btn" onclick="CMC();"><span>What up?</span><span>fuzzy</span></button>
+          <!-- <button class="custom-btn btn"><span>What up?</span><span>fuzzy</span></button> -->
+          <button id="WSS"">Hide mint area</button>
+                    <!-- modal -->
+        <div class="modal">
+          <div class="modal_body">
+            <h1>Modal</h1>
+            <textarea name="modal_textarea_name" id="modal_textarea"></textarea>
+            <br>
+            <button class="modal_inline confirm"> confirm </button>
+            <button class="modal_inline close"> close </button>
+          </div>
+        </div>
+        <button class="btn-open-modal">Open Modal</button>
         </div>
         
         <br>
@@ -48,10 +63,7 @@
             <img src="images/b2.png" onclick="CMC_yellow();">
             <img src="images/b3.png" onclick="CMC_green();">
         </div>
-        <div style="text-align: center;">
-            <span id="clock" style="color:white ; font-size: 50px;">clock</span>
-            <span id="apm" style="color:white; font-size: 20px;">apm</span>
-        </div>
+        
         <div class="recommend_coordi">
             <p style="color:white">오늘 평균기온 입력하면 입을 옷 추천</p>
             <input type="number" id="input-temparture" placeholder="Enter today's avg-temparture" min="-40" max="45" value="null">
@@ -59,6 +71,7 @@
             <button type="submit" id="submit-temparture" onclick="clear_tempartureBox()">today's coordi</button>
         </div><br>
         <input type="text" class="input-field" id="inputBox" oninput="CBC(this)">
+
 
         <!-- JavaScript 파일 연결 -->
         <script src="index.js"></script>

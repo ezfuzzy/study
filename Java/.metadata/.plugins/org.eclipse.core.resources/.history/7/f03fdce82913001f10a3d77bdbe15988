@@ -1,0 +1,10 @@
+package test.mypac;
+
+public class SquareObj {
+  public int width;
+  public int height;
+  
+  public void cal() {
+    System.out.println("넓이 : `width*height`");
+  }
+}

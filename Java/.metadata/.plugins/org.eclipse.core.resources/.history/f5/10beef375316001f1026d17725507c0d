@@ -1,0 +1,12 @@
+package test.mypac;
+
+public class Phone {
+  
+  public Phone() {
+    System.out.println("Contructor of Phone");
+  }
+  
+  public void call() {
+    System.out.println("calling ... ");
+  }
+}

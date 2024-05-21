@@ -6,8 +6,8 @@
   <title>Step02_document02.html</title>
   <style>
     .box {
-      width: 300px;
-      height: 300px;
+      width: 50px;
+      height: 50px;
       border: 3px solid blueviolet;
       font-weight: 600;
       cursor: pointer;
@@ -16,11 +16,11 @@
   </style>
 </head>
 <body>
-  <box class="box">box1</box>
-  <box class="box">box2</box>
-  <box class="box">box3</box>
-  <box class="box">box4</box>
-  <box class="box">box5</box>
+  <button class="box">box1</button>
+  <button class="box">box2</button>
+  <button class="box">box3</button>
+  <button class="box">box4</button>
+  <button class="box">box5</button>
 
   <p class="comment">p1</p>
   <p class="comment">p2</p>
@@ -38,7 +38,6 @@
         const colorIndex = indexes[i] % colors.length;
         indexes[i]++;
         targets[i].style.backgroundColor = colors[colorIndex];
-        console.log(colorIndex);
       })
     }
 

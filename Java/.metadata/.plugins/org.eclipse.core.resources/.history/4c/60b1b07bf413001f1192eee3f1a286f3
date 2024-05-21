@@ -1,0 +1,16 @@
+package test.main;
+
+import java.util.Random;
+
+public class MainClass05 {
+
+  public static void main(String[] args) {
+
+    Random r1 = new Random();
+    // -10 ~ 10
+    System.out.println(r1);
+    // 75 ~ 100
+    
+    // 1 ~ 45
+  }
+}

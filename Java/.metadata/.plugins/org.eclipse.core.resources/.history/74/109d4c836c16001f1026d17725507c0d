@@ -1,0 +1,16 @@
+package test.main;
+
+import test.mypac.Iphone;
+import test.mypac.Phone;
+
+public class MainClass02 {
+  public static void main(String[] args) {
+    Iphone ph1 = new Iphone();
+    
+    Phone ph2 = new Iphone(); // Phone 
+    
+    Object ph3 = new Iphone(); // Ph3 
+    
+    
+  }
+}
