@@ -22,4 +22,5 @@ public class MainClass04 {
     d.hole();
     d.hole();
   }
+  
 }
