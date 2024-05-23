@@ -18,7 +18,7 @@ public class MainClass05 {
 		
 		members.forEach((cur) -> {
 			System.out.println("no. " + cur.getNum() 
-					+ " name: " + cur.name + " addr: " + cur.addr);
+					+ " name: " + cur.getName() + " addr: " + cur.getAddr());
 		});
 		
 	}
