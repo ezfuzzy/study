@@ -25,7 +25,7 @@ public class MainClass06 {
 		
 		for(MemberDto curMem: members) {
 			String info = String.format("번호: %d 이름: %s 주소: %s",
-					curMem.getNum(), curMem.getName(), curMem.getAddr() );
+					curMem.getNum(), curMem.getName(), curMem.getAddr());
 			System.out.println(info);
 		}
 		

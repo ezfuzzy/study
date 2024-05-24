@@ -8,6 +8,6 @@ public class MainClass01 {
     
     ph1.call();
     ph1.IphoneCall();
-    ph1.IphoneTakePic();
+    ph1.takePicture();
   }
 }
