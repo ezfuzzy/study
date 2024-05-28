@@ -1,0 +1,304 @@
+
+/* 기본 틀은 따로 만들어서 일괄 적용시킬 수도 있다. */
+body{
+    height: 100vh;
+    width: 100vw;
+    background-image: url(images/nilah.webp);
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+    padding-left: 30px;
+}
+fieldset{
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  border-color: white;
+  border-width: 5px;
+}
+legend{
+  
+  color: white;
+  font-weight: bold;
+  font-size: 50px;
+}
+h1{
+    color: green;
+}
+h2{
+    background-color: beige;
+}
+h3{
+    color: red;
+}
+
+
+.c{
+  color: white;  
+}
+
+.c.boj li {
+  background-color: yellowgreen;
+  display: table;
+  /* margin: auto; */
+  margin: 4px 0;
+}
+li {
+  /* background-color: yellowgreen; */
+  
+}
+#c11049 {
+  display: flex;
+  cursor: pointer;
+}
+
+#editableTextboxBtn {
+  display: flex;
+  width: 404px;
+  height: 32px;
+  padding: 9px 5px;
+  font-size: 20px;
+  align-items: center;
+
+  background-color: aquamarine;
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#editableTextbox {
+  display: none;
+  width: 400px;
+  height: 30px;
+  font-size: 20px;
+  background-color: aquamarine;
+  border: 0px;
+  border-radius: 5px;
+  cursor: text;
+}
+#WSS {
+  margin-left: 50px;
+  width: 100px;
+  height: 50px;
+  font-weight: 600;
+  font-size: 16px;
+
+}
+.modal{
+  position:absolute;
+  display:none;
+  
+  justify-content: center;
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal_body{
+position:absolute;
+top:50%; 
+width:400px; 
+height:300px;
+padding:40px;  
+text-align: center;
+background-color: rgb(255,255,255); 
+border-radius:10px; 
+box-shadow:0 2px 3px 0 rgba(34,36,38,0.15); 
+
+transform:translateY(-50%); 
+}
+
+#modal_textarea {
+  width: 370px;
+  height: 180px;
+  font-size: 16px;
+  font-weight: 600;
+  resize: none;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.btn-open-modal {
+  width: 100px;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+}
+
+.modal_inline {
+  margin-top: 20px;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#modal_output {
+  background-color: rgb(185, 185, 185);
+  resize: none;
+  cursor: text;
+  width: 370px;
+  height: 180px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+img{
+    width: 200px;
+}
+#ChangeBackgroundColor{
+    padding-bottom: 30px;
+    margin-right: 200px;
+}
+
+#ChangeColor{
+    color: white;
+    cursor: pointer;
+    font:3.0em consolas;
+    display: inline;
+}
+
+.custom-btn {
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+
+
+@-webkit-keyframes shiny-btn1 {
+    0% { -webkit-transform: scale(0) rotate(45deg); opacity: 0; }
+    80% { -webkit-transform: scale(0) rotate(45deg); opacity: 0.5; }
+    81% { -webkit-transform: scale(4) rotate(45deg); opacity: 1; }
+    100% { -webkit-transform: scale(50) rotate(45deg); opacity: 0; }
+}
+
+
+/* 12 */
+.btn{
+    position: relative;
+    right: 20px;
+    bottom: 20px;
+    border:none;
+    box-shadow: none;
+    width: 130px;
+    height: 40px;
+    line-height: 42px;
+    -webkit-perspective: 230px;
+    perspective: 230px;
+}
+.btn span {
+    background: rgb(0,172,238);
+    background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+    display: block;
+    position: absolute;
+    width: 130px;
+    height: 40px;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    border-radius: 5px;
+    margin:0;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+.btn span:nth-child(1) {
+    box-shadow:
+    -7px -7px 20px 0px #fff9,
+    -4px -4px 5px 0px #fff9,
+    7px 7px 20px 0px #0002,
+    4px 4px 5px 0px #0001;
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+}
+.btn span:nth-child(2) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+}
+.btn:hover span:nth-child(1) {   /*호버 이벤트 발생시 */
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+}
+.btn:hover span:nth-child(2) {   /*호버 이벤트 발생시 */
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    color: transparent;
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+}
+#input-temparture{
+    width: 200px; 
+    height: 30px; 
+    /*font: 40px;*/
+}
+#submit-temparture{
+    height: 30px;
+    font-weight: bold;
+}
+
+/* 
+    hov.
+    weather - avgyrpmpatyrlre
+*/
+
+.filled-inputBox{
+    background-color: rgb(200, 213, 236);
+}
+
+/* media query: css로 구현할 수 있는 핵심적인 반응형 디자인   */
+
+@media(max-width:800px) {
+    h1 { 
+        color: white;
+    }
+    h2 {
+        color: blue;
+        background-color: paleturquoise;
+        display: inline;
+    }
+    fieldset {
+        color: red;
+        border-color: red;
+    }
+    legend {
+        color: purple;
+    }
+    .btn{
+        background-color: rgba(0, 183, 255, 0.87);
+    }
+  }
+  

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        width: 500px;
+        margin: 0 auto;
+      }
+      input[type="text"] {
+        width: 300px;
+        height: 30px;
+        font-size: 20px;
+      }
+      button {
+        height: 30px;
+        font-size: 20px;
+      }
+      li {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>문서 요소를 원하는 시점에 만들어서 원하는 위치에 넣기</h1>
+      <input type="text" name="type TO DO" id="inputTODO">
+      <button id="addBtn">ADD</button>
+      <button id="addBtn02">ADD02</button>
+      <button id="addBtn03">ADD03</button>
+      <button id="addBtn04">ADD04</button>
+      <button id="addBtn05">ADD05</button>
+      <ol><!-- ol area --></ol>
+    </div>
+    <script>
+      
+      //btn area
+      const addBtn = document.querySelector("#addBtn");
+      const addBtn02 = document.querySelector("#addBtn02");
+      const addBtn03 = document.querySelector("#addBtn03");
+      const addBtn04 = document.querySelector("#addBtn04");
+      const addBtn05 = document.querySelector("#addBtn05");
+
+      const inputTODO = document.querySelector("#inputTODO");
+      const ol = document.querySelector("ol");
+      
+      addBtn.addEventListener("click", () => {  
+        const li = document.createElement("li");
+        li.innerText = inputTODO.value;
+        ol.appendChild(li);
+        inputTODO.value = "";
+      });
+
+      addBtn02.addEventListener("click", () => {  
+        const li02 = document.createElement("li");
+        li02.innerText = inputTODO.value;
+        ol.insertAdjacentElement("afterbegin", li02);
+        
+        inputTODO.value = "";
+      });
+      
+      addBtn03.addEventListener("click", () => {  
+      
+        const html00 = `<li>${inputTODO.value}</li>`;
+        ol.insertAdjacentHTML("beforeend", html00);
+
+      });
+
+      addBtn04.addEventListener("click", () => {
+        const html01 = `<li>${inputTODO.value}</li>`;
+        ol.innerHTML = html01;
+      });
+      
+      addBtn04.addEventListener("click", () => {
+        const html01 = `<li>${inputTODO.value}</li>`;
+        ol.innerHTML = html01;
+      });
+
+    </script>
+  </body>
+</html>

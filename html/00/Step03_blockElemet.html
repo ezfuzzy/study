@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step03_blockelemet.html</title>
+    <style> /*div, #one, #tow > img같은 애들을 선택자라고 한다. selector*/
+        div{/*apply all div elements(sss)*/
+            background-color: antiquewhite;
+        }
+        #one{
+            color: blue;
+            color:aqua
+        }
+        #two > img{
+            border-width: 2px;
+            border-style: solid;
+            border-color: red;
+        }
+        img{
+            width: 300px;
+        }
+        #three > img{
+            width: 200px;
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div>use div elemet when express paragraph</div>
+    <div id="one">문단에 해당하는 것은 문자열 뿐만이 아니고 다른 여러가지 요소도 올 수 있습니다.</div>
+    <div>div 요소는 폭을 100% 차지하는 block element 입니다.</div>
+    <div id="two">  <!-- div#two-->
+        <!-- this div elemnet has two img elemnet as a child-->
+        <img src="images/1.jpg" alt="">
+        <img src="images/2.jpg" alt="">
+    </div>
+    <div id="three">
+        <img src="images/image1.png" alt="">
+        <img src="images/image2.png" alt="">
+    </div>
+
+</body>
+</html>

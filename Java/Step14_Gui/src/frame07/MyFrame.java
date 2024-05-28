@@ -46,6 +46,20 @@ public class MyFrame extends JFrame implements ActionListener{
     add(ta, BorderLayout.CENTER);
     ta.setVisible(false);
     
+    JButton btn = new JButton("try click");
+    add(btn, BorderLayout.SOUTH);
+    
+    btn.addActionListener((e) -> {
+      System.out.println("2 secs");
+      try{
+	Thread.sleep(2000);
+      } catch(Exception e1) {
+	e1.printStackTrace();
+      }
+    });
+    
+    
+    
     newItem.addActionListener(this);
   } // end of MyFrame
   
@@ -59,11 +73,9 @@ public class MyFrame extends JFrame implements ActionListener{
     if(which == newItem) {
       System.out.println("good");
       ta.setVisible(true);
-    } else if(which == openItem) {
-	
-    } else if(which == saveItem) {
-      
-    }
+    } 
+    
+         
     
   }
 

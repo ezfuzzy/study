@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step09_form04.html</title>
+
+    <style>
+        textarea{
+            width: 200px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>setting basic value on form element</h1>
+        <p>
+            서버에서 클라이언트에 폼을 응답할 때 이미 저장된 값을
+            출력한 상태로 응답을 해야할 때가 있다. <br>
+            예를 들어 회원 목록을 보려면 db에 접근해서
+            해당 내용을 출력해주어야한다.
+        </p>
+
+        <form action="update.jsp">
+            email <input type="email" name="email" value="kim@naver.com"><br>
+            <!-- value에 값 넣으면 그게 초기값. -->
+            <label for="job">job</label>
+            <select name="job" id="job">
+                <option value="">choice</option>
+                <option value="programmer">programmer</option>
+                <option value="doctor">doctor</option>
+                <option value="pianist" selected>pianist</option>
+                <option value="etc">etc</option>
+            </select>
+
+            <fieldset>
+                <legend>choice your hobby</legend>
+                <label>
+                    <input type="checkbox" name="hobby" value="soccer" >soccer
+                </label>
+                <label>
+                    <input type="checkbox" name="hobby" value="baseball" checked>baseball
+                </label>
+                <label>
+                    <input type="checkbox" name="hobby" value="baking">baking
+                </label>
+                <label>
+                    <input type="checkbox" name="hobby" value="etc">etc
+                </label>
+            </fieldset>
+            하고싶은 말 <br>
+            <textarea name="comment" rpws="10"> hihihihihi
+                mj
+                skull
+                monkey 
+            </textarea>
+        </form>
+    </div>
+</body>
+</html>

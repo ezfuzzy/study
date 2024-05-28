@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>createElement</title>
+
+  <style>
+    .container {
+      /* align-items: center; */
+      width: 500px;
+      margin: 0 auto;
+      border: 1px solid #062;
+    }
+    table {
+      width: 500px;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #000;
+    }
+    th, td {
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    num: <input type="text" name="num" id="num">
+    name: <input type="text" name="name" id="name">
+    addr: <input type="text" name="addr" id="addr">
+
+    <button id="addBtn00">ADD00</button>
+    <button id="addBtn01">ADD01</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>num</th>
+          <th>name</th>
+          <th>addr</th>
+        </tr>
+      </thead>
+      <tbody><!-- tbody area --></tbody>
+    </table>
+
+
+  </div>
+  <script>
+    let absNum = 0;
+    const addBtn00 = document.querySelector("#addBtn00");
+    const addBtn01 = document.querySelector("#addBtn01");
+    const tbody = document.querySelector("tbody");
+
+    const inputNum = document.querySelector("#num");
+    const inputName = document.querySelector("#name");
+    const inputAddr = document.querySelector("#addr");
+
+    addBtn00.addEventListener("click", () => {
+      const tr00 = document.createElement("tr");
+
+      const tdNum = document.createElement("td");
+      tdNum.innerText = inputNum.value;
+
+      const tdName = document.createElement("td");
+      tdName.innerText = inputName.value;
+
+      const tdAddr = document.createElement("td");
+      tdAddr.innerText = inputAddr.value;
+      
+      tr00.append(tdNum);
+      tr00.append(tdName);
+      tr00.append(tdAddr);
+
+      tbody.append(tr00);
+    })
+    
+    addBtn01.addEventListener("click", () => {
+      const html01 = `
+        <tr>
+          <td>${absNum++}</td>
+          <td>${inputName.value}</td>
+          <td>${inputAddr.value}</td>
+        </tr>
+      `;
+      tbody.insertAdjacentHTML("beforeend", html01);
+
+    })
+
+    
+
+  </script>
+
+</body>
+</html>
