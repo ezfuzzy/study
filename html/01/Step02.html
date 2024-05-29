@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event</title>
+
+  <style>
+    .box{
+      width: 500px;
+      height: 500px;
+      border: 2px solid #062;
+      background-color: yellowgreen;
+      font-weight: 600;
+      font-family: Victor mono;
+    }
+
+    .container{
+      margin-top: 30px;
+      display: flex;
+    }
+
+    .container.box {
+      margin-left: 20px;
+      width: 200px;
+      height: 200px;
+      border: 2px solid #062;
+      background-color: rgb(197, 197, 197);
+      font-weight: 600;
+      font-family: Victor mono;
+      font-size: 1.5rem;
+      /* arrangement */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+  
+  <div class="container">
+    <div class="container box"></div>
+    <div class="container box"></div>
+    <div class="container box"></div>
+    <div class="container box"></div>
+    <div class="container box"></div>
+  </div>
+
+  <script>
+    const box = document.querySelector(".box");
+
+    box.addEventListener("mousemove", (e) => {
+      console.log(e);
+      
+      const target = e.target; // div.box
+      
+      const ox = e.offsetX;
+      const oy = e.offsetY;
+
+      const offsetInfo = `offset X: ${ox}, offset Y:  ${oy}`;
+      target.innerText = offsetInfo;
+      
+    });
+
+    const containerBox = document.querySelectorAll(".container.box");
+
+    containerBox.forEach((cBox) => {
+      cBox.addEventListener("mousemove", (e) => {
+        const target = e.target;
+
+        const ox = e.offsetX;
+        const oy = e.offsetY;
+
+        const offsetInfo = `offset X: ${ox}, offset Y:  ${oy}`;
+        target.innerText = offsetInfo;
+      })
+    });
+
+
+  </script>
+</body>
+</html>

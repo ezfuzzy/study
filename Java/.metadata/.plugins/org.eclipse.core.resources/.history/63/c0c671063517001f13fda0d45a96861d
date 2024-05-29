@@ -1,9 +1,0 @@
-package test.mypac;
-
-public class Zoo {
-  public class Monkey{
-    public void say() {
-      System.out.println("nokey~");
-    }
-  }
-}
