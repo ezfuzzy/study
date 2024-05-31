@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interval</title>
+  </head>
+  <body>
+    <h1>interval</h1>
+    <!-- <span id="count">0</span><br /> -->
+    <p id="one">0</p>
+    <button id="startBtn">start</button>
+    <button id="stopBtn">stop</button>
+    <button id="resetBtn">reset</button>
+    <script>
+      (function () {
+        let count = 0;
+        let StopWatch;
+        let isActive = false;
+
+        document.querySelector("#startBtn").addEventListener("click", () => {
+          if (isActive) return;
+          isActive = true;
+          console.log(count);
+          StopWatch = setInterval(() => {
+            document.querySelector("#one").innerText = count++;
+          }, 1000);
+        });
+
+        document.querySelector("#stopBtn").addEventListener("click", () => {
+          clearInterval(StopWatch);
+          isActive = false;
+        });
+
+        document.querySelector("#resetBtn").addEventListener("click", () => {
+          clearInterval(StopWatch);
+          isActive = false;
+          count = 0;
+          document.querySelector("#one").innerText = count;
+        });
+        
+      })();
+    </script>
+  </body>
+</html>

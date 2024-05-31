@@ -51,24 +51,25 @@
           </div>
         </div>
         <button class="btn-open-modal">Open Modal</button>
+        <button id="gogo" onclick="imgSlide">gogo</button>
         </div>
         
         <br>
-        <img src="images/t9penguino_trans.png" id="ChangeBackgroundColor" onclick="CIC_white();"> <!--xml: 형식이 정해진 ~ (html도 xml의 일종) -->
-        <img id="imgSlider" src="https://picsum.photos/200/300?grayscale" alt="silde img"> <br>
+        <img src="../images/t9penguino_trans.png" id="ChangeBackgroundColor" onclick="CIC_white();"> <!--xml: 형식이 정해진 ~ (html도 xml의 일종) -->
+        <img id="imgSlider" src="https://picsum.photos/200/300?grayscale" alt="slide img"> <br>
         <div id="ChangeColor"  onclick="RMC();">Get black</div> <br>
         <div class="balls">
-            <img src="images/b0.png" onclick="CMC_red();">
-            <img src="images/b1.png" onclick="CMC_orange();">
-            <img src="images/b2.png" onclick="CMC_yellow();">
-            <img src="images/b3.png" onclick="CMC_green();">
+            <img src="../images/b0.png" onclick="CMC_red();">
+            <img src="../images/b1.png" onclick="CMC_orange();">
+            <img src="../images/b2.png" onclick="CMC_yellow();">
+            <img src="../images/b3.png" onclick="CMC_green();">
         </div>
         
         <div class="recommend_coordi">
             <p style="color:white">오늘 평균기온 입력하면 입을 옷 추천</p>
-            <input type="number" id="input-temparture" placeholder="Enter today's avg-temparture" min="-40" max="45" value="null">
-            <!-- <input type="submit" onclick="clear_tempartureBox()"> -->
-            <button type="submit" id="submit-temparture" onclick="clear_tempartureBox()">today's coordi</button>
+            <input type="number" id="input-temperature" placeholder="Enter today's avg-temperature" min="-40" max="45" value="null">
+            <!-- <input type="submit" onclick="clear_temperature()"> -->
+            <button type="submit" id="submit-temperature" onclick="clear_temperatureBox()">today's coordi</button>
         </div><br>
         <input type="text" class="input-field" id="inputBox" oninput="CBC(this)">
 

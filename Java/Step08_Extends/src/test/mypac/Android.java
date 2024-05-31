@@ -3,6 +3,7 @@ package test.mypac;
 
 public class Android extends Phone{
   
+  public int and_no;
   public Android() {
     System.out.println("Super Duper Recording Call");
   }

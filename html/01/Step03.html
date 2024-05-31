@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>array</title>
+  </head>
+  <body>
+    <script>
+      let nums = [-10, 20, -15, 5, 30];
+      for (let i = 0; i < nums.length; i++) {
+        if (nums[i] < 0) {
+          nums.splice(i, 1);
+          i--;
+        }
+      }
+      console.log(nums);
+
+      const names = ["John", "Jane", "James", "Judy", "Jack"];
+
+      names.forEach((name, idx) => {
+        console.log(name + ": 나는 " + idx + "번");
+        return name + "님";
+      });
+
+      const newArr2 = names.map((name) => name + "님");
+
+      const nums01 = [1, 5, 8, -10, -20, 10, 30];
+      const newNums = nums01.filter((num) => num >= 0).map((num) => num ** 2);
+
+      console.log(newNums);
+    </script>
+  </body>
+</html>
