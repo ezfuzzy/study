@@ -103,7 +103,8 @@ public class MyFrame extends JFrame {
       StringBuilder content = new StringBuilder();
       String line;
       while((line = br.readLine())!=null) {
-	content.append(line).append("\n");
+	System.out.println("line:"+line);
+	content.append(line).append("\r\n");
       }
       ta.setText(content.toString());
       ta.setVisible(true);
@@ -126,7 +127,7 @@ public class MyFrame extends JFrame {
     if(this.getTitle() == null) return;
     
     BufferedWriter bw = null; 
-    try { 
+    try {  // 수정된 부분만 추가하는 방법 ? 
       bw = new BufferedWriter(new FileWriter(openedFile));
       bw.write(ta.getText());      
     } catch (Exception e) {

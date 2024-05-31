@@ -1,0 +1,1292 @@
+SQL> select ename, sal, deptno
+  2  from emp
+  3  where deptno in (select deptno from emp where sal >= 3000);
+
+ENAME                       SAL     DEPTNO                                      
+-------------------- ---------- ----------                                      
+MILLER                     1300         10                                      
+KING                       5000         10                                      
+CLARK                      2450         10                                      
+FORD                       3000         20                                      
+JONES                      2975         20                                      
+SMITH                       800         20                                      
+
+6 개의 행이 선택되었습니다.
+
+SQL> select empno, sal, deptno
+  2  from emp
+  3  where ;
+where 
+     *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> select empno, sal, deptno
+  2  from emp
+  3  where sal in(select max(sal) from emp group by deptno);
+
+     EMPNO        SAL     DEPTNO                                                
+---------- ---------- ----------                                                
+      7698       2850         30                                                
+      7839       5000         10                                                
+      7902       3000         20                                                
+
+SQL> select deptno, dname, loc
+  2  from dept
+  3  where deptno in (select deptno from emp where job='MANAGER');
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 RESEARCH                     DALLAS                                  
+        30 SALES                        CHICAGO                                 
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > all(select max(sal) from emp where deptno = 30);
+
+ENAME                       SAL                                                 
+-------------------- ----------                                                 
+JONES                      2975                                                 
+KING                       5000                                                 
+FORD                       3000                                                 
+
+SQL> set linesize 200
+SQL> set pagesize 20
+SQL> select * from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7369 SMITH                CLERK                    7902 80/12/17        800                    20                                                                                                 
+      7499 ALLEN                SALESMAN                 7698 81/02/20       1600        300         30                                                                                                 
+      7521 WARD                 SALESMAN                 7698 81/02/22       1250        500         30                                                                                                 
+      7566 JONES                MANAGER                  7839 81/04/02       2975                    20                                                                                                 
+      7654 MARTIN               SALESMAN                 7698 81/09/28       1250       1400         30                                                                                                 
+      7698 BLAKE                MANAGER                  7839 81/05/01       2850                    30                                                                                                 
+      7782 CLARK                MANAGER                  7839 81/06/09       2450                    10                                                                                                 
+      7839 KING                 PRESIDENT                     81/11/17       5000                    10                                                                                                 
+      7844 TURNER               SALESMAN                 7698 81/09/08       1500          0         30                                                                                                 
+      7900 JAMES                CLERK                    7698 81/12/03        950                    30                                                                                                 
+      7902 FORD                 ANALYST                  7566 81/12/03       3000                    20                                                                                                 
+      7934 MILLER               CLERK                    7782 82/01/23       1300                    10                                                                                                 
+
+12 개의 행이 선택되었습니다.
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > any(select sal from emp where job='SALESMAN');
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+KING                       5000                                                                                                                                                                         
+FORD                       3000                                                                                                                                                                         
+JONES                      2975                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+CLARK                      2450                                                                                                                                                                         
+ALLEN                      1600                                                                                                                                                                         
+TURNER                     1500                                                                                                                                                                         
+MILLER                     1300                                                                                                                                                                         
+
+8 개의 행이 선택되었습니다.
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > (select min(sal) from emp where deptno=30)
+  4  ;
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+ALLEN                      1600                                                                                                                                                                         
+WARD                       1250                                                                                                                                                                         
+JONES                      2975                                                                                                                                                                         
+MARTIN                     1250                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+CLARK                      2450                                                                                                                                                                         
+KING                       5000                                                                                                                                                                         
+TURNER                     1500                                                                                                                                                                         
+FORD                       3000                                                                                                                                                                         
+MILLER                     1300                                                                                                                                                                         
+
+10 개의 행이 선택되었습니다.
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > any(select sal from emp where deptno=30);
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+KING                       5000                                                                                                                                                                         
+FORD                       3000                                                                                                                                                                         
+JONES                      2975                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+CLARK                      2450                                                                                                                                                                         
+ALLEN                      1600                                                                                                                                                                         
+TURNER                     1500                                                                                                                                                                         
+MILLER                     1300                                                                                                                                                                         
+MARTIN                     1250                                                                                                                                                                         
+WARD                       1250                                                                                                                                                                         
+
+10 개의 행이 선택되었습니다.
+
+SQL> select ename, sal, job
+  2  from emp
+  3  where sal > any(select sal from emp where job='SALESMAN')
+  4  and not job = 'SALESMAN';
+
+ENAME                       SAL JOB                                                                                                                                                                     
+-------------------- ---------- ------------------                                                                                                                                                      
+KING                       5000 PRESIDENT                                                                                                                                                               
+FORD                       3000 ANALYST                                                                                                                                                                 
+JONES                      2975 MANAGER                                                                                                                                                                 
+BLAKE                      2850 MANAGER                                                                                                                                                                 
+CLARK                      2450 MANAGER                                                                                                                                                                 
+MILLER                     1300 CLERK                                                                                                                                                                   
+
+6 개의 행이 선택되었습니다.
+
+SQL> select ename, job
+  2  from emp
+  3  where job = (select job from emp where ename='SMITH');
+
+ENAME                JOB                                                                                                                                                                                
+-------------------- ------------------                                                                                                                                                                 
+SMITH                CLERK                                                                                                                                                                              
+JAMES                CLERK                                                                                                                                                                              
+MILLER               CLERK                                                                                                                                                                              
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > all(select sal from emp where job='SALESMAN')
+  4  and deptno != 20;
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+CLARK                      2450                                                                                                                                                                         
+KING                       5000                                                                                                                                                                         
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal > any(select sal from emp where job='SALESMAN')
+  4  and deptno != 20;
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+KING                       5000                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+CLARK                      2450                                                                                                                                                                         
+ALLEN                      1600                                                                                                                                                                         
+TURNER                     1500                                                                                                                                                                         
+MILLER                     1300                                                                                                                                                                         
+
+6 개의 행이 선택되었습니다.
+
+SQL> select rownum
+  2  from ( select empno, ename from emp order by ename asc);
+
+    ROWNUM                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         1                                                                                                                                                                                              
+         2                                                                                                                                                                                              
+         3                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+         5                                                                                                                                                                                              
+         6                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+         8                                                                                                                                                                                              
+         9                                                                                                                                                                                              
+        10                                                                                                                                                                                              
+        11                                                                                                                                                                                              
+        12                                                                                                                                                                                              
+
+12 개의 행이 선택되었습니다.
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select empno, ename, rownum
+  2* from ( select empno, ename from emp order by ename asc)
+SQL> /
+
+     EMPNO ENAME                    ROWNUM                                                                                                                                                              
+---------- -------------------- ----------                                                                                                                                                              
+      7499 ALLEN                         1                                                                                                                                                              
+      7698 BLAKE                         2                                                                                                                                                              
+      7782 CLARK                         3                                                                                                                                                              
+      7902 FORD                          4                                                                                                                                                              
+      7900 JAMES                         5                                                                                                                                                              
+      7566 JONES                         6                                                                                                                                                              
+      7839 KING                          7                                                                                                                                                              
+      7654 MARTIN                        8                                                                                                                                                              
+      7934 MILLER                        9                                                                                                                                                              
+      7369 SMITH                        10                                                                                                                                                              
+      7844 TURNER                       11                                                                                                                                                              
+      7521 WARD                         12                                                                                                                                                              
+
+12 개의 행이 선택되었습니다.
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select result00.* , rownum
+  2* from ( select empno, ename from emp order by ename asc) result00
+SQL> /
+
+     EMPNO ENAME                    ROWNUM                                                                                                                                                              
+---------- -------------------- ----------                                                                                                                                                              
+      7499 ALLEN                         1                                                                                                                                                              
+      7698 BLAKE                         2                                                                                                                                                              
+      7782 CLARK                         3                                                                                                                                                              
+      7902 FORD                          4                                                                                                                                                              
+      7900 JAMES                         5                                                                                                                                                              
+      7566 JONES                         6                                                                                                                                                              
+      7839 KING                          7                                                                                                                                                              
+      7654 MARTIN                        8                                                                                                                                                              
+      7934 MILLER                        9                                                                                                                                                              
+      7369 SMITH                        10                                                                                                                                                              
+      7844 TURNER                       11                                                                                                                                                              
+      7521 WARD                         12                                                                                                                                                              
+
+12 개의 행이 선택되었습니다.
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select result00.* , rownum
+  2  from ( select empno, ename from emp order by ename asc) result00
+  3* where rownum between 1 and 5;
+SQL> /
+where rownum between 1 and 5;
+                            *
+3행에 오류:
+ORA-00911: 문자가 부적합합니다 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select *
+  2  from(
+  3  select result00.* , rownum
+  4  from ( select empno, ename from emp order by ename asc) result00)
+  5* where rownum between 1 and 5;
+SQL> /
+where rownum between 1 and 5;
+                            *
+5행에 오류:
+ORA-00911: 문자가 부적합합니다 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select *
+  2  from(
+  3  select result00.* , rownum
+  4  from ( select empno, ename from emp order by ename asc) result00)
+  5* where rownum between 1 and 5 ;
+SQL> /
+where rownum between 1 and 5 ;
+                             *
+5행에 오류:
+ORA-00911: 문자가 부적합합니다 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select *
+  2  from(
+  3  select result00.* , rownum
+  4  from ( select empno, ename from emp order by ename asc) result00)
+  5* where rownum between 1 and 5
+SQL> /
+
+     EMPNO ENAME                    ROWNUM                                                                                                                                                              
+---------- -------------------- ----------                                                                                                                                                              
+      7499 ALLEN                         1                                                                                                                                                              
+      7698 BLAKE                         2                                                                                                                                                              
+      7782 CLARK                         3                                                                                                                                                              
+      7902 FORD                          4                                                                                                                                                              
+      7900 JAMES                         5                                                                                                                                                              
+
+SQL> create table detp2(
+  2  ;
+
+*
+2행에 오류:
+ORA-00904: : 부적합한 식별자 
+
+
+SQL> create table dept2(
+  2  deptno number(2) constraint dept2_deptno_pk primary key,
+  3  dname varchar2(12) constraint dept_deptno_nn not null,
+  4  loc varchar2(12) constraint dept2_loc_ck check(loc in('seoul', 'busan'))
+  5  )-
+  6  a;
+)-
+ *
+5행에 오류:
+ORA-00922: 누락된 또는 부적합한 옵션 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  create table dept2(
+  2  deptno number(2) constraint dept2_deptno_pk primary key,
+  3  dname varchar2(12) constraint dept2_deptno_nn not null,
+  4  loc varchar2(12) constraint dept2_loc_ck check(loc in('seoul', 'busan'))
+  5* )
+SQL> /
+
+테이블이 생성되었습니다.
+
+SQL> desc dept2
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ DEPTNO                                                                                                            NOT NULL NUMBER(2)
+ DNAME                                                                                                             NOT NULL VARCHAR2(12)
+ LOC                                                                                                                        VARCHAR2(12)
+
+SQL> drop table dept2
+  2  ;
+
+테이블이 삭제되었습니다.
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  create table dept2(
+  2  deptno number(2) constraint dept2_deptno_pk primary key,
+  3  dname varchar2(12) constraint dept2_dname_nn not null,
+  4  loc varchar2(12) constraint dept2_loc_ck check(loc in('seoul', 'busan'))
+  5* )
+SQL> /
+
+테이블이 생성되었습니다.
+
+SQL> insert into dept2 value(10, 'sales', 'seoul');
+insert into dept2 value(10, 'sales', 'seoul')
+                        *
+1행에 오류:
+ORA-00928: 누락된 SELECT 키워드 
+
+
+SQL> insert into dept2 values(10, 'sales', 'seoul');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into dept2 values(20, 'accounting', 'seoul');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into dept2 values(30, 'humanrss', 'busan');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> create table emp2(
+  2  empno number(4) constraint emp2_empno_pk primary key,
+  3  ename varchar2(12) constraint emp2_ename_nn not null,
+  4  deptno number(2) constraint emp_deptno_fk references dept2(deptno));
+
+테이블이 생성되었습니다.
+
+SQL> insert into emp2 values(8000, 'mj', 10);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> drop table dept2
+  2  ;
+drop table dept2
+           *
+1행에 오류:
+ORA-02449: 외래 키에 의해 참조되는 고유/기본 키가 테이블에 있습니다 
+
+
+SQL> drop table emp2
+  2  ;
+
+테이블이 삭제되었습니다.
+
+SQL> create table emp2(
+  2  empno number(4),
+  3  ename varchar2(12) constraint emp2_ename_nn not null,
+  4  deptno number(2),
+  5  constraint emp2_empno_pk primary key(empno),
+  6  constrinat emp2_deptno_fk foreign key(deptno) refererces dept2(deptno));
+constrinat emp2_deptno_fk foreign key(deptno) refererces dept2(deptno))
+                          *
+6행에 오류:
+ORA-00907: 누락된 우괄호 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  create table emp2(
+  2  empno number(4),
+  3  ename varchar2(12) constraint emp2_ename_nn not null,
+  4  deptno number(2),
+  5  constraint emp2_empno_pk primary key(empno),
+  6* constraint emp2_deptno_fk foreign key(deptno) refererces dept2(deptno))
+SQL> /
+constraint emp2_deptno_fk foreign key(deptno) refererces dept2(deptno))
+                                              *
+6행에 오류:
+ORA-00905: 누락된 키워드 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  create table emp2(
+  2  empno number(4),
+  3  ename varchar2(12) constraint emp2_ename_nn not null,
+  4  deptno number(2),
+  5  constraint emp2_empno_pk primary key(empno),
+  6* constraint emp2_deptno_fk foreign key(deptno) references dept2(deptno))
+SQL> /
+
+테이블이 생성되었습니다.
+
+SQL> drop table emp2;
+
+테이블이 삭제되었습니다.
+
+SQL> create table emp2(
+  2  empno number(4),
+  3  ename varchar2(12),
+  4  deptno number(2));
+
+테이블이 생성되었습니다.
+
+SQL> alter table emp2
+  2  add constraint emp2_empno_pk primary key(empno);
+
+테이블이 변경되었습니다.
+
+SQL> desc emp2;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPNO                                                                                                             NOT NULL NUMBER(4)
+ ENAME                                                                                                                      VARCHAR2(12)
+ DEPTNO                                                                                                                     NUMBER(2)
+
+SQL> add constraint emp2_deptno_fk foreign key(deptno) references dept2(deptno);
+SP2-0734: "add constr..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> alter table emp2
+  2  add constraint emp2_deptno_fk foreign key(deptno) references dept2(deptno);
+
+테이블이 변경되었습니다.
+
+SQL> desc emp2;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPNO                                                                                                             NOT NULL NUMBER(4)
+ ENAME                                                                                                                      VARCHAR2(12)
+ DEPTNO                                                                                                                     NUMBER(2)
+
+SQL> alter table emp2
+  2  modify ename constraint emp2_ename_nn not null;
+
+테이블이 변경되었습니다.
+
+SQL> alter table emp2
+  2  drop constraint emp2_ename_nn;
+
+테이블이 변경되었습니다.
+
+SQL> select * from user_constraints;
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+SCOTT                                                        EMP2_DEPTNO_FK                                               R  EMP2                                                                       
+                                                                                 SCOTT                                                                                                                  
+DEPT2_DEPTNO_PK                                              NO ACTION          ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$hbSeApRcTv+TnVgnP8b7eQ==$0                               C  BIN$EjhEufBSSEiZKT6oV5x1sg==$0                                             
+"ENAME" IS NOT NULL                                                                                                                                                                                     
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$jYmGgd6PRJmSpGhwSRKO5g==$0                               C  BIN$7oXgBs0uRnO/4q468unKkw==$0                                             
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+"ENAME" IS NOT NULL                                                                                                                                                                                     
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        DEPT2_LOC_CK                                                 C  DEPT2                                                                      
+loc in('seoul', 'busan')                                                                                                                                                                                
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        DEPT2_DNAME_NN                                               C  DEPT2                                                                      
+"DNAME" IS NOT NULL                                                                                                                                                                                     
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$FsV85d7PTl6ziw0exNpcDA==$0                               C  BIN$a2fBbuYYSZaw2FI6AIZiWQ==$0                                             
+loc in('seoul', 'busan')                                                                                                                                                                                
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$77kmh6eGTZydrHGe5gck3w==$0                               C  BIN$a2fBbuYYSZaw2FI6AIZiWQ==$0                                             
+"DNAME" IS NOT NULL                                                                                                                                                                                     
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+                24/05/09                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        FK_DEPTNO                                                    R  EMP                                                                        
+                                                                                 SCOTT                                                                                                                  
+PK_DEPT                                                      NO ACTION          ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/03                                                                                                                                                                                
+                                                                                                                                                                                                        
+SCOTT                                                        PK_DEPT                                                      P  DEPT                                                                       
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/03 SCOTT                                                        PK_DEPT                                                                                                           
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+                                                                                                                                                                                                        
+SCOTT                                                        PK_EMP                                                       P  EMP                                                                        
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/03 SCOTT                                                        PK_EMP                                                                                                            
+                                                                                                                                                                                                        
+SCOTT                                                        SYS_C003999                                                  P  MSG                                                                        
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  GENERATED NAME              
+                24/05/07 SCOTT                                                        SYS_C003999                                                                                                       
+                                                                                                                                                                                                        
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+SCOTT                                                        SYS_C004001                                                  P  TODO                                                                       
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  GENERATED NAME              
+                24/05/08 SCOTT                                                        SYS_C004001                                                                                                       
+                                                                                                                                                                                                        
+SCOTT                                                        DEPT2_DEPTNO_PK                                              P  DEPT2                                                                      
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09 SCOTT                                                        DEPT2_DEPTNO_PK                                                                                                   
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$jb+f4eUPRVmOjBksfhA0Zg==$0                               P  BIN$NQapiqPEQVy2ndSDYsX+Yw==$0                                             
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  GENERATED NAME              
+                24/05/08 SCOTT                                                        BIN$RmIFGClIQgKPGbqgAJeKIw==$0                                                                                    
+                                                                                                                                                                                                        
+SCOTT                                                        EMP2_EMPNO_PK                                                P  EMP2                                                                       
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09 SCOTT                                                        EMP2_EMPNO_PK                                                                                                     
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$2n4s6OaER66z9yHAlE403A==$0                               P  BIN$a2fBbuYYSZaw2FI6AIZiWQ==$0                                             
+                                                                                                                                                                                                        
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09 SCOTT                                                        BIN$t7m60I3jTP6azfYx8QAIqg==$0                                                                                    
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$0XjL73wJSoKUVyeVuQrLIg==$0                               P  BIN$7oXgBs0uRnO/4q468unKkw==$0                                             
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+                24/05/09 SCOTT                                                        BIN$yL4bcqBSRy+yrRBNhUCuuQ==$0                                                                                    
+                                                                                                                                                                                                        
+SCOTT                                                        BIN$Po/JRkv7Rq+oS7yWHSnA5g==$0                               P  BIN$EjhEufBSSEiZKT6oV5x1sg==$0                                             
+                                                                                                                                                                                                        
+                                                                                ENABLED          NOT DEFERRABLE               IMMEDIATE          VALIDATED                  USER NAME                   
+
+OWNER                                                        CONSTRAINT_NAME                                              CO TABLE_NAME                                                                 
+------------------------------------------------------------ ------------------------------------------------------------ -- ------------------------------------------------------------               
+SEARCH_CONDITION                                                                 R_OWNER                                                                                                                
+-------------------------------------------------------------------------------- ------------------------------------------------------------                                                           
+R_CONSTRAINT_NAME                                            DELETE_RULE        STATUS           DEFERRABLE                   DEFERRED           VALIDATED                  GENERATED                   
+------------------------------------------------------------ ------------------ ---------------- ---------------------------- ------------------ -------------------------- ----------------------------
+BAD    RELY     LAST_CHA INDEX_OWNER                                                  INDEX_NAME                                                   INVALID        VIEW_RELATED                          
+------ -------- -------- ------------------------------------------------------------ ------------------------------------------------------------ -------------- ----------------------------          
+                24/05/09 SCOTT                                                        BIN$81vefxvGQUyRyWc1/N/OjQ==$0                                                                                    
+                                                                                                                                                                                                        
+
+18 개의 행이 선택되었습니다.
+
+SQL> select emp* from user_constraints;
+select emp* from user_constraints
+            *
+1행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> alter table emp2
+  2  modify ename is not null;
+modify ename is not null
+             *
+2행에 오류:
+ORA-00902: 데이터유형이 부적합합니다 
+
+
+SQL> alter table emp2
+  2  modify emp2_ename_nn not null;
+modify emp2_ename_nn not null
+       *
+2행에 오류:
+ORA-00904: "EMP2_ENAME_NN": 부적합한 식별자 
+
+
+SQL> alter table emp2
+  2  modify constraint emp2_ename_nn not null;
+modify constraint emp2_ename_nn not null
+                                *
+2행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다 
+
+
+SQL> alter table emp2
+  2  modify ename constraint emp2_ename_nn not null;
+
+테이블이 변경되었습니다.
+
+SQL> desc user_constraints
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ OWNER                                                                                                             NOT NULL VARCHAR2(30)
+ CONSTRAINT_NAME                                                                                                   NOT NULL VARCHAR2(30)
+ CONSTRAINT_TYPE                                                                                                            VARCHAR2(1)
+ TABLE_NAME                                                                                                        NOT NULL VARCHAR2(30)
+ SEARCH_CONDITION                                                                                                           LONG
+ R_OWNER                                                                                                                    VARCHAR2(30)
+ R_CONSTRAINT_NAME                                                                                                          VARCHAR2(30)
+ DELETE_RULE                                                                                                                VARCHAR2(9)
+ STATUS                                                                                                                     VARCHAR2(8)
+ DEFERRABLE                                                                                                                 VARCHAR2(14)
+ DEFERRED                                                                                                                   VARCHAR2(9)
+ VALIDATED                                                                                                                  VARCHAR2(13)
+ GENERATED                                                                                                                  VARCHAR2(14)
+ BAD                                                                                                                        VARCHAR2(3)
+ RELY                                                                                                                       VARCHAR2(4)
+ LAST_CHANGE                                                                                                                DATE
+ INDEX_OWNER                                                                                                                VARCHAR2(30)
+ INDEX_NAME                                                                                                                 VARCHAR2(30)
+ INVALID                                                                                                                    VARCHAR2(7)
+ VIEW_RELATED                                                                                                               VARCHAR2(14)
+
+SQL> select constraint_name, table_name
+  2  from user_constraints
+  3  order by table_name;
+
+CONSTRAINT_NAME                                              TABLE_NAME                                                                                                                                 
+------------------------------------------------------------ ------------------------------------------------------------                                                                               
+BIN$0XjL73wJSoKUVyeVuQrLIg==$0                               BIN$7oXgBs0uRnO/4q468unKkw==$0                                                                                                             
+BIN$jYmGgd6PRJmSpGhwSRKO5g==$0                               BIN$7oXgBs0uRnO/4q468unKkw==$0                                                                                                             
+BIN$hbSeApRcTv+TnVgnP8b7eQ==$0                               BIN$EjhEufBSSEiZKT6oV5x1sg==$0                                                                                                             
+BIN$Po/JRkv7Rq+oS7yWHSnA5g==$0                               BIN$EjhEufBSSEiZKT6oV5x1sg==$0                                                                                                             
+BIN$jb+f4eUPRVmOjBksfhA0Zg==$0                               BIN$NQapiqPEQVy2ndSDYsX+Yw==$0                                                                                                             
+BIN$77kmh6eGTZydrHGe5gck3w==$0                               BIN$a2fBbuYYSZaw2FI6AIZiWQ==$0                                                                                                             
+BIN$FsV85d7PTl6ziw0exNpcDA==$0                               BIN$a2fBbuYYSZaw2FI6AIZiWQ==$0                                                                                                             
+BIN$2n4s6OaER66z9yHAlE403A==$0                               BIN$a2fBbuYYSZaw2FI6AIZiWQ==$0                                                                                                             
+PK_DEPT                                                      DEPT                                                                                                                                       
+DEPT2_LOC_CK                                                 DEPT2                                                                                                                                      
+DEPT2_DEPTNO_PK                                              DEPT2                                                                                                                                      
+DEPT2_DNAME_NN                                               DEPT2                                                                                                                                      
+FK_DEPTNO                                                    EMP                                                                                                                                        
+PK_EMP                                                       EMP                                                                                                                                        
+EMP2_ENAME_NN                                                EMP2                                                                                                                                       
+EMP2_EMPNO_PK                                                EMP2                                                                                                                                       
+EMP2_DEPTNO_FK                                               EMP2                                                                                                                                       
+
+CONSTRAINT_NAME                                              TABLE_NAME                                                                                                                                 
+------------------------------------------------------------ ------------------------------------------------------------                                                                               
+SYS_C003999                                                  MSG                                                                                                                                        
+SYS_C004001                                                  TODO                                                                                                                                       
+
+19 개의 행이 선택되었습니다.
+
+SQL> select constraint_name, constraint_type
+  2  from user_constraints
+  3  where table_name = 'dept2';
+
+선택된 레코드가 없습니다.
+
+SQL> where table_name = 'emp2';
+SP2-0734: "where tabl..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> select constraint_name, constraint_type
+  2  from user_constraints
+  3  where table_name = 'emp2';
+
+선택된 레코드가 없습니다.
+
+SQL> desc dept4
+ERROR:
+ORA-04043: dept4 객체는 존재하지 않습니다. 
+
+
+SQL> desc dept2
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ DEPTNO                                                                                                            NOT NULL NUMBER(2)
+ DNAME                                                                                                             NOT NULL VARCHAR2(12)
+ LOC                                                                                                                        VARCHAR2(12)
+
+SQL> select constraint_name, constraint_type
+  2  from user_constraints
+  3  where table_name = 'dept2';
+
+선택된 레코드가 없습니다.
+
+SQL> drop table emp2;
+
+테이블이 삭제되었습니다.
+
+SQL> create table emp2(empno number(4)));
+create table emp2(empno number(4)))
+                                  *
+1행에 오류:
+ORA-00922: 누락된 또는 부적합한 옵션 
+
+
+SQL> create table emp2(empno number(4));
+
+테이블이 생성되었습니다.
+
+SQL> alter table emp2
+  2  add (ename varchar2(12), deptno number(2));
+
+테이블이 변경되었습니다.
+
+SQL> desc emp2;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPNO                                                                                                                      NUMBER(4)
+ ENAME                                                                                                                      VARCHAR2(12)
+ DEPTNO                                                                                                                     NUMBER(2)
+
+SQL> alter table emp2
+  2  add sal number(5);
+
+테이블이 변경되었습니다.
+
+SQL> alter table emp2
+  2  drop sal;
+drop sal
+     *
+2행에 오류:
+ORA-00905: 누락된 키워드 
+
+
+SQL> alter table emp2
+  2  drop col sal;
+drop col sal
+     *
+2행에 오류:
+ORA-00905: 누락된 키워드 
+
+
+SQL> alter table emp2
+  2  drop column sal;
+
+테이블이 변경되었습니다.
+
+SQL> desc emp;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPNO                                                                                                             NOT NULL NUMBER(4)
+ ENAME                                                                                                                      VARCHAR2(10)
+ JOB                                                                                                                        VARCHAR2(9)
+ MGR                                                                                                                        NUMBER(4)
+ HIREDATE                                                                                                                   DATE
+ SAL                                                                                                                        NUMBER(7,2)
+ COMM                                                                                                                       NUMBER(7,2)
+ DEPTNO                                                                                                                     NUMBER(2)
+
+SQL> desc emp2;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPNO                                                                                                                      NUMBER(4)
+ ENAME                                                                                                                      VARCHAR2(12)
+ DEPTNO                                                                                                                     NUMBER(2)
+
+SQL> alter table emp2
+  2  modify ename varchar2(20);
+
+테이블이 변경되었습니다.
+
+SQL> alter table emp2
+  2  modify ename not null;
+
+테이블이 변경되었습니다.
+
+SQL> select constraint_name from emp2;
+select constraint_name from emp2
+       *
+1행에 오류:
+ORA-00904: "CONSTRAINT_NAME": 부적합한 식별자 
+
+
+SQL> select constraint_name from user_constraints where table_name = 'emp2';
+
+선택된 레코드가 없습니다.
+
+SQL> select constraint_name from user_constraints
+  2  ;
+
+CONSTRAINT_NAME                                                                                                                                                                                         
+------------------------------------------------------------                                                                                                                                            
+SYS_C004018                                                                                                                                                                                             
+BIN$hbSeApRcTv+TnVgnP8b7eQ==$0                                                                                                                                                                          
+BIN$jYmGgd6PRJmSpGhwSRKO5g==$0                                                                                                                                                                          
+BIN$gGjlJMeDRrum5kFQUR9NZg==$0                                                                                                                                                                          
+BIN$77kmh6eGTZydrHGe5gck3w==$0                                                                                                                                                                          
+BIN$FsV85d7PTl6ziw0exNpcDA==$0                                                                                                                                                                          
+DEPT2_DNAME_NN                                                                                                                                                                                          
+DEPT2_LOC_CK                                                                                                                                                                                            
+FK_DEPTNO                                                                                                                                                                                               
+PK_DEPT                                                                                                                                                                                                 
+PK_EMP                                                                                                                                                                                                  
+SYS_C003999                                                                                                                                                                                             
+SYS_C004001                                                                                                                                                                                             
+DEPT2_DEPTNO_PK                                                                                                                                                                                         
+BIN$jb+f4eUPRVmOjBksfhA0Zg==$0                                                                                                                                                                          
+BIN$2n4s6OaER66z9yHAlE403A==$0                                                                                                                                                                          
+BIN$0XjL73wJSoKUVyeVuQrLIg==$0                                                                                                                                                                          
+
+CONSTRAINT_NAME                                                                                                                                                                                         
+------------------------------------------------------------                                                                                                                                            
+BIN$Po/JRkv7Rq+oS7yWHSnA5g==$0                                                                                                                                                                          
+BIN$jKUau/FbS7qHlAQ/OvI2WA==$0                                                                                                                                                                          
+
+19 개의 행이 선택되었습니다.
+
+SQL> select constraint_name from user_constraints where table_name = 'dept2';
+
+선택된 레코드가 없습니다.
+
+SQL> desc dept2
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ DEPTNO                                                                                                            NOT NULL NUMBER(2)
+ DNAME                                                                                                             NOT NULL VARCHAR2(12)
+ LOC                                                                                                                        VARCHAR2(12)
+
+SQL> desc emp2;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPNO                                                                                                                      NUMBER(4)
+ ENAME                                                                                                             NOT NULL VARCHAR2(20)
+ DEPTNO                                                                                                                     NUMBER(2)
+
+SQL> alter table emp2
+  2  rename ename to eennaammee;
+rename ename to eennaammee
+       *
+2행에 오류:
+ORA-14155: PARTITION 또는 SUBPARTITION 키워드가 빠졌습니다 
+
+
+SQL> alter table emp2
+  2  rename column ename to eennaammee;
+
+테이블이 변경되었습니다.
+
+SQL> desc emp2;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPNO                                                                                                                      NUMBER(4)
+ EENNAAMMEE                                                                                                        NOT NULL VARCHAR2(20)
+ DEPTNO                                                                                                                     NUMBER(2)
+
+SQL> create sequence test_seq;
+
+시퀀스가 생성되었습니다.
+
+SQL> alter sequence test_seq
+  2  increment by 2
+  3  start with 12
+  4  nocache;
+start with 12
+*
+3행에 오류:
+ORA-02283: 시퀀스 시작 번호는 변경할 수 없습니다. 
+
+
+SQL> test_seq;
+SP2-0042: 알 수 없는 명령어 "test_seq" - 나머지 줄 무시.
+SQL> test_seq
+SP2-0042: 알 수 없는 명령어 "test_seq" - 나머지 줄 무시.
+SQL> select test_seq.currval from dual;
+select test_seq.currval from dual
+       *
+1행에 오류:
+ORA-08002: 시퀀스 TEST_SEQ.CURRVAL은 이 세션에서는 정의 되어 있지 않습니다 
+
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         1                                                                                                                                                                                              
+
+SQL> select test_seq.currval from dual;
+
+   CURRVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         1                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         2                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         3                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+
+SQL> select test_seq.currval from dual;
+
+   CURRVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+
+SQL> select test_seq.currval from dual;
+
+   CURRVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         5                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         6                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         8                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         9                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        10                                                                                                                                                                                              
+
+SQL> create table member(num number primary key, name varchar2(16), addr varchar2(20));
+
+테이블이 생성되었습니다.
+
+SQL> insert into member values(test_seq.nextval from dual, 'aaa','bbb');
+insert into member values(test_seq.nextval from dual, 'aaa','bbb')
+                                           *
+1행에 오류:
+ORA-00917: 누락된 콤마 
+
+
+SQL> insert into member values(select test_seq.nextval from dual, 'aaa','bbb');
+insert into member values(select test_seq.nextval from dual, 'aaa','bbb')
+                          *
+1행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> insert into member values((select test_seq.nextval from dual), 'aaa','bbb');
+insert into member values((select test_seq.nextval from dual), 'aaa','bbb')
+                                           *
+1행에 오류:
+ORA-02287: 시퀀스 번호는 이 위치에 사용할 수 없습니다 
+
+
+SQL> create member_seq;
+create member_seq
+       *
+1행에 오류:
+ORA-00901: CREATE 명령어가 부적합합니다 
+
+
+SQL> create sequence member_seq;
+
+시퀀스가 생성되었습니다.
+
+SQL> insert into member values(member_seq.nextval, 'minjun', 'deokso');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from member;
+
+       NUM NAME                             ADDR                                                                                                                                                        
+---------- -------------------------------- ----------------------------------------                                                                                                                    
+         1 minjun                           deokso                                                                                                                                                      
+
+SQL> insert into member values(member_seq.nextval, 'fuzzy', 'gangnam');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> insert into member values(member_seq.nextval, 'hayeon', 'yeongdeung');
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from member;
+
+       NUM NAME                             ADDR                                                                                                                                                        
+---------- -------------------------------- ----------------------------------------                                                                                                                    
+         1 minjun                           deokso                                                                                                                                                      
+         2 fuzzy                            gangnam                                                                                                                                                     
+         3 hayeon                           yeongdeung                                                                                                                                                  
+
+SQL> commit
+  2  ;
+
+커밋이 완료되었습니다.
+
+SQL> drop sequence test_seq;
+
+시퀀스가 삭제되었습니다.
+
+SQL> create sequence test_seq
+  2  increment by 5
+  3  start with 5
+  4  nocache;
+
+시퀀스가 생성되었습니다.
+
+SQL> test_seq.nextval
+SP2-0734: "test_seq.n..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         5                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        10                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        15                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        20                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        25                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        30                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        35                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        40                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        45                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        50                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        55                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        60                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        65                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        70                                                                                                                                                                                              
+
+SQL> select test_seq.nextval from dual;
+
+   NEXTVAL                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+        75                                                                                                                                                                                              
+
+SQL> select sequence_name from user_sequences;
+
+SEQUENCE_NAME                                                                                                                                                                                           
+------------------------------------------------------------                                                                                                                                            
+TEST_SEQ                                                                                                                                                                                                
+MEMBER_SEQ                                                                                                                                                                                              
+
+SQL> desc user_tables;
+ 이름                                                                                                              널?      유형
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ TABLE_NAME                                                                                                        NOT NULL VARCHAR2(30)
+ TABLESPACE_NAME                                                                                                            VARCHAR2(30)
+ CLUSTER_NAME                                                                                                               VARCHAR2(30)
+ IOT_NAME                                                                                                                   VARCHAR2(30)
+ STATUS                                                                                                                     VARCHAR2(8)
+ PCT_FREE                                                                                                                   NUMBER
+ PCT_USED                                                                                                                   NUMBER
+ INI_TRANS                                                                                                                  NUMBER
+ MAX_TRANS                                                                                                                  NUMBER
+ INITIAL_EXTENT                                                                                                             NUMBER
+ NEXT_EXTENT                                                                                                                NUMBER
+ MIN_EXTENTS                                                                                                                NUMBER
+ MAX_EXTENTS                                                                                                                NUMBER
+ PCT_INCREASE                                                                                                               NUMBER
+ FREELISTS                                                                                                                  NUMBER
+ FREELIST_GROUPS                                                                                                            NUMBER
+ LOGGING                                                                                                                    VARCHAR2(3)
+ BACKED_UP                                                                                                                  VARCHAR2(1)
+ NUM_ROWS                                                                                                                   NUMBER
+ BLOCKS                                                                                                                     NUMBER
+ EMPTY_BLOCKS                                                                                                               NUMBER
+ AVG_SPACE                                                                                                                  NUMBER
+ CHAIN_CNT                                                                                                                  NUMBER
+ AVG_ROW_LEN                                                                                                                NUMBER
+ AVG_SPACE_FREELIST_BLOCKS                                                                                                  NUMBER
+ NUM_FREELIST_BLOCKS                                                                                                        NUMBER
+ DEGREE                                                                                                                     VARCHAR2(40)
+ INSTANCES                                                                                                                  VARCHAR2(40)
+ CACHE                                                                                                                      VARCHAR2(20)
+ TABLE_LOCK                                                                                                                 VARCHAR2(8)
+ SAMPLE_SIZE                                                                                                                NUMBER
+ LAST_ANALYZED                                                                                                              DATE
+ PARTITIONED                                                                                                                VARCHAR2(3)
+ IOT_TYPE                                                                                                                   VARCHAR2(12)
+ TEMPORARY                                                                                                                  VARCHAR2(1)
+ SECONDARY                                                                                                                  VARCHAR2(1)
+ NESTED                                                                                                                     VARCHAR2(3)
+ BUFFER_POOL                                                                                                                VARCHAR2(7)
+ ROW_MOVEMENT                                                                                                               VARCHAR2(8)
+ GLOBAL_STATS                                                                                                               VARCHAR2(3)
+ USER_STATS                                                                                                                 VARCHAR2(3)
+ DURATION                                                                                                                   VARCHAR2(15)
+ SKIP_CORRUPT                                                                                                               VARCHAR2(8)
+ MONITORING                                                                                                                 VARCHAR2(3)
+ CLUSTER_OWNER                                                                                                              VARCHAR2(30)
+ DEPENDENCIES                                                                                                               VARCHAR2(8)
+ COMPRESSION                                                                                                                VARCHAR2(8)
+ DROPPED                                                                                                                    VARCHAR2(3)
+
+SQL> spool off

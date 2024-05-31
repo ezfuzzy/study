@@ -1,17 +1,17 @@
 package com.ezfuzzy.demo.controller;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ezfuzzy.demo.service.PostService;
 import com.ezfuzzy.demo.model.Post;
+import com.ezfuzzy.demo.service.PostService;
+
 import lombok.RequiredArgsConstructor;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")

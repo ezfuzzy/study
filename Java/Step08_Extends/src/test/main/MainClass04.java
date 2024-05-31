@@ -11,6 +11,5 @@ public class MainClass04 {
     
     p2.doInternet();
     
-    
   }
 }

@@ -1,0 +1,211 @@
+SQL> select trunc(32.1234) from dual;
+
+TRUNC(32.1234)                                                                  
+--------------                                                                  
+            32                                                                  
+
+SQL> select to_char(sysdate, 'MM.DD d') from dual;
+
+TO_CHAR(SYSDAT                                                                  
+--------------                                                                  
+05.03 6                                                                         
+
+SQL> select to_char(sysdate, 'MM.DD day') from dual;
+
+TO_CHAR(SYSDATE,'MM.DDDAY')                                                     
+------------------------------------                                            
+05.03 금요일                                                                    
+
+SQL> select to_char(sysdate, 'MM.DD dy') from dual;
+
+TO_CHAR(SYSDATE,'MM.                                                            
+--------------------                                                            
+05.03 금                                                                        
+
+SQL> select to_char(sysdate, '
+  2  YY"년 "MM"월 "DD"일" HH24"tl "MI" 분"SS"초"') D from dual;
+
+D                                                                               
+----------------------------------------------------------------------          
+                                                                                
+24년 05월 03일 14tl 04 분41초                                                   
+                                                                                
+
+SQL> YY"년 "MM"월 "DD"일" HH"시 "MI" 분"SS"초"') D from dual;
+SP2-0734: "YY"년 "MM"..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> SELECT TO_CHAR(SYSDATE , 'YY" 년 "MM" 월 "DD" 일 " HH24" 시 "MI" 분
+  2  "SS" 초 "') D FROM DUAL;
+
+D                                                                               
+--------------------------------------------------------------------------------
+24 년 05 월 03 일  14 시 04 분                                                  
+43 초                                                                           
+                                                                                
+
+SQL> SELECT TO_CHAR(SYSDATE , 'YY" 년 "MM" 월 "DD" 일 " HH" 시 "MI" 분 "SS"초"`) d from dual;
+ERROR:
+ORA-01756: 단일 인용부를 지정해 주십시오 
+
+
+SQL> SELECT TO_CHAR(SYSDATE , 'YY" 년 "MM" 월 "DD" 일 " HH" 시 "MI" 분 "SS"초"`) D from dual;
+ERROR:
+ORA-01756: 단일 인용부를 지정해 주십시오 
+
+
+SQL> SELECT TO_CHAR(SYSDATE , 'YY" 년 "MM" 월 "DD" 일 " HH12" 시 "MI" 분 "SS"초" `) D from dual;
+ERROR:
+ORA-01756: 단일 인용부를 지정해 주십시오 
+
+
+SQL> SELECT TO_CHAR(SYSDATE , 'YY" 년 "MM" 월 "DD" 일 " HH24" 시 "MI" 분 "SS"초" `) D from dual;
+ERROR:
+ORA-01756: 단일 인용부를 지정해 주십시오 
+
+
+SQL> SELECT TO_CHAR(SYSDATE , 'YY" 년 "MM" 월 "DD" 일 " HH24" 시 "MI" 분 "SS"초" ') D from dual;
+
+D                                                                               
+--------------------------------------------------------------------------------
+24 년 05 월 03 일  14 시 04 분 45초                                             
+
+SQL> SELECT TO_CHAR(SYSDATE , 'YY" 년 "MM" 월 "DD" 일 " HH" 시 "MI" 분 "SS"초" ') D from dual;
+
+D                                                                               
+--------------------------------------------------------------------------------
+24 년 05 월 03 일  02 시 04 분 45초                                             
+
+SQL> select count(*) from emp;
+
+  COUNT(*)                                                                      
+----------                                                                      
+        12                                                                      
+
+SQL> select deptno, round(avg(sal), 1) from emp group by deptno;
+
+    DEPTNO ROUND(AVG(SAL),1)                                                    
+---------- -----------------                                                    
+        30            1566.7                                                    
+        20            2258.3                                                    
+        10            2916.7                                                    
+
+SQL> select deptno, round(avg(sal), 1) from emp where sal >= 2000 order by asc;
+select deptno, round(avg(sal), 1) from emp where sal >= 2000 order by asc
+                                                                      *
+1행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> select deptno, round(avg(sal), 1) from emp where sal >= 2000 group by deptno order by asc;
+select deptno, round(avg(sal), 1) from emp where sal >= 2000 group by deptno order by asc
+                                                                                      *
+1행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> select deptno, round(avg(sal), 1) from emp where sal >= 2000 group by deptno order by round(avg(sal)) asc;
+
+    DEPTNO ROUND(AVG(SAL),1)                                                    
+---------- -----------------                                                    
+        30              2850                                                    
+        20            2987.5                                                    
+        10              3725                                                    
+
+SQL> select deptno, job, count(*) from emp group by job order by deptno asc;
+select deptno, job, count(*) from emp group by job order by deptno asc
+       *
+1행에 오류:
+ORA-00979: GROUP BY 표현식이 아닙니다. 
+
+
+SQL> select deptno, job, count(*) from emp group by deptno, job order by deptno asc;
+
+    DEPTNO JOB                  COUNT(*)                                        
+---------- ------------------ ----------                                        
+        10 CLERK                       1                                        
+        10 MANAGER                     1                                        
+        10 PRESIDENT                   1                                        
+        20 ANALYST                     1                                        
+        20 CLERK                       1                                        
+        20 MANAGER                     1                                        
+        30 CLERK                       1                                        
+        30 MANAGER                     1                                        
+        30 SALESMAN                    4                                        
+
+9 개의 행이 선택되었습니다.
+
+SQL> select deptno, avg(sal)
+  2  from emp
+  3  ;
+select deptno, avg(sal)
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다 
+
+
+SQL> select deptno
+  2  from emp;
+
+    DEPTNO                                                                      
+----------                                                                      
+        20                                                                      
+        30                                                                      
+        30                                                                      
+        20                                                                      
+        30                                                                      
+        30                                                                      
+        10                                                                      
+        10                                                                      
+        30                                                                      
+        30                                                                      
+        20                                                                      
+
+    DEPTNO                                                                      
+----------                                                                      
+        10                                                                      
+
+12 개의 행이 선택되었습니다.
+
+SQL> select deptno, avg(sal)
+  2  from emp
+  3  ;
+select deptno, avg(sal)
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다 
+
+
+SQL> select deptno
+  2  from emp
+  3  where ( select detpno from emp where empno >= 7000);
+where ( select detpno from emp where empno >= 7000)
+                                                  *
+3행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> select deptno, avg(sal)
+  2  from emp
+  3  where (
+  4  	select sal
+  5  	from emp
+  6  	where sal >= 1000
+  7  );
+)
+*
+7행에 오류:
+ORA-00936: 누락된 표현식 
+
+
+SQL> select deptno, avg(sal)
+  2  from emp
+  3  where sal >= 1000
+  4  group by deptno
+  5  having avg(sal) >= 2000
+  6  ;
+
+    DEPTNO   AVG(SAL)                                                           
+---------- ----------                                                           
+        20     2987.5                                                           
+        10 2916.66667                                                           
+
+SQL> spool off

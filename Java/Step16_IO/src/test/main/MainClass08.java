@@ -1,5 +1,6 @@
 package test.main;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -22,7 +23,10 @@ public class MainClass08 {
 //      fos = new FileOutputStream("C:\\Users\\user\\playground\\code\\myFolder\\member.dat");
 //      oos = new ObjectOutputStream(fos);
 //      oos.writeObject(dto);
-      fis = new FileInputStream("C:\\Users\\user\\playground\\code\\myFolder\\member.dat");
+      File file = new File("C:\\Users\\user\\playground\\code\\myFolder\\member.dat");
+      if(!file.exists()) file.createNewFile();
+      fis = new FileInputStream(file);
+      
       ois = new ObjectInputStream(fis);
       dto01 = (MemberDto)ois.readObject();
       String info = String.format("num: %d, name: %s, addr: %s",

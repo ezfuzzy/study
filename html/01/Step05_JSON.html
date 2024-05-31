@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Json</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>json</h1>
+      <p><strong>Java Script Object Notation</strong></p>
+    </div>
+    <script>
+      const data1 = { num: 1, name: "fuzzy" };
+      const data2 = `{ "num": 2, "name": "lessa" }`;
+      const data3 = [10, 20, 30];
+      const data4 = `[10, 20, 30]`;
+      
+      const result00 = JSON.parse(data4);
+      console.log(result00);
+      const result01 = JSON.stringify(data3);
+      console.log(result01);
+      console.log(data4);
+      console.log(result00);
+      // JSON.parse() : JSON 문자열을 객체로 변환
+      // JSON.stringify() : 객체를 JSON 문자열로 변환
+
+      const info00 = `{
+        "num": 1,
+        "name": "fuzzy",
+        "addr": "seoul",
+        "friends" : ["lessa", "jane", "james"],
+        "company" : {
+          "name": "theori",
+          "location": "cupertino"
+        }
+      }`; // value를 냅두고싶을땐 null로 지정.
+
+      const infoData00 = JSON.parse(info00);
+      let a = infoData00.num;
+      let b = infoData00.name;
+      let c = infoData00.addr;
+      let d = infoData00.friends;
+      let e = infoData00.company;
+      let f = infoData00.company.name;
+      let g = infoData00.company.location;
+    </script>
+  </body>
+</html>
+
+<!-- put comments in json data 
+   function removeComments(jsonString) {
+  return jsonString
+    .replace(/\/\*[\s\S]*?\*\//g, '') // 블록 주석 제거
+    .replace(/\/\/.*$/gm, ''); // 라인 주석 제거
+}
+
+const info00 = removeComments(info00WithComments);
+const parsedInfo00 = JSON.parse(info00);
+ -->

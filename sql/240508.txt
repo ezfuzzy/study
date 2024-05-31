@@ -1,0 +1,822 @@
+SQL> set pagesize 20
+SQL> select * from emp, dept where join emp.deptno = dept.deptno
+  2  ;
+select * from emp, dept where join emp.deptno = dept.deptno
+                                   *
+1행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다 
+
+
+SQL> select * from emp, dept where join emp.deptno = dept.deptno;
+select * from emp, dept where join emp.deptno = dept.deptno
+                                   *
+1행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다 
+
+
+SQL> select * from emp, dept where emp.deptno = dept.deptno;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO     DEPTNO DNAME                               
+---------- ---------- ---------- ---------- ----------------------------        
+LOC                                                                             
+--------------------------                                                      
+      7369 SMITH                CLERK                    7902 80/12/17          
+       800                    20         20 RESEARCH                            
+DALLAS                                                                          
+                                                                                
+      7499 ALLEN                SALESMAN                 7698 81/02/20          
+      1600        300         30         30 SALES                               
+CHICAGO                                                                         
+                                                                                
+      7521 WARD                 SALESMAN                 7698 81/02/22          
+      1250        500         30         30 SALES                               
+CHICAGO                                                                         
+                                                                                
+      7566 JONES                MANAGER                  7839 81/04/02          
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO     DEPTNO DNAME                               
+---------- ---------- ---------- ---------- ----------------------------        
+LOC                                                                             
+--------------------------                                                      
+      2975                    20         20 RESEARCH                            
+DALLAS                                                                          
+                                                                                
+      7654 MARTIN               SALESMAN                 7698 81/09/28          
+      1250       1400         30         30 SALES                               
+CHICAGO                                                                         
+                                                                                
+      7698 BLAKE                MANAGER                  7839 81/05/01          
+      2850                    30         30 SALES                               
+CHICAGO                                                                         
+                                                                                
+      7782 CLARK                MANAGER                  7839 81/06/09          
+      2450                    10         10 ACCOUNTING                          
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO     DEPTNO DNAME                               
+---------- ---------- ---------- ---------- ----------------------------        
+LOC                                                                             
+--------------------------                                                      
+NEW YORK                                                                        
+                                                                                
+      7839 KING                 PRESIDENT                     81/11/17          
+      5000                    10         10 ACCOUNTING                          
+NEW YORK                                                                        
+                                                                                
+      7844 TURNER               SALESMAN                 7698 81/09/08          
+      1500          0         30         30 SALES                               
+CHICAGO                                                                         
+                                                                                
+      7900 JAMES                CLERK                    7698 81/12/03          
+       950                    30         30 SALES                               
+CHICAGO                                                                         
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO     DEPTNO DNAME                               
+---------- ---------- ---------- ---------- ----------------------------        
+LOC                                                                             
+--------------------------                                                      
+                                                                                
+      7902 FORD                 ANALYST                  7566 81/12/03          
+      3000                    20         20 RESEARCH                            
+DALLAS                                                                          
+                                                                                
+      7934 MILLER               CLERK                    7782 82/01/23          
+      1300                    10         10 ACCOUNTING                          
+NEW YORK                                                                        
+                                                                                
+
+12 개의 행이 선택되었습니다.
+
+SQL> set linesize 200
+SQL> select * from emp, dept where emp.deptno = dept.deptno;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO     DEPTNO DNAME                        LOC                                                     
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ---------- ---------- ---------------------------- --------------------------                              
+      7369 SMITH                CLERK                    7902 80/12/17        800                    20         20 RESEARCH                     DALLAS                                                  
+      7499 ALLEN                SALESMAN                 7698 81/02/20       1600        300         30         30 SALES                        CHICAGO                                                 
+      7521 WARD                 SALESMAN                 7698 81/02/22       1250        500         30         30 SALES                        CHICAGO                                                 
+      7566 JONES                MANAGER                  7839 81/04/02       2975                    20         20 RESEARCH                     DALLAS                                                  
+      7654 MARTIN               SALESMAN                 7698 81/09/28       1250       1400         30         30 SALES                        CHICAGO                                                 
+      7698 BLAKE                MANAGER                  7839 81/05/01       2850                    30         30 SALES                        CHICAGO                                                 
+      7782 CLARK                MANAGER                  7839 81/06/09       2450                    10         10 ACCOUNTING                   NEW YORK                                                
+      7839 KING                 PRESIDENT                     81/11/17       5000                    10         10 ACCOUNTING                   NEW YORK                                                
+      7844 TURNER               SALESMAN                 7698 81/09/08       1500          0         30         30 SALES                        CHICAGO                                                 
+      7900 JAMES                CLERK                    7698 81/12/03        950                    30         30 SALES                        CHICAGO                                                 
+      7902 FORD                 ANALYST                  7566 81/12/03       3000                    20         20 RESEARCH                     DALLAS                                                  
+      7934 MILLER               CLERK                    7782 82/01/23       1300                    10         10 ACCOUNTING                   NEW YORK                                                
+
+12 개의 행이 선택되었습니다.
+
+SQL> select ename, dept.deptno, dname from emp,dept where emp.deptno = dept.deptno order by ename ;
+
+ENAME                    DEPTNO DNAME                                                                                                                                                                   
+-------------------- ---------- ----------------------------                                                                                                                                            
+ALLEN                        30 SALES                                                                                                                                                                   
+BLAKE                        30 SALES                                                                                                                                                                   
+CLARK                        10 ACCOUNTING                                                                                                                                                              
+FORD                         20 RESEARCH                                                                                                                                                                
+JAMES                        30 SALES                                                                                                                                                                   
+JONES                        20 RESEARCH                                                                                                                                                                
+KING                         10 ACCOUNTING                                                                                                                                                              
+MARTIN                       30 SALES                                                                                                                                                                   
+MILLER                       10 ACCOUNTING                                                                                                                                                              
+SMITH                        20 RESEARCH                                                                                                                                                                
+TURNER                       30 SALES                                                                                                                                                                   
+WARD                         30 SALES                                                                                                                                                                   
+
+12 개의 행이 선택되었습니다.
+
+SQL> select ename, deptno, dname from emp,dept where emp.deptno = dept.deptno order by ename ;
+select ename, deptno, dname from emp,dept where emp.deptno = dept.deptno order by ename 
+              *
+1행에 오류:
+ORA-00918: 열의 정의가 애매합니다 
+
+
+SQL> 3e
+SP2-0042: 알 수 없는 명령어 "3e" - 나머지 줄 무시.
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1* select ename, dept.deptno, dname from emp,dept where emp.deptno = dept.deptno order by ename 
+SQL> /
+
+ENAME                    DEPTNO DNAME                                                                                                                                                                   
+-------------------- ---------- ----------------------------                                                                                                                                            
+ALLEN                        30 SALES                                                                                                                                                                   
+BLAKE                        30 SALES                                                                                                                                                                   
+CLARK                        10 ACCOUNTING                                                                                                                                                              
+FORD                         20 RESEARCH                                                                                                                                                                
+JAMES                        30 SALES                                                                                                                                                                   
+JONES                        20 RESEARCH                                                                                                                                                                
+KING                         10 ACCOUNTING                                                                                                                                                              
+MARTIN                       30 SALES                                                                                                                                                                   
+MILLER                       10 ACCOUNTING                                                                                                                                                              
+SMITH                        20 RESEARCH                                                                                                                                                                
+TURNER                       30 SALES                                                                                                                                                                   
+WARD                         30 SALES                                                                                                                                                                   
+
+12 개의 행이 선택되었습니다.
+
+SQL> select ename, dname from emp, dept where emp.deptno = dept.deptno and sal between 3000 and 5000 sal;
+select ename, dname from emp, dept where emp.deptno = dept.deptno and sal between 3000 and 5000 sal
+                                                                                                *
+1행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다 
+
+
+SQL> select ename, dname from emp, dept where emp.deptno = dept.deptno and sal between 3000 and 5000;
+
+ENAME                DNAME                                                                                                                                                                              
+-------------------- ----------------------------                                                                                                                                                       
+KING                 ACCOUNTING                                                                                                                                                                         
+FORD                 RESEARCH                                                                                                                                                                           
+
+SQL> select ename, dname from emp, dept where emp.deptno = dept.deptno and sal between 3000 and 5000 SAL;
+select ename, dname from emp, dept where emp.deptno = dept.deptno and sal between 3000 and 5000 SAL
+                                                                                                *
+1행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다 
+
+
+SQL> select ename, dname from emp, dept where emp.deptno = dept.deptno and sal between 3000 and 5000 as SAL;
+select ename, dname from emp, dept where emp.deptno = dept.deptno and sal between 3000 and 5000 as SAL
+                                                                                                *
+1행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다 
+
+
+SQL> select ename, hiredate, dept.deptno, dname from emp, dept where emp.deptno = dept.deptno and danme='ACCOUNTING';
+select ename, hiredate, dept.deptno, dname from emp, dept where emp.deptno = dept.deptno and danme='ACCOUNTING'
+                                                                                             *
+1행에 오류:
+ORA-00904: "DANME": 부적합한 식별자 
+
+
+SQL> select ename, hiredate, dept.deptno, dname from emp, dept where emp.deptno = dept.deptno and dname='ACCOUNTING';
+
+ENAME                HIREDATE     DEPTNO DNAME                                                                                                                                                          
+-------------------- -------- ---------- ----------------------------                                                                                                                                   
+CLARK                81/06/09         10 ACCOUNTING                                                                                                                                                     
+KING                 81/11/17         10 ACCOUNTING                                                                                                                                                     
+MILLER               82/01/23         10 ACCOUNTING                                                                                                                                                     
+
+SQL> select ename, hiredate, dept.deptno, dname
+  2  from emp e, dept d
+  3  inner join dept on emp.deptno = dept.deptno
+  4  where dname = 'ACCOUNTING';
+inner join dept on emp.deptno = dept.deptno
+                   *
+3행에 오류:
+ORA-00904: "EMP"."DEPTNO": 부적합한 식별자 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select ename, hiredate, dept.deptno, dname
+  2  from emp e, dept d
+  3  inner join dept on e.deptno = d.deptno
+  4* where dname = 'ACCOUNTING'
+SQL> /
+inner join dept on e.deptno = d.deptno
+                   *
+3행에 오류:
+ORA-00904: "E"."DEPTNO": 부적합한 식별자 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select ename, hiredate, dept.deptno, dname
+  2  from emp e
+  3  inner join dept on e.deptno = dept.deptno
+  4* where dname = 'ACCOUNTING'
+SQL> //
+
+ENAME                HIREDATE     DEPTNO DNAME                                                                                                                                                          
+-------------------- -------- ---------- ----------------------------                                                                                                                                   
+CLARK                81/06/09         10 ACCOUNTING                                                                                                                                                     
+KING                 81/11/17         10 ACCOUNTING                                                                                                                                                     
+MILLER               82/01/23         10 ACCOUNTING                                                                                                                                                     
+
+SQL> delect ename, hiredate, dname
+SP2-0734: "delect ena..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> select ename, hiredate, dname
+  2  from emp
+  3  join dept using(deptno)
+  4  where com != null;
+where com != null
+      *
+4행에 오류:
+ORA-00904: "COM": 부적합한 식별자 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select ename, hiredate, dname
+  2  from emp
+  3  join dept using(deptno)
+  4* where comm != null
+SQL> /
+
+선택된 레코드가 없습니다.
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select ename, hiredate, dname
+  2  from emp
+  3  join dept using(deptno)
+  4* where comm not null
+SQL> /
+where comm not null
+               *
+4행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select ename, hiredate, dname
+  2  from emp
+  3  join dept using(deptno)
+  4* where comm is not null
+SQL> /
+
+ENAME                HIREDATE DNAME                                                                                                                                                                     
+-------------------- -------- ----------------------------                                                                                                                                              
+TURNER               81/09/08 SALES                                                                                                                                                                     
+MARTIN               81/09/28 SALES                                                                                                                                                                     
+WARD                 81/02/22 SALES                                                                                                                                                                     
+ALLEN                81/02/20 SALES                                                                                                                                                                     
+
+SQL> select e1.ename, e2.ename
+  2  from emp e1, emp e2
+  3  where e1.mgr = e2.empno;
+
+ENAME                ENAME                                                                                                                                                                              
+-------------------- --------------------                                                                                                                                                               
+FORD                 JONES                                                                                                                                                                              
+JAMES                BLAKE                                                                                                                                                                              
+TURNER               BLAKE                                                                                                                                                                              
+MARTIN               BLAKE                                                                                                                                                                              
+WARD                 BLAKE                                                                                                                                                                              
+ALLEN                BLAKE                                                                                                                                                                              
+MILLER               CLARK                                                                                                                                                                              
+CLARK                KING                                                                                                                                                                               
+BLAKE                KING                                                                                                                                                                               
+JONES                KING                                                                                                                                                                               
+SMITH                FORD                                                                                                                                                                               
+
+11 개의 행이 선택되었습니다.
+
+SQL> select ename, hiredate, dname
+  2  from emp, dept
+  3  where emp.deptno = dept.deptno and comm is not null;
+
+ENAME                HIREDATE DNAME                                                                                                                                                                     
+-------------------- -------- ----------------------------                                                                                                                                              
+TURNER               81/09/08 SALES                                                                                                                                                                     
+MARTIN               81/09/28 SALES                                                                                                                                                                     
+WARD                 81/02/22 SALES                                                                                                                                                                     
+ALLEN                81/02/20 SALES                                                                                                                                                                     
+
+SQL> select ename, hiredate, dname
+  2  from emp
+  3  join dept on emp.deptno = dept.deptno
+  4  where comm is not null;
+
+ENAME                HIREDATE DNAME                                                                                                                                                                     
+-------------------- -------- ----------------------------                                                                                                                                              
+TURNER               81/09/08 SALES                                                                                                                                                                     
+MARTIN               81/09/28 SALES                                                                                                                                                                     
+WARD                 81/02/22 SALES                                                                                                                                                                     
+ALLEN                81/02/20 SALES                                                                                                                                                                     
+
+SQL> cl sc
+SP2-0158: 알 수 없는 CLEAR 옵션 "sc"
+SQL> sc cl
+SP2-0042: 알 수 없는 명령어 "sc cl" - 나머지 줄 무시.
+SQL> select e1.ename ||"의 매니저는 " || e2.ename
+  2  from emp e1, emp e2
+  3  where e1.mgr = e2.empno;
+select e1.ename ||"의 매니저는 " || e2.ename
+                  *
+1행에 오류:
+ORA-00904: "의 매니저는 ": 부적합한 식별자 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select e1.ename ||'의 매니저는 '|| e2.ename
+  2  from emp e1, emp e2
+  3* where e1.mgr = e2.empno
+SQL> /
+
+E1.ENAME||'의매니저는'||E2.ENAME                                                                                                                                                                        
+--------------------------------------------------------------------------                                                                                                                              
+FORD의 매니저는 JONES                                                                                                                                                                                   
+JAMES의 매니저는 BLAKE                                                                                                                                                                                  
+TURNER의 매니저는 BLAKE                                                                                                                                                                                 
+MARTIN의 매니저는 BLAKE                                                                                                                                                                                 
+WARD의 매니저는 BLAKE                                                                                                                                                                                   
+ALLEN의 매니저는 BLAKE                                                                                                                                                                                  
+MILLER의 매니저는 CLARK                                                                                                                                                                                 
+CLARK의 매니저는 KING                                                                                                                                                                                   
+BLAKE의 매니저는 KING                                                                                                                                                                                   
+JONES의 매니저는 KING                                                                                                                                                                                   
+SMITH의 매니저는 FORD                                                                                                                                                                                   
+
+11 개의 행이 선택되었습니다.
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select e1.ename ||'의 매니저는 '|| e2.ename info
+  2  from emp e1, emp e2
+  3* where e1.mgr = e2.empno
+SQL> /
+
+INFO                                                                                                                                                                                                    
+--------------------------------------------------------------------------                                                                                                                              
+FORD의 매니저는 JONES                                                                                                                                                                                   
+JAMES의 매니저는 BLAKE                                                                                                                                                                                  
+TURNER의 매니저는 BLAKE                                                                                                                                                                                 
+MARTIN의 매니저는 BLAKE                                                                                                                                                                                 
+WARD의 매니저는 BLAKE                                                                                                                                                                                   
+ALLEN의 매니저는 BLAKE                                                                                                                                                                                  
+MILLER의 매니저는 CLARK                                                                                                                                                                                 
+CLARK의 매니저는 KING                                                                                                                                                                                   
+BLAKE의 매니저는 KING                                                                                                                                                                                   
+JONES의 매니저는 KING                                                                                                                                                                                   
+SMITH의 매니저는 FORD                                                                                                                                                                                   
+
+11 개의 행이 선택되었습니다.
+
+SQL> select empno, dept.deptno, dname
+  2  from emp, dept
+  3  where emp.deptno(+) = dept.deptno;
+
+     EMPNO     DEPTNO DNAME                                                                                                                                                                             
+---------- ---------- ----------------------------                                                                                                                                                      
+      7369         20 RESEARCH                                                                                                                                                                          
+      7499         30 SALES                                                                                                                                                                             
+      7521         30 SALES                                                                                                                                                                             
+      7566         20 RESEARCH                                                                                                                                                                          
+      7654         30 SALES                                                                                                                                                                             
+      7698         30 SALES                                                                                                                                                                             
+      7782         10 ACCOUNTING                                                                                                                                                                        
+      7839         10 ACCOUNTING                                                                                                                                                                        
+      7844         30 SALES                                                                                                                                                                             
+      7900         30 SALES                                                                                                                                                                             
+      7902         20 RESEARCH                                                                                                                                                                          
+      7934         10 ACCOUNTING                                                                                                                                                                        
+                   40 OPERATIONS                                                                                                                                                                        
+
+13 개의 행이 선택되었습니다.
+
+SQL> select dept.deptno, dname, ename, sal
+  2  from emp
+  3  join dept using(deptno);
+select dept.deptno, dname, ename, sal
+       *
+1행에 오류:
+ORA-25154: USING 절의 열 부분은 식별자를 가질 수 없음 
+
+
+SQL> select emp.deptno, dname, ename, sal
+  2  from emp
+  3  join dept using(deptno);
+select emp.deptno, dname, ename, sal
+       *
+1행에 오류:
+ORA-25154: USING 절의 열 부분은 식별자를 가질 수 없음 
+
+
+SQL> select deptno, dname, ename, sal
+  2  from emp
+  3  join dept using(deptno);
+
+    DEPTNO DNAME                        ENAME                       SAL                                                                                                                                 
+---------- ---------------------------- -------------------- ----------                                                                                                                                 
+        20 RESEARCH                     SMITH                       800                                                                                                                                 
+        30 SALES                        ALLEN                      1600                                                                                                                                 
+        30 SALES                        WARD                       1250                                                                                                                                 
+        20 RESEARCH                     JONES                      2975                                                                                                                                 
+        30 SALES                        MARTIN                     1250                                                                                                                                 
+        30 SALES                        BLAKE                      2850                                                                                                                                 
+        10 ACCOUNTING                   CLARK                      2450                                                                                                                                 
+        10 ACCOUNTING                   KING                       5000                                                                                                                                 
+        30 SALES                        TURNER                     1500                                                                                                                                 
+        30 SALES                        JAMES                       950                                                                                                                                 
+        20 RESEARCH                     FORD                       3000                                                                                                                                 
+        10 ACCOUNTING                   MILLER                     1300                                                                                                                                 
+
+12 개의 행이 선택되었습니다.
+
+SQL> select dname
+  2  from emp, dept
+  3  join dept on emp.deptno = dept.deptno
+  4  where ename = 'ALLEN';
+select dname
+*
+1행에 오류:
+ORA-00918: 열의 정의가 애매합니다 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select dept.dname
+  2  from emp, dept
+  3  join dept on emp.deptno = dept.deptno
+  4* where ename = 'ALLEN'
+SQL> /
+select dept.dname
+*
+1행에 오류:
+ORA-00918: 열의 정의가 애매합니다 
+
+
+SQL> select d.dname
+  2  from emp
+  3  join dept d on emp.deptno=dept.deptno
+  4  where ename = 'ALLEN';
+join dept d on emp.deptno=dept.deptno
+                          *
+3행에 오류:
+ORA-00904: "DEPT"."DEPTNO": 부적합한 식별자 
+
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select d.dname
+  2  from emp
+  3  join dept d on emp.deptno=d.deptno
+  4* where ename = 'ALLEN'
+SQL> /
+
+DNAME                                                                                                                                                                                                   
+----------------------------                                                                                                                                                                            
+SALES                                                                                                                                                                                                   
+
+SQL> select ename, dept.deptno, dname, sal
+  2  from emp, dept
+  3  where emp.deptno(+)=dept.deptno;
+
+ENAME                    DEPTNO DNAME                               SAL                                                                                                                                 
+-------------------- ---------- ---------------------------- ----------                                                                                                                                 
+SMITH                        20 RESEARCH                            800                                                                                                                                 
+ALLEN                        30 SALES                              1600                                                                                                                                 
+WARD                         30 SALES                              1250                                                                                                                                 
+JONES                        20 RESEARCH                           2975                                                                                                                                 
+MARTIN                       30 SALES                              1250                                                                                                                                 
+BLAKE                        30 SALES                              2850                                                                                                                                 
+CLARK                        10 ACCOUNTING                         2450                                                                                                                                 
+KING                         10 ACCOUNTING                         5000                                                                                                                                 
+TURNER                       30 SALES                              1500                                                                                                                                 
+JAMES                        30 SALES                               950                                                                                                                                 
+FORD                         20 RESEARCH                           3000                                                                                                                                 
+MILLER                       10 ACCOUNTING                         1300                                                                                                                                 
+                             40 OPERATIONS                                                                                                                                                              
+
+13 개의 행이 선택되었습니다.
+
+SQL> select e1.ename e2.ename
+  2  from emp e1, emp e2
+  3  where e1.mgr = e2.empno;
+select e1.ename e2.ename
+                  *
+1행에 오류:
+ORA-00923: FROM 키워드가 필요한 위치에 없습니다. 
+
+
+SQL> select e1.ename || '의 매니저는 '|| e2.ename ||'입니다.'
+  2  from emp e1, emp e2
+  3  where e1.mgr = e2.empno;
+
+E1.ENAME||'의매니저는'||E2.ENAME||'입니다.'                                                                                                                                                             
+----------------------------------------------------------------------------------------------                                                                                                          
+FORD의 매니저는 JONES입니다.                                                                                                                                                                            
+JAMES의 매니저는 BLAKE입니다.                                                                                                                                                                           
+TURNER의 매니저는 BLAKE입니다.                                                                                                                                                                          
+MARTIN의 매니저는 BLAKE입니다.                                                                                                                                                                          
+WARD의 매니저는 BLAKE입니다.                                                                                                                                                                            
+ALLEN의 매니저는 BLAKE입니다.                                                                                                                                                                           
+MILLER의 매니저는 CLARK입니다.                                                                                                                                                                          
+CLARK의 매니저는 KING입니다.                                                                                                                                                                            
+BLAKE의 매니저는 KING입니다.                                                                                                                                                                            
+JONES의 매니저는 KING입니다.                                                                                                                                                                            
+SMITH의 매니저는 FORD입니다.                                                                                                                                                                            
+
+11 개의 행이 선택되었습니다.
+
+SQL> select ename, sal, length(sal) tier
+  2  from emp
+  3  ;
+
+ENAME                       SAL       TIER                                                                                                                                                              
+-------------------- ---------- ----------                                                                                                                                                              
+SMITH                       800          3                                                                                                                                                              
+ALLEN                      1600          4                                                                                                                                                              
+WARD                       1250          4                                                                                                                                                              
+JONES                      2975          4                                                                                                                                                              
+MARTIN                     1250          4                                                                                                                                                              
+BLAKE                      2850          4                                                                                                                                                              
+CLARK                      2450          4                                                                                                                                                              
+KING                       5000          4                                                                                                                                                              
+TURNER                     1500          4                                                                                                                                                              
+JAMES                       950          3                                                                                                                                                              
+FORD                       3000          4                                                                                                                                                              
+MILLER                     1300          4                                                                                                                                                              
+
+12 개의 행이 선택되었습니다.
+
+SQL> select ename, sal, grade
+  2  from emp, salgrade
+  3  where emp.sal between salgrade.losal and salgrade.hisal;
+
+ENAME                       SAL      GRADE                                                                                                                                                              
+-------------------- ---------- ----------                                                                                                                                                              
+SMITH                       800          1                                                                                                                                                              
+JAMES                       950          1                                                                                                                                                              
+WARD                       1250          2                                                                                                                                                              
+MARTIN                     1250          2                                                                                                                                                              
+MILLER                     1300          2                                                                                                                                                              
+TURNER                     1500          3                                                                                                                                                              
+ALLEN                      1600          3                                                                                                                                                              
+CLARK                      2450          4                                                                                                                                                              
+BLAKE                      2850          4                                                                                                                                                              
+JONES                      2975          4                                                                                                                                                              
+FORD                       3000          4                                                                                                                                                              
+KING                       5000          5                                                                                                                                                              
+
+12 개의 행이 선택되었습니다.
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select ename, sal, grade
+  2  from emp, salgrade
+  3* where emp.sal between salgrade.losal and salgrade.hisal
+SQL> select enae, dname, grade
+  2  from emp, dept, salgrade
+  3  where emp.deptno = dept.deptno and emp.sal between salgrade.losal and salgrade.hisal;
+select enae, dname, grade
+       *
+1행에 오류:
+ORA-00904: "ENAE": 부적합한 식별자 
+
+
+SQL> select ename, dname, grade
+  2  from emp, dept, salgrade
+  3  where emp.deptno = dept.deptno and emp.sal between salgrade.losal and salgrade.hisal;
+
+ENAME                DNAME                             GRADE                                                                                                                                            
+-------------------- ---------------------------- ----------                                                                                                                                            
+SMITH                RESEARCH                              1                                                                                                                                            
+JAMES                SALES                                 1                                                                                                                                            
+WARD                 SALES                                 2                                                                                                                                            
+MARTIN               SALES                                 2                                                                                                                                            
+MILLER               ACCOUNTING                            2                                                                                                                                            
+TURNER               SALES                                 3                                                                                                                                            
+ALLEN                SALES                                 3                                                                                                                                            
+CLARK                ACCOUNTING                            4                                                                                                                                            
+BLAKE                SALES                                 4                                                                                                                                            
+JONES                RESEARCH                              4                                                                                                                                            
+FORD                 RESEARCH                              4                                                                                                                                            
+KING                 ACCOUNTING                            5                                                                                                                                            
+
+12 개의 행이 선택되었습니다.
+
+SQL> select dname
+  2  from emp, dept
+  3  where emp.deptno = dept.deptno and ename = 'SMITH';
+
+DNAME                                                                                                                                                                                                   
+----------------------------                                                                                                                                                                            
+RESEARCH                                                                                                                                                                                                
+
+SQL> select dname
+  2  from dept
+  3  where deptno = (select deptno from emp where ename = 'SMITH');
+
+DNAME                                                                                                                                                                                                   
+----------------------------                                                                                                                                                                            
+RESEARCH                                                                                                                                                                                                
+
+SQL> select ename, deptno
+  2  from emp
+  3  where deptno = (select deptno from emp);
+where deptno = (select deptno from emp)
+                *
+3행에 오류:
+ORA-01427: 단일 행 하위 질의에 2개 이상의 행이 리턴되었습니다. 
+
+
+SQL> select ename, deptno
+  2  from emp
+  3  where deptno = (select deptno from emp where ename = 'ALLEN');
+
+ENAME                    DEPTNO                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+ALLEN                        30                                                                                                                                                                         
+WARD                         30                                                                                                                                                                         
+MARTIN                       30                                                                                                                                                                         
+BLAKE                        30                                                                                                                                                                         
+TURNER                       30                                                                                                                                                                         
+JAMES                        30                                                                                                                                                                         
+
+6 개의 행이 선택되었습니다.
+
+SQL> select empno, enmae, job
+  2  from emp
+  3  where job = (select job from emp where ename = 'ALLEN';
+where job = (select job from emp where ename = 'ALLEN'
+             *
+3행에 오류:
+ORA-00921: SQL 명령어가 불완전합니다 
+
+
+SQL> select ename, deptno
+  2  from emp
+  3  ;
+
+ENAME                    DEPTNO                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+SMITH                        20                                                                                                                                                                         
+ALLEN                        30                                                                                                                                                                         
+WARD                         30                                                                                                                                                                         
+JONES                        20                                                                                                                                                                         
+MARTIN                       30                                                                                                                                                                         
+BLAKE                        30                                                                                                                                                                         
+CLARK                        10                                                                                                                                                                         
+KING                         10                                                                                                                                                                         
+TURNER                       30                                                                                                                                                                         
+JAMES                        30                                                                                                                                                                         
+FORD                         20                                                                                                                                                                         
+MILLER                       10                                                                                                                                                                         
+
+12 개의 행이 선택되었습니다.
+
+SQL> select empno, enmae, job
+  2  from emp
+  3  where job = (select job from emp where ename = 'ALLEN');
+select empno, enmae, job
+              *
+1행에 오류:
+ORA-00904: "ENMAE": 부적합한 식별자 
+
+
+SQL> select empno, ename, job
+  2  from emp
+  3  where job = (select job from emp where ename = 'ALLEN');
+
+     EMPNO ENAME                JOB                                                                                                                                                                     
+---------- -------------------- ------------------                                                                                                                                                      
+      7499 ALLEN                SALESMAN                                                                                                                                                                
+      7521 WARD                 SALESMAN                                                                                                                                                                
+      7654 MARTIN               SALESMAN                                                                                                                                                                
+      7844 TURNER               SALESMAN                                                                                                                                                                
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal >= (select sal from emp);
+where sal >= (select sal from emp)
+              *
+3행에 오류:
+ORA-01427: 단일 행 하위 질의에 2개 이상의 행이 리턴되었습니다. 
+
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal >= (select sal from emp where ename = 'ALLEN');
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+ALLEN                      1600                                                                                                                                                                         
+JONES                      2975                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+CLARK                      2450                                                                                                                                                                         
+KING                       5000                                                                                                                                                                         
+FORD                       3000                                                                                                                                                                         
+
+6 개의 행이 선택되었습니다.
+
+SQL> select ename, deptno
+  2  from emp
+  3  where deptno = (select deptno from emp where loc = 'DALLAS');
+where deptno = (select deptno from emp where loc = 'DALLAS')
+                                             *
+3행에 오류:
+ORA-00904: "LOC": 부적합한 식별자 
+
+
+SQL> select ename, deptno
+  2  from emp
+  3  where deptno = (select deptno from dept where loc = 'DALLAS');
+
+ENAME                    DEPTNO                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+SMITH                        20                                                                                                                                                                         
+JONES                        20                                                                                                                                                                         
+FORD                         20                                                                                                                                                                         
+
+SQL> select ename, sal
+  2  from emp
+  3  where deptno = (select deptno from dept where dname = 'SALES');
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+ALLEN                      1600                                                                                                                                                                         
+WARD                       1250                                                                                                                                                                         
+MARTIN                     1250                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+TURNER                     1500                                                                                                                                                                         
+JAMES                       950                                                                                                                                                                         
+
+6 개의 행이 선택되었습니다.
+
+SQL> select ename, sal
+  2  from emp
+  3  where mgr = (select empno from emp where ename = 'king');
+
+선택된 레코드가 없습니다.
+
+SQL> select ename, sal
+  2  from emp
+  3  where mgr = (select empno from emp where ename = 'KING');
+
+ENAME                       SAL                                                                                                                                                                         
+-------------------- ----------                                                                                                                                                                         
+JONES                      2975                                                                                                                                                                         
+BLAKE                      2850                                                                                                                                                                         
+CLARK                      2450                                                                                                                                                                         
+
+SQL> create state table;
+create state table
+       *
+1행에 오류:
+ORA-00901: CREATE 명령어가 부적합합니다 
+
+
+SQL> create table state;
+create table state
+                 *
+1행에 오류:
+ORA-00906: 누락된 좌괄호 
+
+
+SQL> spool off
