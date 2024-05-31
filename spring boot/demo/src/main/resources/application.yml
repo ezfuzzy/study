@@ -1,21 +1,11 @@
-# spring.application.name=demo > properties format
+#  application.yml이 main.
+# local: h2
+# dev: mariadb
+# test(staging): -
+# prod: postgresql  -> 이런 경우는 잘 없음
+
+#active : application-local.yml도 같이 활성화 # local, dev, prod
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  datasource:
-    url: jdbc:h2:~/test;
-    driver-class-name: org.h2.Driver
-    username: ez
-    password: fz
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        format-sql: true
-        show-sql: true
-    hibernate:
-      ddl-auto: create-drop # create-drop: 시작과 종료에서 모두 drop > 데이터 날아감 , create, update, validate: 실서버 , none
+  profiles:
+    active: prod
