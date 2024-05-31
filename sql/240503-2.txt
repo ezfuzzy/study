@@ -1,0 +1,259 @@
+SQL> select lower(ename) from emp;
+
+LOWER(ENAME)                                                                    
+--------------------                                                            
+smith                                                                           
+allen                                                                           
+ward                                                                            
+jones                                                                           
+martin                                                                          
+blake                                                                           
+clark                                                                           
+king                                                                            
+turner                                                                          
+james                                                                           
+ford                                                                            
+
+LOWER(ENAME)                                                                    
+--------------------                                                            
+miller                                                                          
+
+12 개의 행이 선택되었습니다.
+
+SQL> select ltrim('aaaabbacc','a') from dual;
+
+LTRIM('AAA                                                                      
+----------                                                                      
+bbacc                                                                           
+
+SQL> select ltrim('aaaabbacc','b') from dual;
+
+LTRIM('AAAABBACC',                                                              
+------------------                                                              
+aaaabbacc                                                                       
+
+SQL> select ltrim('acacacacbbacc','ac') from dual;
+
+LTRIM('ACA                                                                      
+----------                                                                      
+bbacc                                                                           
+
+SQL> select substr('abcdefghijklmnopqr', 3, 5) from dual;
+
+SUBSTR('AB                                                                      
+----------                                                                      
+cdefg                                                                           
+
+SQL> select lpad('ji', 20, 'pp') from dual;
+
+LPAD('JI',20,'PP')                                                              
+----------------------------------------                                        
+ppppppppppppppppppji                                                            
+
+SQL> select lpad('ji', 20, 'pa') from dual;
+
+LPAD('JI',20,'PA')                                                              
+----------------------------------------                                        
+papapapapapapapapaji                                                            
+
+SQL> select job, max(sal) from emp group by job;
+
+JOB                  MAX(SAL)                                                   
+------------------ ----------                                                   
+CLERK                    1300                                                   
+SALESMAN                 1600                                                   
+PRESIDENT                5000                                                   
+MANAGER                  2975                                                   
+ANALYST                  3000                                                   
+
+SQL> select deptno, avg(sal) from emp where 1000>=1000 group by deptno order by deptno desc;
+
+    DEPTNO   AVG(SAL)                                                           
+---------- ----------                                                           
+        30 1566.66667                                                           
+        20 2258.33333                                                           
+        10 2916.66667                                                           
+
+SQL> select deptno, avg(sal) from emp where sal>=1000 group by deptno order by deptno desc;
+
+    DEPTNO   AVG(SAL)                                                           
+---------- ----------                                                           
+        30       1690                                                           
+        20     2987.5                                                           
+        10 2916.66667                                                           
+
+SQL> select deptno, round(avg(sal)) from emp where sal >= 2000 group by deptno order by round(avg(sal)) asc;
+
+    DEPTNO ROUND(AVG(SAL))                                                      
+---------- ---------------                                                      
+        30            2850                                                      
+        20            2988                                                      
+        10            3725                                                      
+
+SQL> select deptno, job, count(*) from emp group by deptno, job order by count(*);
+
+    DEPTNO JOB                  COUNT(*)                                        
+---------- ------------------ ----------                                        
+        20 CLERK                       1                                        
+        10 PRESIDENT                   1                                        
+        20 MANAGER                     1                                        
+        30 CLERK                       1                                        
+        20 ANALYST                     1                                        
+        30 MANAGER                     1                                        
+        10 CLERK                       1                                        
+        10 MANAGER                     1                                        
+        30 SALESMAN                    4                                        
+
+9 개의 행이 선택되었습니다.
+
+SQL> select deptno, job, count(*) from emp group by deptno, job order by deptno;
+
+    DEPTNO JOB                  COUNT(*)                                        
+---------- ------------------ ----------                                        
+        10 CLERK                       1                                        
+        10 MANAGER                     1                                        
+        10 PRESIDENT                   1                                        
+        20 ANALYST                     1                                        
+        20 CLERK                       1                                        
+        20 MANAGER                     1                                        
+        30 CLERK                       1                                        
+        30 MANAGER                     1                                        
+        30 SALESMAN                    4                                        
+
+9 개의 행이 선택되었습니다.
+
+SQL> select * from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7369 SMITH                CLERK                    7902 80/12/17          
+       800                    20                                                
+                                                                                
+      7499 ALLEN                SALESMAN                 7698 81/02/20          
+      1600        300         30                                                
+                                                                                
+      7521 WARD                 SALESMAN                 7698 81/02/22          
+      1250        500         30                                                
+                                                                                
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7566 JONES                MANAGER                  7839 81/04/02          
+      2975                    20                                                
+                                                                                
+      7654 MARTIN               SALESMAN                 7698 81/09/28          
+      1250       1400         30                                                
+                                                                                
+      7698 BLAKE                MANAGER                  7839 81/05/01          
+      2850                    30                                                
+                                                                                
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7782 CLARK                MANAGER                  7839 81/06/09          
+      2450                    10                                                
+                                                                                
+      7839 KING                 PRESIDENT                     81/11/17          
+      5000                    10                                                
+                                                                                
+      7844 TURNER               SALESMAN                 7698 81/09/08          
+      1500          0         30                                                
+                                                                                
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7900 JAMES                CLERK                    7698 81/12/03          
+       950                    30                                                
+                                                                                
+      7902 FORD                 ANALYST                  7566 81/12/03          
+      3000                    20                                                
+                                                                                
+      7934 MILLER               CLERK                    7782 82/01/23          
+      1300                    10                                                
+                                                                                
+
+12 개의 행이 선택되었습니다.
+
+SQL> set linesize 200
+SQL> select * from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7369 SMITH                CLERK                    7902 80/12/17        800                    20                                                                                                 
+      7499 ALLEN                SALESMAN                 7698 81/02/20       1600        300         30                                                                                                 
+      7521 WARD                 SALESMAN                 7698 81/02/22       1250        500         30                                                                                                 
+      7566 JONES                MANAGER                  7839 81/04/02       2975                    20                                                                                                 
+      7654 MARTIN               SALESMAN                 7698 81/09/28       1250       1400         30                                                                                                 
+      7698 BLAKE                MANAGER                  7839 81/05/01       2850                    30                                                                                                 
+      7782 CLARK                MANAGER                  7839 81/06/09       2450                    10                                                                                                 
+      7839 KING                 PRESIDENT                     81/11/17       5000                    10                                                                                                 
+      7844 TURNER               SALESMAN                 7698 81/09/08       1500          0         30                                                                                                 
+      7900 JAMES                CLERK                    7698 81/12/03        950                    30                                                                                                 
+      7902 FORD                 ANALYST                  7566 81/12/03       3000                    20                                                                                                 
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7934 MILLER               CLERK                    7782 82/01/23       1300                    10                                                                                                 
+
+12 개의 행이 선택되었습니다.
+
+SQL> select deptno, job, count(*) from emp group by deptno, job order by deptno;
+
+    DEPTNO JOB                  COUNT(*)                                                                                                                                                                
+---------- ------------------ ----------                                                                                                                                                                
+        10 CLERK                       1                                                                                                                                                                
+        10 MANAGER                     1                                                                                                                                                                
+        10 PRESIDENT                   1                                                                                                                                                                
+        20 ANALYST                     1                                                                                                                                                                
+        20 CLERK                       1                                                                                                                                                                
+        20 MANAGER                     1                                                                                                                                                                
+        30 CLERK                       1                                                                                                                                                                
+        30 MANAGER                     1                                                                                                                                                                
+        30 SALESMAN                    4                                                                                                                                                                
+
+9 개의 행이 선택되었습니다.
+
+SQL> select deptno, avg(sal) from emp where sal >= 1000 group by deptno having avg(sal) >= 2000;
+
+    DEPTNO   AVG(SAL)                                                                                                                                                                                   
+---------- ----------                                                                                                                                                                                   
+        20     2987.5                                                                                                                                                                                   
+        10 2916.66667                                                                                                                                                                                   
+
+SQL> select ename, emp.deptno, dname from emp, dept where emp.deptno = dept.deptno;
+
+ENAME                    DEPTNO DNAME                                                                                                                                                                   
+-------------------- ---------- ----------------------------                                                                                                                                            
+SMITH                        20 RESEARCH                                                                                                                                                                
+ALLEN                        30 SALES                                                                                                                                                                   
+WARD                         30 SALES                                                                                                                                                                   
+JONES                        20 RESEARCH                                                                                                                                                                
+MARTIN                       30 SALES                                                                                                                                                                   
+BLAKE                        30 SALES                                                                                                                                                                   
+CLARK                        10 ACCOUNTING                                                                                                                                                              
+KING                         10 ACCOUNTING                                                                                                                                                              
+TURNER                       30 SALES                                                                                                                                                                   
+JAMES                        30 SALES                                                                                                                                                                   
+FORD                         20 RESEARCH                                                                                                                                                                
+
+ENAME                    DEPTNO DNAME                                                                                                                                                                   
+-------------------- ---------- ----------------------------                                                                                                                                            
+MILLER                       10 ACCOUNTING                                                                                                                                                              
+
+12 개의 행이 선택되었습니다.
+
+SQL> select sysdate from dual;
+
+SYSDATE                                                                                                                                                                                                 
+--------                                                                                                                                                                                                
+24/05/03                                                                                                                                                                                                
+
+SQL> spool off
