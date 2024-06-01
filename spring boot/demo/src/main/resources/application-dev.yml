@@ -1,14 +1,30 @@
 spring:
   datasource:
-    url: jdbc:mariadb://192.168.1.253:3306/testdb
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: ezez
-    password: fzfz
+    hikari:
+      primary:
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://192.168.1.253:3306/testdb
+        username: ezez
+        password: fzfz
+      secondary:
+        driver-class-name: org.postgresql.Driver
+        jdbc-url: jdbc:postgresql://192.168.1.253/postgres
+        username: ezez
+        password: fzfz
   jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
+    show-sql: true
     properties:
       hibernate:
-        format-sql: true
-        show-sql: true
-    hibernate:
-      ddl-auto: create-drop # create-drop: 시작과 종료에서 모두 drop > 데이터 날아감 , create, update, validate: 실서버 , none
+        format_sql: true
+        use_sql_comments: true
+        query:
+          in_clause_parameter_padding: true
+    open-in-view: false
+# logging:
+#   level:
+#     root: INFO
+#     dev.ohhoonim.demo.mapper: TRACE
+
+# file:
+#   upload:
+#     rootpath: /home/upload

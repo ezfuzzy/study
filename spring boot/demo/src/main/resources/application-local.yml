@@ -5,6 +5,7 @@ spring:
       path: /h2-console
   datasource:
     url: jdbc:h2:~/test;
+    #AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
     username: ez
     password: fz
@@ -17,3 +18,16 @@ spring:
         show-sql: true
     hibernate:
       ddl-auto: create-drop # create-drop: 시작과 종료에서 모두 drop > 데이터 날아감 , create, update, validate: 실서버 , none
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/h2/**/**.xml
+  type-handlers-package: dev.ezfuzzy.demo.typehandler
+  type-aliases-package: dev.ezfuzzy.demo.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    default-fetch-size: 100
+    default-statement-timeout: 30
+#mapper/*.xml
+
+# Path: demo/src/main/resources/application-dev.yml
+# classpath = resources dir
