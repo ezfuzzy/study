@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 // ObjectOutputStream 객체를 이용하려면 Serializable class를 implements 해야함.
 public class MemberDto implements Serializable {
-  
+
   private int num;
   private String name;
   private String addr;

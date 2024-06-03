@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON</title>
+  </head>
+  <body>
+    <button id="printBtn">Print</button>
+    <button id="printBtn2">Print2</button>
+
+    <!-- beforebegin -->
+    <ul id="friends">
+      <!-- afterbegin -->
+      <!-- ul area -->
+      <!-- beforeend -->
+    </ul>
+    <!-- afterend -->
+
+    <script>
+      const data = `[
+        "fuzzy",
+        "ezez",
+        "fzfz",
+        "lessa",
+        "hayeon"
+      ]`;
+
+      const friends = JSON.parse(data);
+      const iterUl = document.querySelector("#friends");
+
+      document.querySelector("#printBtn").addEventListener("click", () => {
+        friends.forEach((people) => {
+          const elementLi = document.createElement("li");
+          elementLi.innerText = people;
+
+          iterUl.appendChild(elementLi);
+        });
+      });
+
+      document.querySelector("#printBtn2").addEventListener("click", () => {
+        friends.forEach((people) => {
+          const curLi = `<li>${people}</li>`;
+          iterUl.insertAdjacentHTML("beforeend", curLi);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,14 +1,14 @@
 package test.dto;
 
-public class MemberDto {
+public class MemberDtodb {
   private int num;
   private String name;
   private String addr;
   
   
-  public MemberDto() {}
+  public MemberDtodb() {}
   
-  public MemberDto(int num, String name, String addr) {
+  public MemberDtodb(int num, String name, String addr) {
     super();
     this.num = num;
     this.name = name;

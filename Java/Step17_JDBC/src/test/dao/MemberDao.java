@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import test.dto.MemberDto;
+import test.dto.MemberDtodb;
 import test.util.DBConnecter;
 
 public class MemberDao { // Data Access Object
@@ -15,8 +15,8 @@ public class MemberDao { // Data Access Object
   PreparedStatement pstmt = null;
   ResultSet rs = null;
   
-  List<MemberDto> curList = null;
-  MemberDto curDto = null;
+  List<MemberDtodb> curList = null;
+  MemberDtodb curDto = null;
   int rowCount=0;
   
   public MemberDao(String id, String pwd) {
@@ -24,7 +24,7 @@ public class MemberDao { // Data Access Object
   }
   
   // C
-  public boolean insert(MemberDto dto) {
+  public boolean insert(MemberDtodb dto) {
 
     try {
       String sql = "insert into member"
@@ -43,7 +43,7 @@ public class MemberDao { // Data Access Object
   }
   
   //R
-  public List<MemberDto> getAllMember() { 
+  public List<MemberDtodb> getAllMember() { 
     
     curList = new ArrayList<>();
     
@@ -54,7 +54,7 @@ public class MemberDao { // Data Access Object
       rs = pstmt.executeQuery();
           
       while(rs.next()) {
-	curDto = new MemberDto(rs.getInt("num"), rs.getString("name"), rs.getString("addr"));
+	curDto = new MemberDtodb(rs.getInt("num"), rs.getString("name"), rs.getString("addr"));
 	curList.add(curDto);
       }
     } catch(Exception e00) {
@@ -71,7 +71,7 @@ public class MemberDao { // Data Access Object
   }
   
   
-  public MemberDto getMemberByNum(int num) {
+  public MemberDtodb getMemberByNum(int num) {
     
     try {
       String sql = "select *"
@@ -84,7 +84,7 @@ public class MemberDao { // Data Access Object
       rs = pstmt.executeQuery();
       
       if(rs.next()) {
-	curDto = new MemberDto(rs.getInt("num"), rs.getString("name"), rs.getString("addr"));
+	curDto = new MemberDtodb(rs.getInt("num"), rs.getString("name"), rs.getString("addr"));
       }
       
       
@@ -96,7 +96,7 @@ public class MemberDao { // Data Access Object
   
   
   //U
-  public boolean update(MemberDto dto) { 
+  public boolean update(MemberDtodb dto) { 
     try {
       String sql = "update member"
 	  + " set name = ?, addr = ?"

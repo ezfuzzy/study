@@ -1,4 +1,4 @@
-package example;
+package test.frame;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -21,36 +21,28 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import test.dto.MemberDto;
+import test.dao.MemberDao;
+import test.dto.MemberDtodb;
 
 public class MemberFrame extends JFrame implements ActionListener {
 
-  JTextField inputNum, inputName, inputAddr;
+  JTextField inputName = null, inputAddr = null;
   JButton addBtn = null, delBtn = null;
   DefaultTableModel model;
   JTable table00 = null;
   File file = null;
-  MemberDto dto = null;
   
-  List<MemberDto> list = new ArrayList<>();
-  
-  FileInputStream fis = null;
-  FileOutputStream fos = null;
-  
-  ObjectInputStream ois = null;
-  ObjectOutputStream oos = null;
-  
+  List<MemberDtodb> list = new ArrayList<>();
+  MemberDao dao = new MemberDao("scott", "tiger"); 
   
   public MemberFrame(String title) {
     super(title);
     setLayout(new BorderLayout());
     
     // === interface ===
-    JLabel label1=new JLabel("번호");
     JLabel label2=new JLabel("이름");
     JLabel label3=new JLabel("주소");	
 
-    inputNum=new JTextField(10);
     inputName=new JTextField(10);
     inputAddr=new JTextField(10);
 
@@ -59,8 +51,6 @@ public class MemberFrame extends JFrame implements ActionListener {
     
     //페널에 UI 배치
     JPanel panel=new JPanel();
-    panel.add(label1);
-    panel.add(inputNum);
     panel.add(label2);
     panel.add(inputName);
     panel.add(label3);
@@ -91,10 +81,12 @@ public class MemberFrame extends JFrame implements ActionListener {
     delBtn.addActionListener(this);
     
     // === load ===
-    loadFromFile();
+    
     refreshTable();
+    
+   
   }
-
+  
   public static void main(String[] args) {
     MemberFrame frame = new MemberFrame(" 회원 정보 관리 ");
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -111,53 +103,43 @@ public class MemberFrame extends JFrame implements ActionListener {
      */
     
     if(cmd.equals("add")) {
-      int num = Integer.parseInt(inputNum.getText());
       String name = inputName.getText();
       String addr = inputAddr.getText();
+      if(name == null || addr == null) { 
+	JOptionPane.showMessageDialog(this, "fill the textbox");
+	return;
+      }
       
-      dto = new MemberDto(num, name, addr);
-      list.add(dto);
-      inputNum.setText(null);
+      MemberDtodb dto = new MemberDtodb(0, name, addr);
+      dao.insert(dto);
+      
+      inputName.setText(null);
+      inputAddr.setText(null);
+      
     } else if (cmd.equals("del")) {
       int selectedRow = table00.getSelectedRow();
       if(selectedRow == -1) {
 	JOptionPane.showMessageDialog(this, "select the row");
 	return;
       }
-      list.remove(selectedRow);
+      // defaultTableModel을 통해 pk 얻기 
+      int num = (int)model.getValueAt(selectedRow,0);
+
+      // List<MemberDto> 객체를 통해 pk 얻기
+      int num2 = list.get(selectedRow).getNum();
       
+      dao.delete(num);
     }
     
     
     refreshTable();
-    saveToFile();
   }
   
-  public void loadFromFile() {
-    
-    try {
-      file = new File("C:\\Users\\user\\playground\\code\\myFolder\\members.dat");
-      if(!file.exists()) file.createNewFile();
-      if(file.length() == 0) return;
 
-      fis = new FileInputStream(file);
-      ois = new ObjectInputStream(fis);
-
-      list = (List<MemberDto>)ois.readObject();
-      
-    } catch (Exception e01) {
-      e01.printStackTrace();
-    } finally {
-      try {
-	if(ois != null) ois.close();
-	if(fis != null) fis.close();
-      } catch (Exception e02) {
-	e02.printStackTrace();
-      }
-    }
-  }
   
   public void refreshTable() {
+    list = dao.getAllMember();
+    
     if(list == null) return;
     
     model.setRowCount(0);
@@ -170,26 +152,5 @@ public class MemberFrame extends JFrame implements ActionListener {
   }
   
   
-  public void saveToFile() {
     
-    
-    try {
-      file = new File("C:\\Users\\user\\playground\\code\\myFolder\\members.dat");
-      if(!file.exists()) file.createNewFile();
-      
-      fos = new FileOutputStream(file);
-      oos = new ObjectOutputStream(fos);
-      
-      oos.writeObject(list);
-      oos.flush();
-    } catch (Exception e01) {
-      e01.printStackTrace();
-    } finally {
-      try {
-	if (oos != null) oos.close();
-	if (fos != null) fos.close();
-      } catch (Exception e02) {e02.printStackTrace();}
-    }
-  }
-  
 }
