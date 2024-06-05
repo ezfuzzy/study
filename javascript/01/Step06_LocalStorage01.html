@@ -15,18 +15,18 @@
       <br /><br />
       <input type="text" name="" id="searchInput" />
       <button id="searchBtn">Search</button>
+      <button id="clearBtn" style="margin-left: 110px">Clear</button>
       <ul id="searchResult">
         [ Search Result ]
       </ul>
-      <ul id="dictionaryList">
-        Word List
-      </ul>
+      <hr />
+      <h5>[ Word List ]</h5>
+      <ul id="dictionaryList"></ul>
     </div>
+    <script src="js/myutil.js"></script>
+
     <script>
       {
-        function $(selector) {
-          return document.querySelector(selector);
-        }
         refresh();
         const word = $("#word");
         const meaning = $("#meaning");
@@ -77,6 +77,11 @@
             $("#dictionaryList").appendChild(li);
           });
         }
+        
+        $("#clearBtn").addEventListener("click", () => {
+          localStorage.clear();
+          refresh();
+        });
       }
     </script>
   </body>
