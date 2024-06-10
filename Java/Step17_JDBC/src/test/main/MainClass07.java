@@ -3,7 +3,7 @@ package test.main;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import test.dto.MemberDto;
+import test.dto.MemberDtodb;
 import test.util.DBConnecter;
 
 public class MainClass07 {
@@ -11,12 +11,12 @@ public class MainClass07 {
     String name = "lessa55";
     String addr = "soez55";
     
-    MemberDto curMember = new MemberDto(0, name, addr);
+    MemberDtodb curMember = new MemberDtodb(0, name, addr);
     insert(curMember);
     
   }
   
-  public static void insert(MemberDto dto) { // static method 안에서는 static method만 호출 가능
+  public static void insert(MemberDtodb dto) { // static method 안에서는 static method만 호출 가능
     Connection conn = null;
     PreparedStatement pstmt = null;
      

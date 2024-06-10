@@ -30,6 +30,7 @@ public class MemberFrame extends JFrame implements ActionListener {
   DefaultTableModel model;
   JTable table00 = null;
   File file = null;
+  MemberDto dto = null;
   
   List<MemberDto> list = new ArrayList<>();
   
@@ -92,10 +93,8 @@ public class MemberFrame extends JFrame implements ActionListener {
     // === load ===
     loadFromFile();
     refreshTable();
-    
-   
   }
-  
+
   public static void main(String[] args) {
     MemberFrame frame = new MemberFrame(" 회원 정보 관리 ");
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -116,8 +115,9 @@ public class MemberFrame extends JFrame implements ActionListener {
       String name = inputName.getText();
       String addr = inputAddr.getText();
       
-      MemberDto dto = new MemberDto(num, name, addr);
+      dto = new MemberDto(num, name, addr);
       list.add(dto);
+      inputNum.setText(null);
     } else if (cmd.equals("del")) {
       int selectedRow = table00.getSelectedRow();
       if(selectedRow == -1) {

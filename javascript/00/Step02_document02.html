@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step02_document02.html</title>
+  <style>
+    .box {
+      width: 50px;
+      height: 50px;
+      border: 3px solid blueviolet;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 200px;
+    }
+  </style>
+</head>
+<body>
+  <button class="box">box1</button>
+  <button class="box">box2</button>
+  <button class="box">box3</button>
+  <button class="box">box4</button>
+  <button class="box">box5</button>
+
+  <p class="comment">p1</p>
+  <p class="comment">p2</p>
+  <p class="comment">p3</p>
+  <p class="comment">p4</p>
+  <p class="comment">p5</p>
+  <button id="changeColor">Btn</button>
+  <script>
+    var targets = document.querySelectorAll(".box");
+    const colors = ["red", "green", "blue", "aqua"]
+    const indexes =[0,0,0,0,0];
+    for (let i = 0; i < targets.length; i++) {
+      targets[i].addEventListener('click', ()=>{
+
+        const colorIndex = indexes[i] % colors.length;
+        indexes[i]++;
+        targets[i].style.backgroundColor = colors[colorIndex];
+      })
+    }
+
+    let nums = [10, 20, 30, 40, 50];
+    let names = ["Minjun", "fuzzy", "jihae", "hayeon", "daniel"];
+
+    nums.forEach((item)=>{
+      console.log(item);
+      // nums의 foreach가 method로 호출되었기때문에 item은 nums[0]에서 시작
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>local storage</h1>
+      <p>url ? 문자열 영구 저장 local storage</p>
+      <input type="text" name="" id="inputName" placeholder="type your name" />
+      <button id="saveBtn">Save</button>
+      <button id="saveJSON">With JSON</button>
+      <button id="delBtn">Delete</button>
+      <p id="names"></p>
+    </div>
+    <script>
+      {
+        var cnt = 0;
+        const curInput = document.querySelector("#inputName");
+        refresh();
+        function refresh() {
+          const savedName = localStorage.getItem("name");
+          if (savedName != undefined) {
+            document.querySelector("#names").innerText = savedName + " haewi~";
+          } else {
+            document.querySelector("#names").innerText =
+              "저장된 이름이 없습니다.";
+          }
+        }
+
+        document.querySelector("#saveBtn").addEventListener("click", () => {
+          const curName = curInput.value;
+
+          localStorage.setItem("name", curName);
+          // localStorage["name"] = name; // 이렇게도 가능
+
+          curInput.value = "";
+          curInput.focus();
+
+          refresh();
+        });
+
+        document.querySelector("#saveJSON").addEventListener("click", () => {
+          var names = localStorage.getItem("names");
+          var curNames;
+          if (names != null) {
+            curNames = JSON.parse(names);
+          } else {
+            curNames = "";
+          }
+
+          curNames = curNames + cnt + curInput.value;
+          names = JSON.stringify(curNames);
+          localStorage.setItem("names", names);
+          cnt++;
+          console.log(names);
+        });
+
+        document.querySelector("#delBtn").addEventListener("click", () => {
+          delete localStorage.name;
+          refresh();
+        });
+      }
+    </script>
+  </body>
+</html>

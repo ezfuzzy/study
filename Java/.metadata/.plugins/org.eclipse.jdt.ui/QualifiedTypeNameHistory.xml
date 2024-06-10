@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.security.PublicKey"/>
-    <fullyQualifiedTypeName name="java.lang.Void"/>
-    <fullyQualifiedTypeName name="test.main.MainClass01"/>
-    <fullyQualifiedTypeName name="test.main.MainClass02"/>
-    <fullyQualifiedTypeName name="test.mypac.MyWeapon"/>
     <fullyQualifiedTypeName name="test.mypac.Zoo.Monkey"/>
     <fullyQualifiedTypeName name="test.mypac.Zoo"/>
     <fullyQualifiedTypeName name="test.mypac.Zoo.Tiger"/>
@@ -21,7 +16,6 @@
     <fullyQualifiedTypeName name="javax.management.MBeanFeatureInfo"/>
     <fullyQualifiedTypeName name="java.lang.ArithmeticException"/>
     <fullyQualifiedTypeName name="test.mypac.MyUtil"/>
-    <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="java.lang.RuntimeException"/>
     <fullyQualifiedTypeName name="java.util.Random"/>
     <fullyQualifiedTypeName name="test.mypac.WowException"/>
@@ -60,4 +54,10 @@
     <fullyQualifiedTypeName name="java.lang.StringIndexOutOfBoundsException"/>
     <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
     <fullyQualifiedTypeName name="test.Util.MyUtil"/>
+    <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+    <fullyQualifiedTypeName name="java.lang.Exception"/>
+    <fullyQualifiedTypeName name="java.sql.DriverManager"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
+    <fullyQualifiedTypeName name="test.util.DBConnecter"/>
+    <fullyQualifiedTypeName name="test.dao.MemberDao"/>
 </qualifiedTypeNameHistroy>

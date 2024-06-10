@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.dao.MemberDao;
-import test.dto.MemberDto;
+import test.dto.MemberDtodb;
 
 public class MainClass08 {
   public static void main(String[] args) {
@@ -12,7 +12,7 @@ public class MainClass08 {
     int num = 4;
     String name = "ffuzzyy", addr = "seoul";
     
-    MemberDto dto = new MemberDto(num, name, addr);
+    MemberDtodb dto = new MemberDtodb(num, name, addr);
     
     MemberDao dao = new MemberDao("scott", "tiger");
     
@@ -25,14 +25,19 @@ public class MainClass08 {
 //    dto = dao.getMemberByNum(dto.getNum());
 //    System.out.println(dto.getNum() + " | " + dto.getName() + " | " + dto.getAddr());
     
-    List<MemberDto> list = new ArrayList<>();
-    list = dao.getAllMember();
+//    List<MemberDto> list = new ArrayList<>();
+//    list = dao.getAllMember();
+//    
+//    list.forEach((curMember) -> {
+//      String info01 = String.format("num: %5d | name: %12s | addr: %12s",
+//	    curMember.getNum(), curMember.getName(), curMember.getAddr());
+//	System.out.println(info01);
+//    });
+    dto = dao.getMemberByNum(7);
+    String info01 = String.format("num: %5d | name: %12s | addr: %12s",
+	dto.getNum(), dto.getName(), dto.getAddr());
+    System.out.println(info01);
     
-    list.forEach((curMember) -> {
-      String info01 = String.format("num: %5d | name: %12s | addr: %12s",
-	    curMember.getNum(), curMember.getName(), curMember.getAddr());
-	System.out.println(info01);
-    });
     
     System.out.println("isSuccess ? " + isSuccess);
   }

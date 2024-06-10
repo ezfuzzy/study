@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>local storage</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>dicdicdicdic</h1>
+      <input type="text" name="" id="word" placeholder="type word" />
+      <input type="text" name="" id="meaning" placeholder="type meaning" />
+      <button id="saveBtn">Save</button>
+
+      <br /><br />
+      <input type="text" name="" id="searchInput" />
+      <button id="searchBtn">Search</button>
+      <button id="clearBtn" style="margin-left: 110px">Clear</button>
+      <ul id="searchResult">
+        [ Search Result ]
+      </ul>
+      <hr />
+      <h5>[ Word List ]</h5>
+      <ul id="dictionaryList"></ul>
+    </div>
+    <script src="js/myutil.js"></script>
+
+    <script>
+      {
+        refresh();
+        const word = $("#word");
+        const meaning = $("#meaning");
+        const searchInput = $("#searchInput");
+
+        $("#saveBtn").addEventListener("click", () => {
+          var curDic = localStorage.getItem("dic")
+            ? JSON.parse(localStorage.getItem("dic"))
+            : {};
+          curDic[word.value] = meaning.value;
+          localStorage.setItem("dic", JSON.stringify(curDic));
+
+          word.value = "";
+          meaning.value = "";
+          refresh();
+        });
+
+        $("#searchBtn").addEventListener("click", () => {
+          const searchInputWord = searchInput.value;
+          const data = localStorage.getItem("dic");
+          const curDictionary = JSON.parse(data);
+          if (curDictionary == null) {
+            alert("no data in dictionary");
+            return;
+          }
+          if (curDictionary[searchInputWord]) {
+            const li = document.createElement("li");
+            li.innerText = `${searchInputWord} : ${curDictionary[searchInputWord]}`;
+            $("#searchResult").appendChild(li);
+            searchInput.value = "";
+          } else alert("no data");
+          refresh();
+        });
+
+        function refresh() {
+          const ul = ($("#dictionaryList").innerHTML = "");
+          const data = localStorage.getItem("dic");
+          const curDictionary = JSON.parse(data);
+
+          if (curDictionary == null) {
+            alert("no data in dictionary");
+            return;
+          }
+
+          Object.entries(curDictionary).forEach(([key, value]) => {
+            const li = document.createElement("li");
+            li.innerText = `${key}: ${value}`;
+            $("#dictionaryList").appendChild(li);
+          });
+        }
+        
+        $("#clearBtn").addEventListener("click", () => {
+          localStorage.clear();
+          refresh();
+        });
+      }
+    </script>
+  </body>
+</html>
