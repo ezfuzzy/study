@@ -1,0 +1,39 @@
+<html>
+  <body>
+    <script language="javascript">
+      var set_state = true; //버튼 상태를 체크하는 전역 boolean 변수
+
+      var img_icon = new Array(); //버튼 이미지를 저장할 배열 선언 배열객체를 할당함.
+
+      img_icon[0] = new Image(); //배열을 이미지 객체로 초기화
+
+      img_icon[1] = new Image();
+
+      img_icon[0].src = "../images/2.png"; //배열내의 이미지 객체에 이미지를 설정함.
+
+      img_icon[1].src = "../images/1.png";
+
+      function setImg() {
+        //버튼이미지를 변환시키는 함수
+
+        document.all.icon_btn.src = set_state
+          ? img_icon[0].src
+          : img_icon[1].src;
+        if (set_state) {
+          //버튼의 셋팅을 변환 : 이부분에 버튼을 눌렀을 경우의 동작을 설정할 수 있다.
+          set_state = false;
+        } else {
+          set_state = true;
+        }
+      }
+    </script>
+
+    <img
+      name="icon_btn"
+      src="../images/1.png"
+      alt="버튼을 누르면 이미지가 변합니다."
+      onClick="setImg()"
+      style="cursor: hand"
+    />
+  </body>
+</html>
