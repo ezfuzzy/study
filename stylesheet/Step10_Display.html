@@ -9,10 +9,21 @@
 			보이지 않게 하기  */
 			display: none;
 		}
+		h1 {
+			color: red;
+		}
+		/*
+		* 내부 css가 인라인 css보다 우선순위가 높다 !!!
+		 ?? 인라인 css가 제일 우선순위 높다는데 뭐징
+		> 하드코딩된 내용은 인라인 css가 우선순위가 높지만
+		> !js로 추가된 css는 외부 > 내부 > 인라인 순으로 우선순위가 높다
+		>>> js로 css를 추가하면 인라인으로 들어감 
+		> : 외부는 체크 안해봄 
+		 */
 	</style>
 </head>
 <body>
-<h1>display 속성 테스트</h1>
+<h1 id="hh11" style="color:aqua"">display 속성 테스트</h1>
 <button id="showBtn">눌러보셈</button>
 <p id="one">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus cupiditate ea earum sequi aspernatur reprehenderit at quia, consequuntur consequatur iste quos necessitatibus eveniet ipsam, vero, eaque iusto maiores, ipsum explicabo.</p>	
 <img src="images/kim1.png" />
@@ -21,6 +32,7 @@
 	.addEventListener("click", function(){
 		document.querySelector("#one")
 		.style.display="block";
+		
 	});
 </script>
 </body>
