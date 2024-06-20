@@ -56,6 +56,10 @@
             <button id="leftBtn">&larr;</button>
             <button id="rightBtn">&rarr;</button>
         </div>
+        <div>
+            <input type="text" name="input" id="input"> input
+            <button id="inputBtn">G</button>
+        </div>
     </div>
     <script>
         //n 각형의 폭을 함수에 전달하면 div 를 배치할때 rotateY 값과 translateZ 가 Object 로 리턴되는 함수 
@@ -68,9 +72,10 @@
             };
             return obj;
         }
-
+        
+        
         //n각형
-        const n=8;
+        const n=20;
         //div 의 width
         const width=400;
         // 6 각형 폭은 400px 인 경우 
