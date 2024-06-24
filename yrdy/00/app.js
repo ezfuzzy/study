@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require('express-session');
 const path = require("path");
 const app = express();
 
@@ -21,8 +22,28 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(session({
+  secret: 'your_secret_key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 1000 * 60 * 30 }
+}));
+
+app.get('/login', (req, res) => {
+  req.session.user = { id: 1, username: 'ezfz' };
+  res.send('Logged in!');
+});
+
+app.get('/session-info', (req, res) => {
+  if (req.session.user) {
+    res.json(req.session);
+  } else {
+    res.status(401).json({ error: 'Not logged in' });
+  }
+});
+
 app.get("/", (req, res) => {
-  res.send("Hello, client!");
+  res.sendFile(path.join(__dirname + "/public", "index.html"));
 });
 
 app.get("/signIn", (req, res) => {

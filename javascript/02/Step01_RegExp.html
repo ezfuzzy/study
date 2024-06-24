@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Regular Expression</title>
+  </head>
+  <body>
+    <script>
+      const source = "Hello, World!";
+      const reg = /Hello/;              // 1. 정규표현식 리터럴
+      const reg2 = new RegExp("Hello"); // 2. RegExp 객체 생성자
+      
+      const result = reg.test(source);
+      const result2 = reg2.test(source);
+
+      console.log(result);  // true
+      console.log(result2); // true
+    </script>
+  </body>
+</html>

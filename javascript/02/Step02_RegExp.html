@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reg Exp</title>
+  </head>
+  <body>
+    <div class="container">
+      string: <input type="text" id="source" placeholder="type string" />
+      <br />
+      Reg Exp: <input type="text" id="expression" placeholder="type Reg Exp" />
+      <br />
+      <button id="testBtn">match</button>
+      <button id="findAllBtn">findAll</button>
+      <p>result: <string id="true"></string></p>
+      <strong>Match List</strong>
+      <ol id="findList"></ol>
+      <strong>Match List2</strong>
+      <ul id="findList2"></ul>
+    </div>
+
+    <script>
+      document.getElementById("testBtn").addEventListener("click", function () {
+        const source = document.getElementById("source").value;
+        const expression = new RegExp(document.getElementById("expression").value, "g");
+
+        const result = expression.test(source);
+        document.getElementById("true").textContent = result;
+
+        const findArray = source.match(expression);
+
+        const ol = document.getElementById("findList");
+        ol.innerHTML = "";
+        findArray.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          ol.appendChild(li);
+        });
+      });
+
+      document.getElementById("findAllBtn").addEventListener("click", function () {
+        const source = document.getElementById("source").value;
+        const expression = new RegExp(document.getElementById("expression").value, "g");
+        // g : global, i : ignore case, m : multiline
+        // gi : global + ignore case
+        const result = expression.test(source);
+        document.getElementById("true").textContent = result;
+
+        const ul = document.getElementById("findList2");
+        ul.innerHTML = "";
+        while (true) {
+          const result = expression.exec(source);
+          if (result === null) break;
+          const li = `<li>${result[0]}</li>`;
+          ul.insertAdjacentHTML("beforeend", li);
+        }
+      });
+    </script>
+  </body>
+</html>
