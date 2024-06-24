@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+body {
+  @apply bg-gray-100 text-gray-900 flex flex-col items-center justify-center min-h-screen;
+  margin: 0;
+  font-family: "Victor Mono", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.memory-block {
+  @apply border border-gray-700 my-2 p-2 flex flex-col items-center text-white;
+}
+
+.memory-block.allocated {
+  @apply bg-red-500;
+}
+
+.memory-block.free {
+  @apply bg-green-500;
+}
+
+.memory-visualizer {
+  @apply flex flex-row items-center mt-10 overflow-x-auto w-full px-4;
+}
+
+.control-panel {
+  @apply flex flex-col items-center my-4 space-y-4 bg-white shadow-lg p-6 rounded-lg w-full max-w-3xl;
+}
+
+.control-panel input {
+  @apply border border-gray-500 p-2 w-full;
+}
+
+.control-panel button {
+  @apply bg-blue-500 text-white p-2 rounded w-full;
+}
+
+.control-panel .button-group {
+  @apply flex flex-row space-x-4 w-full;
+}
+
+.control-panel .radio-group {
+  @apply flex flex-row space-x-8;
+}
+
+.control-panel .radio-group label {
+  cursor: pointer;
+}
+.control-panel label {
+  @apply flex items-center space-x-2;
+}
