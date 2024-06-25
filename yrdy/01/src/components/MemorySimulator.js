@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import MemoryVisualizer from "./MemoryVisualizer";
-import ControlPanel from "./ControlPanel.js";
+import ControlPanel from "./ControlPanel";
 
 const initialState = {
   memory: [
@@ -8,7 +8,7 @@ const initialState = {
     { id: 2, size: 100, status: "free", allocatedSize: 0 },
     { id: 3, size: 200, status: "free", allocatedSize: 0 },
   ],
-  mode: "contiguous",
+  selectedBlockId: null,
 };
 
 const memoryReducer = (state, action) => {
@@ -20,24 +20,88 @@ const memoryReducer = (state, action) => {
         ...state,
         memory: allocateMemory(state.memory, action.size, state.mode),
       };
-    case "FREE":
-      return {
-        ...state,
-        memory: freeMemory(state.memory),
-      };
     case "ADD_MEMORY":
       return {
         ...state,
         memory: [...state.memory, { id: state.memory.length + 1, size: action.size, status: "free", allocatedSize: 0 }],
       };
+    case "FREE":
+      return {
+        ...state,
+        memory: state.memory.map((block) => {
+          if (block.status === "allocated" && block.id === state.selectedBlockId) {
+            return { ...block, status: "free", allocatedSize: 0 };
+          }
+          return block;
+        }),
+      };
     case "RESET":
       return {
         ...state,
-        memory: resetMemory(state.memory, action.blockId),
+        memory: state.memory.map((block) => ({ ...block, status: "free", allocatedSize: 0 })),
+      };
+    case "SELECT_BLOCK":
+      return {
+        ...state,
+        selectedBlockId: action.id,
       };
     default:
       return state;
   }
+};
+
+const contiguousAllocate = (memory, size) => {
+  let remainingSize = size;
+  return memory.map((block) => {
+    if (block.status === "free" && remainingSize > 0) {
+      const allocatedSize = Math.min(block.size, remainingSize);
+      remainingSize -= allocatedSize;
+      return { ...block, status: "allocated", allocatedSize };
+    }
+    return block;
+  });
+};
+
+const fragmentationAllocate = (memory, size) => {
+  let remainingSize = size;
+  return memory.map((block) => {
+    if (remainingSize > 0) {
+      const allocatedSize = Math.min(block.size, remainingSize);
+      remainingSize -= allocatedSize;
+      return { ...block, status: "allocated", allocatedSize };
+    }
+    return block;
+  });
+};
+
+const nonContiguousAllocate = (memory, size) => {
+  let remainingSize = size;
+  return memory.map((block) => {
+    if (block.status === "free" && remainingSize > 0) {
+      const allocatedSize = Math.min(block.size, remainingSize);
+      remainingSize -= allocatedSize;
+      return { ...block, status: "allocated", allocatedSize };
+    }
+    return block;
+  });
+};
+
+const buddySystemAllocate = (memory, size) => {
+  const powerOf2 = Math.ceil(Math.log2(size));
+  const requiredSize = Math.pow(2, powerOf2);
+
+  for (let i = 0; i < memory.length; i++) {
+    if (memory[i].status === "free" && memory[i].size >= requiredSize) {
+      let currentSize = memory[i].size;
+      while (currentSize > requiredSize) {
+        currentSize /= 2;
+      }
+      return memory.map((block, index) =>
+        index === i ? { ...block, status: "allocated", allocatedSize: currentSize } : block
+      );
+    }
+  }
+  return memory; // 할당 실패
 };
 
 const allocateMemory = (memory, size, mode) => {
@@ -55,84 +119,44 @@ const allocateMemory = (memory, size, mode) => {
   }
 };
 
-const freeMemory = (memory) => {
-  return memory.map((block) => {
-    if (block.status === "allocated") {
-      return { ...block, status: "free", allocatedSize: 0 };
-    }
-    return block;
-  });
-};
-
-const resetMemory = (memory, blockId) => {
-  return memory.map((block) => {
-    if (block.id.toString() === blockId && block.status === "allocated") {
-      return { ...block, status: "free", allocatedSize: 0 };
-    }
-    return block;
-  });
-};
-
-const contiguousAllocate = (memory, size) => {
-  let allocated = false;
-  return memory.map((block) => {
-    if (!allocated && block.status === "free" && block.size >= size) {
-      allocated = true;
-      return { ...block, status: "allocated", allocatedSize: size };
-    }
-    return block;
-  });
-};
-
-const fragmentationAllocate = (memory, size) => {
-  // 단편화 할당 로직
-  return contiguousAllocate(memory, size);
-};
-
-const nonContiguousAllocate = (memory, size) => {
-  // 비연속 할당 로직
-  return contiguousAllocate(memory, size);
-};
-
-const buddySystemAllocate = (memory, size) => {
-  // 버디 시스템 예시 로직
-  return contiguousAllocate(memory, size);
-};
-
 const MemorySimulator = () => {
   const [state, dispatch] = useReducer(memoryReducer, initialState);
 
-  const allocateMemory = (size) => {
-    dispatch({ type: "ALLOCATE", size: parseInt(size, 10) });
+  const setMode = (mode) => {
+    dispatch({ type: "SET_MODE", mode });
   };
 
-  const freeMemory = () => {
-    dispatch({ type: "FREE" });
+  const allocateMemory = (size) => {
+    dispatch({ type: "ALLOCATE", size: parseInt(size, 10) });
   };
 
   const addMemoryBlock = (size) => {
     dispatch({ type: "ADD_MEMORY", size: parseInt(size, 10) });
   };
 
-  const resetMemory = (blockId) => {
-    dispatch({ type: "RESET", blockId });
+  const freeMemory = () => {
+    dispatch({ type: "FREE" });
   };
 
-  const setMode = (mode) => {
-    dispatch({ type: "SET_MODE", mode });
+  const resetMemory = (id) => {
+    dispatch({ type: "RESET", id });
+  };
+
+  const selectBlock = (id) => {
+    dispatch({ type: "SELECT_BLOCK", id });
   };
 
   return (
-    <div className="flex flex-col items-center space-y-6">
-      <h1 className="text-2xl font-bold">Memory Allocation Simulator</h1>
+    <div>
       <ControlPanel
+        setMode={setMode}
         allocateMemory={allocateMemory}
-        freeMemory={freeMemory}
         addMemoryBlock={addMemoryBlock}
         resetMemory={resetMemory}
-        setMode={setMode}
+        freeMemory={freeMemory}
+        selectedBlockId={state.selectedBlockId}
       />
-      <MemoryVisualizer memory={state.memory} />
+      <MemoryVisualizer memory={state.memory} onBlockClick={selectBlock} />
     </div>
   );
 };
