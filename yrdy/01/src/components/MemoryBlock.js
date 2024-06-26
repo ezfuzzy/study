@@ -11,7 +11,7 @@ const MemoryBlock = ({ id, size, status, allocatedSize, onClick }) => {
   const allocatedStyle = {
     width: `${allocatedSize}px`,
     height: "100%",
-    backgroundColor: "rgba(255, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     position: "absolute",
     left: 0,
     top: 0,
