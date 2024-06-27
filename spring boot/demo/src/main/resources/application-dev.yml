@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    hikari:
+      primary:
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://192.168.1.253:3306/testdb
+        username: ezez
+        password: fzfz
+      secondary:
+        driver-class-name: org.postgresql.Driver
+        jdbc-url: jdbc:postgresql://192.168.1.253/postgres
+        username: ezez
+        password: fzfz
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        query:
+          in_clause_parameter_padding: true
+    open-in-view: false
+# logging:
+#   level:
+#     root: INFO
+#     dev.ohhoonim.demo.mapper: TRACE
+
+# file:
+#   upload:
+#     rootpath: /home/upload
