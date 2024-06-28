@@ -1,0 +1,26 @@
+{
+  "name": "memory-allocation-simulator-server",
+  "version": "1.0.0",
+  "description": "메모리 할당 시뮬레이터 서버",
+  "main": "server.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "start": "node --openssl-legacy-provider server.js",
+    "dev": "nodemon --openssl-legacy-provider server.js",
+    "test": "jest"
+  },
+  "keywords": ["memory", "allocation", "simulator", "server"],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "jest": "^27.0.6"
+  }
+}

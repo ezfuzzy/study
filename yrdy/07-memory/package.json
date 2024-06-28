@@ -1,0 +1,27 @@
+{
+  "name": "memory-allocation-simulator",
+  "version": "1.0.0",
+  "description": "메모리 할당 시뮬레이터 앱",
+  "main": "index.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
+    "start:client": "cd client && npm start",
+    "start:server": "cd server && npm start",
+    "install": "concurrently \"cd client && npm install\" \"cd server && npm install\"",
+    "build": "concurrently \"cd client && npm run build\" \"cd server && npm run build\"",
+    "test": "concurrently \"cd client && npm test\" \"cd server && npm test\""
+  },
+  "keywords": [
+    "memory",
+    "allocation",
+    "simulator"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
