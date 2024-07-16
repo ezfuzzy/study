@@ -7,6 +7,18 @@ function App() {
     alert("clicked");
   };
 
+  const myStyle = {
+    margin: "auto",
+    width: "100px",
+    height: "100px",
+    border: "solid 2px green",
+    backgroundColor: "yellowgreen",
+  };
+
+  const datas = ["ezfz", "hysz", "lessa"];
+
+  const names = datas.map((item) => <li>{item}</li>);
+
   return (
     <div className="container">
       <h1>index page</h1>
@@ -20,6 +32,9 @@ function App() {
         click
       </button>
       <button onClick={clicked}>clicked</button>
+      <div style={myStyle}>inline css</div>
+      <ul>{datas}</ul>
+      <ul>{names}</ul>
     </div>
   );
 }
