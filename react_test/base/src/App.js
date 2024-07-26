@@ -25,6 +25,9 @@ function App() {
     seq: 0,
   });
 
+  // ---
+  let inputName = null;
+
   console.log("mounted");
 
   const handleAddProperty = () => {
@@ -51,9 +54,9 @@ function App() {
   const handleShow = (e) => {
     setShow(e.target.checked);
   };
-  
+
   const replacer = (key, value) => {
-    if (key === 'inputName') {
+    if (key === "inputName") {
       return undefined;
     }
     return value;
@@ -116,18 +119,38 @@ function App() {
           </p>
         )}
         <div className="mt-3">
-          <input type="text" onChange={(e) => {setNameList({ ...nameList, inputName: e.target.value })}} />
-          <button onClick={() => {setNameList({
-            ...nameList,
-            names: [...nameList.names, { name: nameList.inputName, id: nameList.seq }],
-            seq: nameList.seq+1
-          })}}>add</button>
+          <input
+            type="text"
+            onChange={(e) => {
+              setNameList({ ...nameList, inputName: e.target.value });
+            }}
+            placeholder="type name (by e)"
+          />
+          <input
+            ref={(refValue) => {
+              inputName = refValue;
+            }}
+            type="text"
+            placeholder="using ref"
+          />
+          <button
+            className="btn btn-info"
+            onClick={() => {
+              setNameList({
+                ...nameList,
+                names: [...nameList.names, { name: inputName.value, id: nameList.seq }],
+                seq: nameList.seq + 1,
+              });
+              inputName.value = "";
+            }}>
+            add
+          </button>
           <ul>
             {nameList.names.map((item) => (
               <li key={item.id}>{item.name}</li>
             ))}
           </ul>
-          <pre>{JSON.stringify(nameList, replacer, 2)}</pre>
+          {isShow && <pre>{JSON.stringify(nameList, replacer, 2)}</pre>}
         </div>
       </div>
     </div>
