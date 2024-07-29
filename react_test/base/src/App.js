@@ -1,7 +1,10 @@
 // App.css 적용하기 (내부 css)
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
+import Play from "./components/Play";
+import Study from "./components/Study";
+import Study2 from "./components/Study2";
 
 //함수형 component
 function App() {
@@ -27,6 +30,9 @@ function App() {
 
   // ---
   let inputName = null;
+
+  // useRef
+  let inputNameRef = useRef();
 
   console.log("mounted");
 
@@ -62,9 +68,20 @@ function App() {
     return value;
   };
 
+  // useEffect: counter
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((prevSeconds) => prevSeconds + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="container">
-      <h1>인덱스 페이지 입니다</h1>
+      <h1>인덱스 페이지 입니다 [{seconds}]</h1>
       {/* profile */}
       <div style={{ padding: "20px", border: "solid 2px #062" }}>
         <h1>프로필 정보</h1>
@@ -110,7 +127,13 @@ function App() {
       </div>
       <div>
         {/* boolean, undefined, null */}
-        <input type="checkbox" checked={isShow} onChange={handleShow} />
+        <input
+          className="m-4"
+          type="checkbox"
+          checked={isShow}
+          onChange={handleShow}
+          style={{ transform: "scale(5)" }}
+        />
         {isShow && (
           <p>
             true: {true} <br />
@@ -119,6 +142,7 @@ function App() {
           </p>
         )}
         <div className="mt-3">
+          {/* event */}
           <input
             type="text"
             onChange={(e) => {
@@ -126,6 +150,18 @@ function App() {
             }}
             placeholder="type name (by e)"
           />
+          <button
+            className="btn btn-info m-3"
+            onClick={() => {
+              setNameList({
+                ...nameList,
+                names: [...nameList.names, { name: nameList.inputName }],
+                seq: nameList.seq + 1,
+              });
+            }}>
+            add
+          </button>
+          {/* ref */}
           <input
             ref={(refValue) => {
               inputName = refValue;
@@ -134,7 +170,7 @@ function App() {
             placeholder="using ref"
           />
           <button
-            className="btn btn-info"
+            className="btn btn-info m-3"
             onClick={() => {
               setNameList({
                 ...nameList,
@@ -143,7 +179,22 @@ function App() {
               });
               inputName.value = "";
             }}>
-            add
+            add(ref)
+          </button>
+          <br />
+          {/* useRef */}
+          <input ref={inputNameRef} type="text" placeholder="useRef" />
+          <button
+            className="btn btn-info m-3"
+            onClick={() => {
+              setNameList({
+                ...nameList,
+                names: [...nameList.names, { name: inputNameRef.current.value, id: nameList.seq }],
+                seq: nameList.seq + 1,
+              });
+              inputNameRef.current.value = "";
+            }}>
+            add(useRef)
           </button>
           <ul>
             {nameList.names.map((item) => (
@@ -153,6 +204,12 @@ function App() {
           {isShow && <pre>{JSON.stringify(nameList, replacer, 2)}</pre>}
         </div>
       </div>
+      {/* css */}
+      <div className="box">box</div>
+      <Play />
+      <Study />
+      <Study2 />
+      <div style={{ margin: "1000px" }}></div>
     </div>
   );
 }

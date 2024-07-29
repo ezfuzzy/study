@@ -1,0 +1,14 @@
+.box {
+  margin: 10px auto;
+  width: 150px;
+  height: 150px;
+  border: solid 2px #062;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-green {
+  background-color: green;
+  color: white;
+}
