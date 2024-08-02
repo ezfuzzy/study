@@ -1,16 +1,12 @@
-// App.css 적용하기 (내부 css)
-import './App.css'
-
-//함수형 component
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "react-bootstrap";
 function App() {
-
   return (
-    <div className="container">
+    <Container>
       <h1>인덱스 페이지 입니다</h1>
-      
-    </div>
+    </Container>
   );
 }
 
-//외부에서 App.js 를 import 하면 App 함수를 사용할수 있다. (src/index.js)
 export default App;

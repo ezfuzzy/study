@@ -1,23 +1,92 @@
-// App.css 적용하기 (내부 css)
-import { useState } from "react";
 import "./App.css";
-import MyCounter from "./components/MyCounter";
-import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import YourCounter from "./components/YourCounter";
+import { Alert, Button, Container, FloatingLabel, Form, Modal } from "react-bootstrap";
+import axios from "axios";
+import Navbar from "./components/Navbar";
+import Fortune from "./components/Fortune";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
-//함수형 component
+function LoginModal(props) {
+  const dispatch = useDispatch();
+  const [signInInfo, setSignInInfo] = useState({});
+  const [isError, setError] = useState(false);
+
+  const handleChange = (event) => {
+    setSignInInfo({
+      ...signInInfo,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const signIn = () => {
+    axios
+      .post("/api/auth", signInInfo)
+      .then((res) => {
+        dispatch({ type: "user_signIn", payload: signInInfo.userName });
+        localStorage.token = res.data;
+        setError(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(true);
+      });
+  };
+
+  return (
+    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">로그인이 필요 합니다.</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <FloatingLabel controlId="floatingInput" label="User Name" className="mb-3">
+          <Form.Control name="userName" type="text" placeholder="User Name" onChange={handleChange} />
+        </FloatingLabel>
+        <FloatingLabel controlId="floatingPassword" label="Password" className="mb-3">
+          <Form.Control name="password" type="password" placeholder="Password" onChange={handleChange} />
+        </FloatingLabel>
+        {isError && <Alert variant="danger">wrong username or password</Alert>}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={signIn}>로그인</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
 function App() {
-  const [counter, setCounter] = useState(0);
+  const isSignIn = useSelector((state) => state.isSignIn);
+  const [nameList, setNameList] = useState([]);
+
+  const handleClick = () => {
+    axios
+      .get("/api/names", { Authorization: localStorage.token })
+      .then((res) => {
+        setNameList(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <Container>
+      {/* use redux sample */}
+      <Navbar />
       <h1>인덱스 페이지 입니다</h1>
-      <MyCounter count={counter} setCount={setCounter} />
-      <YourCounter />
+      <Fortune />
+      {/* use jwt */}
+      <LoginModal show={!isSignIn} />
+      <Button variant="primary" onClick={handleClick}>
+        request
+      </Button>
+      <ul>
+        {nameList.map((cur) => (
+          <li key={cur}>{cur}</li>
+        ))}
+      </ul>
     </Container>
   );
 }
 
-//외부에서 App.js 를 import 하면 App 함수를 사용할수 있다. (src/index.js)
 export default App;
