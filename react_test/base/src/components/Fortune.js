@@ -12,11 +12,12 @@ function Fortune(props) {
           <p>
             <strong>{userName}</strong>'s today's fortune
           </p>
-          <p>gooooooooooooooooooooooooooooooooooooood</p>
+          <p>good day</p>
         </>
       ) : (
         <p>
-          <strong>your today's fortune</strong><br />
+          <strong>your today's fortune</strong>
+          <br />
           <span>if you want to know that : plz sign in</span>
         </p>
       )}

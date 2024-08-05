@@ -60,7 +60,7 @@ function App() {
 
   const handleClick = () => {
     axios
-      .get("/api/names", { Authorization: localStorage.token })
+      .get("/api/names")
       .then((res) => {
         setNameList(res.data);
       })

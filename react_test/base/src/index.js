@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { legacy_createStore as createStore } from "redux";
 import { Provider } from "react-redux";
 import { decodeToken } from "jsontokens";
+import axios from "axios";
 
 let userName = null;
 let isSignIn = false;
@@ -17,8 +18,11 @@ if (localStorage.token) {
   const now = new Date().getTime();
 
   if (expTime > now) {
+    console.log("#########")
     userName = result.payload.sub;
     isSignIn = true;
+    // axios를 통해 요청을 전송할때 headers : { token }을 가지고 갈 수 있도록 설정
+    axios.defaults.headers.common["Authorization"] = localStorage.token;
   } else {
     delete localStorage.token;
   }
