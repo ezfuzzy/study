@@ -40,6 +40,9 @@ const BsNavBar = () => {
               <Nav.Link as={NavLink} to="/members">
                 Member
               </Nav.Link>
+              <Nav.Link as={NavLink} to="/posts">
+                Post
+              </Nav.Link>
             </Nav>
             {userName ? (
               <>

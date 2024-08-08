@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Member from "../pages/Member";
 import MemberAddForm from "../pages/MemberAddForm";
 import MemberUpdateForm from "../pages/MemberUpdateForm";
+import Post from "../pages/Post";
 
 // route 정보를 배열에 저장
 const routes = [
@@ -11,6 +12,7 @@ const routes = [
   { path: "/members", element: <Member /> },
   { path: "/members/new", element: <MemberAddForm /> },
   { path: "/members/:num/update", element: <MemberUpdateForm /> },
+  { path: "/posts", element: <Post /> },
 ];
 
 // create BrowserRouter
