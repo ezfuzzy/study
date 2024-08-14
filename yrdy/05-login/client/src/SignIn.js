@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-function SignIn() {
+function SignIn(setUser) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ function SignIn() {
         body: JSON.stringify({ email, password })
       });
       if (response.ok) {
+        // setUser()
         navigate('/');
       } else {
         const data = await response.json();
@@ -33,7 +34,7 @@ function SignIn() {
         <form onSubmit={handleSubmit}>
           <div className="mt-4">
             <div>
-              <label className="block" htmlFor="email">이메일</label>
+              <label className="block">이메일</label>
               <input type="email" placeholder="Email"
                 className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                 value={email} onChange={(e) => setEmail(e.target.value)} required />

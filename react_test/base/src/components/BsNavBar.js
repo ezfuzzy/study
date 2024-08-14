@@ -1,37 +1,46 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// src/components/BsNavBar.js
+
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import AlertModal from "./AlertModal";
+import { useState } from "react";
 
-const BsNavBar = () => {
-  const dispatch = useDispatch();
+function BsNavBar() {
+  //로그인된 사용자명이 있는지 store 에서 읽어와 본다.
   const userName = useSelector((state) => state.userName);
+  // action 을 dispatch 할수 있는 함수
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSignIn = () => {
-    // axios sign in
-    // res -> dispatch
-    // localStorage.token setting
-    dispatch({
-      type: "user_signIn",
-      payload: "ezfz",
-    });
+  //"로그아웃 되었습니다" 모달을 띄울지 여부
+  const [alertShow, setAlertShow] = useState(false);
+
+  const handleLogout = () => {
+    //localStorage 에서 token 을 삭제한다
+    delete localStorage.token;
+    // userName 을 null 로 변경
+    dispatch({ type: "UPDATE_USER", payload: null });
+    //최상위 경로로 이동
+    navigate("/");
+    // 알림 모달 띄우기
+    setAlertShow(true);
   };
 
-  const handleSignOut = () => {
-    dispatch({
-      type: "user_signOut",
-    });
+  const handleYes = () => {
+    //알림 모달 숨기기
+    setAlertShow(false);
   };
 
   return (
     <>
-      <Navbar expand="md" className="bg-success mb-2">
+      <AlertModal show={alertShow} message={"로그 아웃 되었습니다"} yes={handleYes} />
+      <Navbar expand="md" className="bg-warning mb-2">
         <Container>
           <Navbar.Brand as={NavLink} to="/">
-            EZFZ
+            Acorn
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="one"></Navbar.Toggle>
+          <Navbar.Toggle aria-controls="one" />
           <Navbar.Collapse id="one">
             <Nav className="me-auto">
               <Nav.Link as={NavLink} to="/">
@@ -43,20 +52,34 @@ const BsNavBar = () => {
               <Nav.Link as={NavLink} to="/posts">
                 Post
               </Nav.Link>
+              <Nav.Link as={NavLink} to="/gallery">
+                Gallery
+              </Nav.Link>
             </Nav>
             {userName ? (
               <>
                 <Nav>
-                  <Nav.Link><strong>{userName}</strong></Nav.Link>
-                  {/* user info page */}
+                  <Nav.Link>{userName}</Nav.Link>
                   <span className="navbar-text">Signed in</span>
                 </Nav>
-                <Button variant="warning" onClick={handleSignOut}>
-                  Sign out
+                <Button variant="outline-primary" onClick={handleLogout}>
+                  Logout
                 </Button>
               </>
             ) : (
-              <Button variant="primary" onClick={handleSignIn}>
+              <Button
+                variant="success"
+                onClick={() => {
+                  //로그인 모달을 띄우는 action 을 dispatch 한다
+                  const action = {
+                    type: "LOGIN_MODAL",
+                    payload: {
+                      show: true,
+                      message: "로그인 폼 입니다",
+                    },
+                  };
+                  dispatch(action);
+                }}>
                 Sign in
               </Button>
             )}
@@ -65,6 +88,6 @@ const BsNavBar = () => {
       </Navbar>
     </>
   );
-};
+}
 
 export default BsNavBar;

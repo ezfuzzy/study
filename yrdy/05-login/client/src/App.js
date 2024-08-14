@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import LoadingScreen from './LoadingScreen';
 import axios from "axios";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
@@ -21,7 +22,10 @@ function App() {
       } catch (error) {
         console.error("Authentication error:", error);
       } finally {
-        setLoading(false); // 로딩 완료
+        const timer = setTimeout(() => {
+          setLoading(false);
+        }, 3000);
+        return () => clearTimeout(timer);
       }
     };
     checkAuth();
@@ -32,7 +36,7 @@ function App() {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>; // 로딩 중 표시할 내용
+    return <LoadingScreen />;
   }
 
   return (
