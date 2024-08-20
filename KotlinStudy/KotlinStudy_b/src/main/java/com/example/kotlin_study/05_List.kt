@@ -1,4 +1,4 @@
-package com.example.a04_function
+package com.example.kotlin_study
 
 
 /*
@@ -21,7 +21,7 @@ fun main() {
     }
 
     println("\n\n### it ###")
-    nums.forEach { // it은 암시적으로 가리킴 그냥
+    nums.forEach { // it은 암시적으로 가리킴 그냥 (한개일때만)
         print("$it ")
     }
 

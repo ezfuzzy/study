@@ -1,4 +1,4 @@
-package com.example.a04_function
+package com.example.kotlin_study
 
 fun main() {
 
@@ -15,6 +15,24 @@ fun main() {
     // type casting
     val name3:String = mem.get("name") as String
     val name4:String = mem.get("name").toString()
+
+    /*
+        ### mutable map ###
+    */
+
+    val mem2 = mutableMapOf<String, Any>("num" to 2, "name" to "hysz", "isMan" to false)
+
+    val post = mutableMapOf<String, Any>()
+
+    post["id"] = 1
+    post["title"] = "title is good"
+    post["content"] = "content is nice"
+
+    val post_id = post["id"]
+    val post_title = post["title"]
+    val post_content = post["content"]
+
+
 
 
 }

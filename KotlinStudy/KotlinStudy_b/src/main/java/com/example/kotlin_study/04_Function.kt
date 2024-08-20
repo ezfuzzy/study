@@ -1,4 +1,4 @@
-package com.example.a04_function
+package com.example.kotlin_study
 
 
 fun useFunc(f:() -> Unit) {

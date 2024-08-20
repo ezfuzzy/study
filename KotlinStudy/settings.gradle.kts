@@ -23,3 +23,4 @@ rootProject.name = "KotlinStudy"
 include(":app")
 include(":KotlinStudy_b")
 include(":step02_event")
+include(":step02_event2")
