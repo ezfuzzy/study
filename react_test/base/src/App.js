@@ -18,7 +18,7 @@ function App() {
       <Container>
         <div>{currentOutlet}</div>
       </Container>
-      <LoginModal show={loginModal.show} message={loginModal.message} />
+      <LoginModal show={loginModal.show} message={loginModal.message} url={loginModal.url} />
     </>
   );
 }

@@ -128,8 +128,9 @@ function GalleryForm() {
         <Form.Control ref={imageInput} onChange={handleChange} type="file" name="image" accept="image/*" multiple />
       </Form.Group>
       <a
-        href="javascript:"
-        onClick={() => {
+        href="about:blank" // -> 빈 페이지 
+        onClick={(e) => {
+          e.preventDefault();
           imageInput.current.click();
         }}>
         <div

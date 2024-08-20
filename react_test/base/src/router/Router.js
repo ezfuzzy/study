@@ -7,6 +7,7 @@ import MemberUpdateForm from "../pages/MemberUpdateForm";
 import Post from "../pages/Post";
 import Gallery from "../pages/Gallery";
 import GalleryForm from "../pages/GalleryForm";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 // route 정보를 배열에 저장
 const routes = [
@@ -16,7 +17,14 @@ const routes = [
   { path: "/members/:num/update", element: <MemberUpdateForm /> },
   { path: "/posts", element: <Post /> },
   { path: "/gallery", element: <Gallery /> },
-  { path: "/gallery/new", element: <GalleryForm /> },
+  {
+    path: "/gallery/new",
+    element: (
+      <ProtectedRoute>
+        <GalleryForm />
+      </ProtectedRoute>
+    ),
+  },
 ];
 
 // create BrowserRouter
