@@ -43,7 +43,7 @@ function BsNavBar() {
           <Navbar.Toggle aria-controls="one" />
           <Navbar.Collapse id="one">
             <Nav className="me-auto">
-              <Nav.Link as={NavLink} to="/">
+              <Nav.Link as={NavLink} to="/tripDuo">
                 Home
               </Nav.Link>
               <Nav.Link as={NavLink} to="/members">

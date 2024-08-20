@@ -8,6 +8,7 @@ import Post from "../pages/Post";
 import Gallery from "../pages/Gallery";
 import GalleryForm from "../pages/GalleryForm";
 import ProtectedRoute from "../components/ProtectedRoute";
+import THome from "../pages/tripDuo/THome";
 
 // route 정보를 배열에 저장
 const routes = [
@@ -25,6 +26,9 @@ const routes = [
       </ProtectedRoute>
     ),
   },
+
+  // ### tripDou ###
+  { path: "/tripDuo", element: <THome /> },
 ];
 
 // create BrowserRouter
