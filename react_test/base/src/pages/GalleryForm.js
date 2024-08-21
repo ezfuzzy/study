@@ -1,10 +1,15 @@
 // src/pages/GalleryForm.js
 
+import axios from "axios";
 import { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function GalleryForm() {
+  const navigate = useNavigate();
+
   const dropZone = useRef();
+  const captionInput = useRef();
   const imageInput = useRef();
   const [imageData, setImageData] = useState([]);
 
@@ -117,18 +122,35 @@ function GalleryForm() {
     }
   };
 
+  const handleUpload = () => {
+    const formData = new FormData();
+    formData.append("caption", captionInput.current.value);
+    const files = imageInput.current.files;
+    for (let i = 0; i < files.length; i++) {
+      formData.append("images", files[i]);
+    }
+    axios
+      .post("/gallery", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        navigate("/gallery");
+      });
+  };
+
   return (
     <>
       <Form.Group className="mb-3" controlId="caption">
         <Form.Label>설명</Form.Label>
-        <Form.Control type="text" name="caption" placeholder="설명 입력..." />
+        <Form.Control ref={captionInput} type="text" name="caption" placeholder="설명 입력..." />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="image">
+      <Form.Group style={{ display: "none" }} className="mb-3" controlId="image">
         <Form.Label>이미지</Form.Label>
         <Form.Control ref={imageInput} onChange={handleChange} type="file" name="image" accept="image/*" multiple />
       </Form.Group>
       <a
-        href="about:blank" // -> 빈 페이지 
+        href="about:blank" // -> 빈 페이지
         onClick={(e) => {
           e.preventDefault();
           imageInput.current.click();
@@ -146,7 +168,9 @@ function GalleryForm() {
           )}
         </div>
       </a>
-      <Button variant="success">업로드</Button>
+      <Button onClick={handleUpload} variant="success">
+        업로드
+      </Button>
     </>
   );
 }
