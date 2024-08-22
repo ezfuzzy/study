@@ -65,7 +65,7 @@ function Gallery() {
   return (
     <>
       <h1>갤러리 입니다</h1>
-      <Button variant="success" as={Link} to="/gallery/new">
+      <Button className="my-3" variant="success" as={Link} to="/gallery/new">
         업로드
       </Button>
       <Row>
@@ -74,11 +74,15 @@ function Gallery() {
             <Card>
               <Card.Img variant="top" src={`/upload/images/${item.saveFileName}`} />
               <Card.Body>
+                <Card.Text>{item.num}</Card.Text>
                 <Card.Text>{item.caption}</Card.Text>
                 <Card.Text>
                   writer : <strong>{item.writer}</strong>
                 </Card.Text>
-                <Button>자세히 보기</Button>
+                {/* <Button onClick={() => {navigate(`/gallery/${item.num}`)}}>자세히 보기</Button> */}
+                <Button as={Link} to={`/gallery/${item.num}`}>
+                  자세히 보기
+                </Button>
               </Card.Body>
             </Card>
           </Col>
