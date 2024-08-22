@@ -31,9 +31,7 @@ public class MainActivity extends AppCompatActivity
         names =new ArrayList<>();
         names.add("ezfz");
         names.add("hysz");
-        for(int i=0; i<100; i++){
-            names.add("ezfz"+i);
-        }
+
         //new ArrayAdapter<>(Context type, 셀의 레이아웃 정보, 모델)
         //ListView 에 연결할 Adapter 객체 생성하기
         adapter=new ArrayAdapter<>(this,

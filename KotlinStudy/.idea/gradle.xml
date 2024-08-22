@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/step02_event" />
             <option value="$PROJECT_DIR$/step02_event2" />
             <option value="$PROJECT_DIR$/step03_listvuew" />
+            <option value="$PROJECT_DIR$/step04_webview" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
