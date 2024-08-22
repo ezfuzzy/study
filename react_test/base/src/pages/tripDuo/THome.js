@@ -25,18 +25,12 @@ function THome(props) {
     axios
       .post("/api/v1/auth/login", userData)
       .then((res) => {
-        //로그인 성공이면 여기가 실행되면서 jwt 가 발급된다.
-        console.log(res.data);
-        //토큰을 localStorage 에 저장
-        localStorage.token = res.data;
-        //토큰을 디코딩해서 사용자 정보를 얻어온다
-        const result = decodeToken(localStorage.token.substring(7));
-        //토큰에 저장된 주제(subject) 얻어내기
-        const username = result.payload.sub;
-        //axios 의 header 에 인증정보를 기본으로 가지고 갈수 있도록 설정
-        axios.defaults.headers.common["Authorization"] = localStorage.token;
-        //로그인 이후에 원래 가려던 곳이 있으면 리다이렉팅 logic
 
+        console.log(res.data);
+        localStorage.tripDuo_token = res.data;
+        const result = decodeToken(localStorage.tripDuo_token.substring(7));
+        const username = result.payload.sub;
+        axios.defaults.headers.common["Authorization"] = localStorage.tripDuo_token;
         console.log(username);
         
       })
@@ -45,11 +39,25 @@ function THome(props) {
       });
   };
 
+  const handleSignup = () => {
+    axios
+      .post("/api/v1/auth/signup", userData)
+      .then((res) => {
+        
+        console.log(res.data);
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
     <div>
       <input ref={username} name="username" type="text" onChange={handleChange} />
       <input ref={password} name="password" type="text" onChange={handleChange} />
       <button onClick={handleLogin}>login</button>
+      <button onClick={handleSignup}>sign up</button>
     </div>
   );
 }
