@@ -80,7 +80,7 @@ function THome(props) {
     console.log(phoneNumber);
 
     axios
-      .post("/api/v1/auth/send", { phoneNumber: phoneNumber })
+      .post("/api/v1/auth/send", phoneNumber)
       .then((res) => {
         console.log(res.data);
       })
@@ -95,7 +95,7 @@ function THome(props) {
     console.log(code);
 
     axios
-      .post("/api/v1/auth/verify", phoneNum+code)
+      .post("/api/v1/auth/verify", phoneNum + code)
       .then((res) => {
         console.log(res.data);
       })
