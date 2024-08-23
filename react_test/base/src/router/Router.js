@@ -10,6 +10,7 @@ import GalleryForm from "../pages/GalleryForm";
 import ProtectedRoute from "../components/ProtectedRoute";
 import THome from "../pages/tripDuo/THome";
 import GalleryDetail from "../pages/GalleryDetail";
+import Cafe from "../pages/Cafe";
 
 // route 정보를 배열에 저장
 // :num -> const {num} = useParams() 로 얻어낼 수 있는데 이때 여기에 작성한 변수 명을 따라간다 
@@ -29,7 +30,7 @@ const routes = [
     ),
   },
   { path: "/gallery/:num", element: <GalleryDetail /> },
-
+  { path: "/cafe", element: <Cafe /> },
   // ### tripDuo ###
   { path: "/tripDuo", element: <THome /> },
 ];
