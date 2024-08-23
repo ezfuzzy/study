@@ -1,6 +1,7 @@
 package com.example.kotlin_study
 
 import com.example.kotlin_study.mypac.Car
+import com.example.kotlin_study.mypac.Cat
 import com.example.kotlin_study.mypac.Member
 import com.example.kotlin_study.mypac.Member2
 
@@ -43,6 +44,20 @@ class Person2 constructor(var name:String)
 
 class Person3 (var name:String)
 
+class User constructor(){ // primary 생성자
+    init{
+        println("primary 생성자는 반드시 호출되어야 객체가 생성됨 -> 객체가 생성될때 반드시 호출됨 ")
+    }
+
+//    constructor(){} // 일반 생성자
+
+    constructor(name:String) : this() {
+        println("일반 생성자 호출됨")
+    }
+
+}
+
+
 fun main() {
     val c1:MyCar = MyCar()
     val c2 = YourCar()
@@ -76,12 +91,9 @@ fun main() {
     c02.drive()
 
 
+    val cat1 = Cat()
+    cat1.putName("hy")
+    cat1.showInfo()
 
-
-
-
-
-
-
-
+    val user1 = User("ezfz")
 }

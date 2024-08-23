@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.step04_webview"
+    namespace = "com.example.step05_menuitem"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.step04_webview"
+        applicationId = "com.example.step05_menuitem"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -38,8 +38,9 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
