@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/step03_listvuew" />
             <option value="$PROJECT_DIR$/step04_webview" />
             <option value="$PROJECT_DIR$/step05_menuitem" />
+            <option value="$PROJECT_DIR$/step05httprequest" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
