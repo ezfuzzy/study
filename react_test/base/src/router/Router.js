@@ -11,9 +11,12 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import THome from "../pages/tripDuo/THome";
 import GalleryDetail from "../pages/GalleryDetail";
 import Cafe from "../pages/Cafe";
+import CafeForm from "../pages/CafeForm";
+import DashBoard from "../pages/admin/DashBoard";
+import Users from "../pages/admin/Users";
 
 // route 정보를 배열에 저장
-// :num -> const {num} = useParams() 로 얻어낼 수 있는데 이때 여기에 작성한 변수 명을 따라간다 
+// :num -> const {num} = useParams() 로 얻어낼 수 있는데 이때 여기에 작성한 변수 명을 따라간다
 const routes = [
   { path: "/", element: <Home /> },
   { path: "/members", element: <Member /> },
@@ -31,6 +34,30 @@ const routes = [
   },
   { path: "/gallery/:num", element: <GalleryDetail /> },
   { path: "/cafe", element: <Cafe /> },
+  {
+    path: "/cafe/new",
+    element: (
+      <ProtectedRoute>
+        <CafeForm />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <DashBoard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/users",
+    element: (
+      <ProtectedRoute>
+        <Users />
+      </ProtectedRoute>
+    ),
+  },
   // ### tripDuo ###
   { path: "/tripDuo", element: <THome /> },
 ];
