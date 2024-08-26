@@ -35,7 +35,7 @@ function BsNavBar() {
   return (
     <>
       <AlertModal show={alertShow} message={"로그 아웃 되었습니다"} yes={handleYes} />
-      <Navbar expand="md" className="bg-warning mb-2">
+      <Navbar expand="md" className="bg-success mb-2">
         <Container>
           <Navbar.Brand as={NavLink} to="/">
             Acorn
@@ -57,6 +57,9 @@ function BsNavBar() {
               </Nav.Link>
               <Nav.Link as={NavLink} to="/cafe">
                 Cafe
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/admin">
+                Admin_DashBoard
               </Nav.Link>
             </Nav>
             {userName ? (

@@ -26,7 +26,7 @@ function LoginModal(props) {
   //로그인 버튼을 눌렀을때 실행할 함수
   const handleLogin = () => {
     axios
-      .post("/auth", state)
+      .post("/api/auth", state)
       .then((res) => {
         //로그인 성공이면 여기가 실행되면서 jwt 가 발급된다.
         console.log(res.data);
