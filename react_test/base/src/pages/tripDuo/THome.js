@@ -45,6 +45,17 @@ function THome(props) {
       });
   };
 
+  const handleTest = () => {
+    axios
+      .get("/api/v1/auth/test")
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handle인증번호받기 = () => {
     const phoneNumber = inputPhoneNum.current.value;
 
@@ -90,18 +101,27 @@ function THome(props) {
   };
 
   const handle인증번호확인2 = () => {
-    const phoneNum = inputPhoneNum.current.value;
+    const phone_number = inputPhoneNum.current.value;
     const code = inputVerificationCode.current.value;
     console.log(code);
 
     axios
-      .post("/api/v1/auth/verify", phoneNum + code)
+      .post("/api/v1/auth/verify", { phone_number, code })
       .then((res) => {
         console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleTest2 = () => {
+    const phone_number = inputPhoneNum.current.value;
+
+    axios
+      .post("/api/v1/auth/verify", phone_number)
+      .then((res) => console.log(res.data))
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -113,6 +133,9 @@ function THome(props) {
       </Button>
       <Button className="mx-2" onClick={handleSignup}>
         sign up
+      </Button>
+      <Button className="mx-2" onClick={handleTest}>
+        getUsername to console
       </Button>
       <div className="d-flex my-2">
         <Form.Control
@@ -159,6 +182,11 @@ function THome(props) {
         />
         <Button className="m-2" onClick={handle인증번호확인2}>
           handle인증번호확인2
+        </Button>
+      </div>
+      <div>
+        <Button className="m-2" onClick={handleTest2}>
+          SMS test
         </Button>
       </div>
     </>
