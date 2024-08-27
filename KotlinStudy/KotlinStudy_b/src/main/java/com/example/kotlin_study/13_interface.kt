@@ -20,6 +20,22 @@ class MyRemocon() : Remocon {
     }
 }
 
+// ### abstract method
+abstract class Weapon {
+    fun move(){
+        println("weapon move")
+    }
+
+    abstract fun attack()
+}
+
+class MyWeapon : Weapon() {
+    override fun attack() {
+        println("MyWeapon attack")
+    }
+}
+
+
 fun main() {
     // MyRemocon 객체를 생성해서 MyRemocon type 상수에 담기
     val r1:MyRemocon = MyRemocon()
@@ -73,4 +89,17 @@ fun main() {
 
     r01.up()
     r01.down()
+
+    val w1:Weapon = MyWeapon()
+    w1.move()
+    w1.attack()
+
+    val w2:Weapon = object:Weapon(){
+        override fun attack() {
+            println("drop bomb")
+        }
+    }
+    w2.move()
+    w2.attack()
+
 }

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.step05httprequest"
+    namespace = "com.example.step06coroutine"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.step05httprequest"
+        applicationId = "com.example.step06coroutine"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -27,16 +27,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildFeatures {
-        viewBinding = true
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
 
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
