@@ -66,9 +66,9 @@ function BsNavBar() {
               <>
                 <Nav>
                   <Nav.Link>{userName}</Nav.Link>
-                  <span className="navbar-text">Signed in</span>
+                  <span className="navbar-text mx-3">Signed in</span>
                 </Nav>
-                <Button variant="outline-primary" onClick={handleLogout}>
+                <Button variant="info" onClick={handleLogout}>
                   Logout
                 </Button>
               </>

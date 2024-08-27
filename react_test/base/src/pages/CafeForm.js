@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, FloatingLabel } from "react-bootstrap";
 import { initEditor } from "../editor/SmartEditor";
+import axios from "axios";
 
 function CafeForm(props) {
   const [editorTool, setEditorTool] = useState([]);
+
+  const inputTitle = useRef();
+  const inputContent = useRef();
 
   useEffect(() => {
     // initEditor()를 호출하면서 textarea의 id를 전달하면
@@ -16,17 +20,25 @@ function CafeForm(props) {
       <h1>new post form</h1>
       <Form>
         <FloatingLabel label="title" className="mb-3" controlId="title">
-          <Form.Control type="text" placeholder="type title..." />
+          <Form.Control ref={inputTitle} type="text" placeholder="type title..." />
         </FloatingLabel>
         <Form.Group className="mb-3" controlId="content">
           <Form.Label>content</Form.Label>
-          <Form.Control as="textarea" rows="20"/>
+          <Form.Control ref={inputContent} as="textarea" rows="20" />
         </Form.Group>
         <Button
           type="submit"
           onClick={(e) => {
             e.preventDefault();
             editorTool.exec();
+
+            const title = inputTitle.current.value;
+            const content = inputContent.current.value;
+
+            axios
+              .post("/api/cafes", { title, content })
+              .then((res) => console.log(res.data))
+              .catch((error) => console.log(error));
           }}>
           save
         </Button>
