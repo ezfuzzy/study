@@ -32,8 +32,6 @@ function Gallery() {
     */
   const [params, setParams] = useSearchParams({ pageNum: 1 });
 
-  console.log(params.get("pageNum"));
-
   //겔러리 목록 데이터 읽어오는 함수
   const refresh = (pageNum) => {
     axios
@@ -49,13 +47,13 @@ function Gallery() {
   };
   /*
         useEffect(함수 , [])  -> component 활성화 시점에 함수가 한번만 호출된다.
-
+        
         useEffect(함수 , [params]) -> component 활성화 시점 또는 
         params 값이 변경될때 마다 호출된다. 
-
+        
         useEffect(함수 , [state1, state2]) -> component 활성화 시점 또는 
         state1 or state2 값이 변경될때 마다 호출된다. 
-    */
+        */
   useEffect(() => {
     //갤러리 목록을 요청해서 읽어온다
     const pageNum = params.get("pageNum");

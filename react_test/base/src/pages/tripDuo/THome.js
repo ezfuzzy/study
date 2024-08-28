@@ -116,12 +116,25 @@ function THome(props) {
   };
 
   const handleTest2 = () => {
-    const phone_number = inputPhoneNum.current.value;
+    // const phone_number = inputPhoneNum.current.value;
 
-    axios
-      .post("/api/v1/auth/verify", phone_number)
-      .then((res) => console.log(res.data))
-      .catch((error) => console.log(error));
+    // axios
+    //   .post("/api/v1/auth/verify", phone_number)
+    //   .then((res) => console.log(res.data))
+    //   .catch((error) => console.log(error));
+    const username = "user2";
+    console.log(`username : ${username}`);
+
+    if (username) {
+      console.log(`### username : ${username}`);
+
+      axios
+        .get(`/api/v1/users/username/${username}`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
@@ -186,7 +199,7 @@ function THome(props) {
       </div>
       <div>
         <Button className="m-2" onClick={handleTest2}>
-          SMS test
+          test2
         </Button>
       </div>
     </>
