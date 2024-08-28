@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/KotlinStudy_b" />
-            <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/myapplication" />
             <option value="$PROJECT_DIR$/step02_event" />
             <option value="$PROJECT_DIR$/step02_event2" />
@@ -19,6 +18,7 @@
             <option value="$PROJECT_DIR$/step05_menuitem" />
             <option value="$PROJECT_DIR$/step05httprequest" />
             <option value="$PROJECT_DIR$/step06coroutine" />
+            <option value="$PROJECT_DIR$/step07customlistview" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

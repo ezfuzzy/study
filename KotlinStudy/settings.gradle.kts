@@ -20,7 +20,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "KotlinStudy"
-include(":app")
 include(":KotlinStudy_b")
 include(":step02_event")
 include(":step02_event2")
@@ -30,3 +29,4 @@ include(":step04_webview")
 include(":step05_menuitem")
 include(":step05httprequest")
 include(":step06coroutine")
+include(":step07customlistview")

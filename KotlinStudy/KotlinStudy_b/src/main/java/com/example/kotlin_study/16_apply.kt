@@ -1,5 +1,6 @@
 package com.example.kotlin_study
 
+
 fun main() {
     class Member {
 
@@ -13,26 +14,19 @@ fun main() {
         }
     }
 
-    val m1 = Member()
-    m1.num = 1
-    m1.name = "ezfz"
-    m1.isMan = true
-    m1.showInfo()
+    val m1 = Member().apply {
+        num=1
+        name="ezfz"
+        isMan=true
+    }
 
-    val m2 = Member()
-    with(m2) {
+    // with를 apply 처럼 사용하려면 이렇게 해야함 - pp
+    val m2 = with(Member()) {
         num = 2
         name = "hysz"
         isMan = false
-        showInfo()
+        this
     }
 
-    val m3 = Member()
-    val result = with(m3) {
-        num = 3
-        name = "lessa"
-        isMan = true
-        "[result] : with scope의 리턴 값"
-    }
-    println(result)
+
 }
