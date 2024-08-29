@@ -6,8 +6,10 @@ const MapComponent = ({ onSave, onLoad }) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
-  const [savedPlaces, setSavedPlaces] = useState([]); // 저장된 장소 목록
-  const [selectedSavedPlace, setSelectedSavedPlace] = useState(null); // 선택된 저장 장소 정보
+  const [savedPlaces, setSavedPlaces] = useState([]);
+  const [selectedSavedPlace, setSelectedSavedPlace] = useState(null);
+  const [showOnlySavedPlaces, setShowOnlySavedPlaces] = useState(false);
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     const initializeMap = () => {
@@ -32,7 +34,48 @@ const MapComponent = ({ onSave, onLoad }) => {
     } else {
       initializeMap();
     }
+
+    const loadedPlaces = JSON.parse(localStorage.getItem("savedPlaces") || "[]");
+
+    // 불러온 데이터의 position 값을 LatLng 객체로 변환
+    const placesWithLatLng = loadedPlaces.map((place) => ({
+      ...place,
+      position: new window.kakao.maps.LatLng(place.position.Ma, place.position.La),
+    }));
+  
+    setSavedPlaces(placesWithLatLng);
   }, []);
+
+  useEffect(() => {
+    // Save places to localStorage whenever savedPlaces changes
+    localStorage.setItem("savedPlaces", JSON.stringify(savedPlaces));
+  }, [savedPlaces]);
+
+  useEffect(() => {
+    // 로컬 스토리지에서 불러온 savedPlaces에 대한 마커 생성 및 지도에 표시
+    if (map && savedPlaces.length > 0) {
+      // Clear existing markers
+      markers.forEach((marker) => marker.setMap(null));
+  
+      // Create markers for saved places
+      const newMarkers = savedPlaces.map((place) => {
+        const marker = new window.kakao.maps.Marker({
+          position: place.position,
+          map: map,
+        });
+  
+        window.kakao.maps.event.addListener(marker, "click", () => {
+          setSelectedSavedPlace(place);
+          map.setCenter(place.position);
+          map.setLevel(5);
+        });
+  
+        return marker;
+      });
+  
+      setMarkers(newMarkers);
+    }
+  }, [map, savedPlaces]);
 
   const handleSearch = () => {
     if (map && keyword) {
@@ -42,11 +85,15 @@ const MapComponent = ({ onSave, onLoad }) => {
           setPlaces(data);
           map.setCenter(new window.kakao.maps.LatLng(data[0].y, data[0].x));
           map.setLevel(3);
-          data.forEach((place) => {
+
+          // Clear existing markers
+          markers.forEach((marker) => marker.setMap(null));
+
+          const newMarkers = data.map((place) => {
             const marker = new window.kakao.maps.Marker({
               position: new window.kakao.maps.LatLng(place.y, place.x),
+              map: map,
             });
-            marker.setMap(map);
 
             window.kakao.maps.event.addListener(marker, "click", () => {
               setSelectedPlace({
@@ -54,11 +101,15 @@ const MapComponent = ({ onSave, onLoad }) => {
                 name: place.place_name,
                 position: new window.kakao.maps.LatLng(place.y, place.x),
                 address: place.road_address_name || place.address_name,
-                phone: place.phone || '정보 없음',
-                category: place.category_name || '정보 없음',
+                phone: place.phone || "정보 없음",
+                category: place.category_name || "정보 없음",
               });
             });
+
+            return marker;
           });
+
+          setMarkers(newMarkers);
         }
       });
     }
@@ -66,61 +117,139 @@ const MapComponent = ({ onSave, onLoad }) => {
 
   const handleSave = () => {
     if (selectedPlace) {
-      setSavedPlaces([...savedPlaces, selectedPlace]); // 저장된 장소 목록 업데이트
-      onSave(selectedPlace);
-      setSelectedPlace(null);
+      const isAlreadySaved = savedPlaces.some(place => place.id === selectedPlace.id);
+      if (isAlreadySaved) {
+        alert("이미 저장된 장소입니다.");
+      } else {
+        setSavedPlaces([...savedPlaces, selectedPlace]);
+        onSave(selectedPlace);
+        setSelectedPlace(null);
+      }
     }
   };
 
   const handlePlaceClick = (place) => {
-    setSelectedSavedPlace(place);
     console.log(place);
     
-
+    setSelectedSavedPlace(place);
     map.setCenter(place.position);
-    map.setLevel(3);
+    map.setLevel(5);
+  };
+
+  const handleShowSavedPlaces = () => {
+    setShowOnlySavedPlaces(!showOnlySavedPlaces);
+
+    if (!showOnlySavedPlaces) {
+      // Clear existing markers
+      markers.forEach((marker) => marker.setMap(null));
+
+      // Show only saved places
+      const savedMarkers = savedPlaces.map((place) => {
+        return new window.kakao.maps.Marker({
+          position: place.position,
+          map: map,
+        });
+      });
+      setMarkers(savedMarkers);
+    } else {
+      // Revert to showing all places
+      handleSearch();
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleDeleteSavedPlace = () => {
+    
   };
 
   return (
-    <div>
-      <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="장소를 검색하세요" />
-      <button onClick={handleSearch}>검색</button>
-      <div ref={mapRef} style={{ width: "100%", height: "400px" }}></div>
-      {selectedPlace && (
-        <div>
-          <button onClick={handleSave}>저장</button>
-        </div>
-      )}
-      <ul>
-        {places.map((place, index) => (
-          <li
-            key={index}
-            onClick={() => {
-              map.setCenter(new window.kakao.maps.LatLng(place.y, place.x));
-              map.setLevel(3);
-            }}>
-            {place.place_name}
-          </li>
-        ))}
-      </ul>
-      <h2>저장된 장소 목록</h2>
-      <ul>
-        {savedPlaces.map((place, index) => (
-          <li key={index} onClick={() => handlePlaceClick(place)}>
-            {place.name}
-          </li>
-        ))}
-      </ul>
+    <div className="flex h-screen bg-gray-100">
+      <div ref={mapRef} className="w-1/2 h-full"></div>
+
+      <div className="w-1/6 p-4 bg-white shadow-md">
+        <input
+          type="text"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="장소를 검색하세요"
+          className="w-full p-2 mb-2 border rounded"
+        />
+        <button onClick={handleSearch} className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+          검색
+        </button>
+
+        <ul className="mt-4 space-y-2">
+          {places.map((place, index) => (
+            <li
+              key={index}
+              onClick={() => {
+                map.setCenter(new window.kakao.maps.LatLng(place.y, place.x));
+                map.setLevel(3);
+                setSelectedPlace({
+                  id: place.id,
+                  name: place.place_name,
+                  position: new window.kakao.maps.LatLng(place.y, place.x),
+                  address: place.road_address_name || place.address_name,
+                  phone: place.phone || "정보 없음",
+                  category: place.category_name || "정보 없음",
+                });
+              }}
+              className={`p-2 cursor-pointer hover:bg-gray-100 rounded ${
+                selectedPlace && selectedPlace.id === place.id ? "bg-blue-100 border border-blue-500" : ""
+              }`}>
+              {place.place_name}
+            </li>
+          ))}
+        </ul>
+        {selectedPlace && (
+          <button onClick={handleSave} className="w-full p-2 mt-2 text-white bg-green-500 rounded hover:bg-green-600">
+            {`${selectedPlace.name} 저장`}
+          </button>
+        )}
+      </div>
+
+      <div className="w-1/6 p-4 bg-white shadow-md">
+        <h2 className="mb-2 text-xl font-bold">저장된 장소 목록</h2>
+        <button
+          onClick={handleShowSavedPlaces}
+          className="w-full p-2 mt-4 text-white bg-purple-500 rounded hover:bg-purple-600">
+          {showOnlySavedPlaces ? "모든 장소 보기" : "저장한 장소만 보기"}
+        </button>
+        <ul className="space-y-2">
+          {savedPlaces.map((place, index) => (
+            <li
+              key={index}
+              onClick={() => handlePlaceClick(place)}
+              className={`p-2 cursor-pointer hover:bg-gray-100 rounded ${
+                selectedSavedPlace && selectedSavedPlace.id === place.id ? "bg-blue-100 border border-blue-500" : ""
+              }`}>
+              {place.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {selectedSavedPlace && (
-        <div>
-          <h3>{selectedSavedPlace.name} 정보</h3>
-          <ul>
+        <div className="w-1/6 p-4 bg-white shadow-md">
+          <h3 className="mb-4 text-lg font-semibold">{selectedSavedPlace.name} 정보</h3>
+          <ul className="space-y-2">
             {Object.entries(selectedSavedPlace).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value.toString()}
+              <li key={key} className="p-2 bg-gray-50 rounded">
+                <strong className="font-medium">{key}:</strong> {value.toString()}
               </li>
             ))}
           </ul>
+          <button
+            onClick={handleDeleteSavedPlace}
+            className="w-full p-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600">
+            삭제
+          </button>
         </div>
       )}
     </div>
