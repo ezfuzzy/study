@@ -14,6 +14,7 @@ import Cafe from "../pages/Cafe";
 import CafeForm from "../pages/CafeForm";
 import DashBoard from "../pages/admin/DashBoard";
 import Users from "../pages/admin/Users";
+import CafeDetail from "../pages/CafeDetail";
 
 // route 정보를 배열에 저장
 // :num -> const {num} = useParams() 로 얻어낼 수 있는데 이때 여기에 작성한 변수 명을 따라간다
@@ -39,6 +40,14 @@ const routes = [
     element: (
       <ProtectedRoute>
         <CafeForm />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/cafe/:num",
+    element: (
+      <ProtectedRoute>
+        <CafeDetail/>
       </ProtectedRoute>
     ),
   },
