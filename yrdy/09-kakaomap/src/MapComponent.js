@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
 
 const MapComponent = ({ onSave, onLoad }) => {
-  const mapRef = useRef(null);
-  const [map, setMap] = useState(null);
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [keyword, setKeyword] = useState("");
-  const [places, setPlaces] = useState([]);
-  const [savedPlaces, setSavedPlaces] = useState([]);
-  const [selectedSavedPlace, setSelectedSavedPlace] = useState(null);
-  const [showOnlySavedPlaces, setShowOnlySavedPlaces] = useState(false);
-  const [markers, setMarkers] = useState([]);
-  const [infoWindows, setInfoWindows] = useState([]);
+  const mapRef = useRef(null); // 지도 DOM 요소를 참조하기 위한 ref
+  const [map, setMap] = useState(null); // Kakao 지도 객체를 관리
+  const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소를 관리
+  const [keyword, setKeyword] = useState(""); // 검색 키워드를 관리
+  const [places, setPlaces] = useState([]); // 검색된 장소들을 관리
+  const [savedPlaces, setSavedPlaces] = useState([]); // 저장된 장소들을 관리
+  const [selectedSavedPlace, setSelectedSavedPlace] = useState(null); // 선택된 저장된 장소를 관리
+  const [showOnlySavedPlaces, setShowOnlySavedPlaces] = useState(false); // 저장된 장소만 표시할지 여부를 관리
+  const [markers, setMarkers] = useState([]); // 지도에 표시된 마커들을 관리
+  const [infoWindows, setInfoWindows] = useState([]); // 지도에 표시된 정보 창들을 관리
 
+  // 컴포넌트가 처음 렌더링될 때 실행되는 useEffect
   useEffect(() => {
     const initializeMap = () => {
       if (!window.kakao || !window.kakao.maps) {
@@ -28,12 +29,13 @@ const MapComponent = ({ onSave, onLoad }) => {
 
       // Add click event listener to the map
       window.kakao.maps.event.addListener(map, "click", () => {
-        closeAllInfoWindows();
+        window.closeInfoWindow();// infoWindow 전부 닫기
         setSelectedPlace(null); // 선택된 장소 초기화
         setSelectedSavedPlace(null); // 선택된 저장된 장소 초기화
       });
     };
 
+    // Kakao Maps API가 로드되지 않은 경우 스크립트 추가
     if (!window.kakao || !window.kakao.maps) {
       const script = document.createElement("script");
       script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=de8bb4ac88880a204a617a3e3f74d387&libraries=services`;
@@ -43,21 +45,25 @@ const MapComponent = ({ onSave, onLoad }) => {
       initializeMap();
     }
 
+    // 로컬 저장소에서 저장된 장소 불러오기
     const loadedPlaces = JSON.parse(localStorage.getItem("savedPlaces") || "[]");
 
+    // 불러온 장소들에 LatLng 객체 추가
     const placesWithLatLng = loadedPlaces.map((place) => ({
       ...place,
-      position: new window.kakao.maps.LatLng(place.position.Ma, place.position.La),
+      position: new window.kakao.maps.LatLng(place.position.Ma, place.position.La), // 객체로 생성해야만 함
     }));
 
     setSavedPlaces(placesWithLatLng);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); // 여기에 의존성 추가 금지
 
+  // 저장된 장소가 변경될 때마다 로컬 저장소에 저장
   useEffect(() => {
     localStorage.setItem("savedPlaces", JSON.stringify(savedPlaces));
   }, [savedPlaces]);
 
+  // 지도 객체가 변경될때와 저장된 장소변경시 마커갱신 + 정보창 없애기
   useEffect(() => {
     if (map && savedPlaces.length > 0) {
       clearMarkers();
@@ -67,17 +73,18 @@ const MapComponent = ({ onSave, onLoad }) => {
       const newInfoWindows = [];
 
       savedPlaces.forEach((place) => {
-        const marker = new window.kakao.maps.Marker({
+        const marker = new window.kakao.maps.Marker({ // marker 생성
           position: place.position,
           map: map,
         });
 
-        const infoWindow = new window.kakao.maps.InfoWindow({
+        const infoWindow = new window.kakao.maps.InfoWindow({ // infoWindow 생성
           content: createInfoWindowContent(place),
         });
 
         window.kakao.maps.event.addListener(marker, "click", () => {
-          closeAllInfoWindows();
+          // 마커 클릭 이벤트
+          window.closeInfoWindow();
           setSelectedSavedPlace(place);
           infoWindow.open(map, marker);
         });
@@ -102,11 +109,12 @@ const MapComponent = ({ onSave, onLoad }) => {
     setInfoWindows([]);
   };
 
-  const closeAllInfoWindows = () => {
-    window.closeInfoWindow();
-  };
+  // const closeAllInfoWindows = () => {
+  //   window.closeInfoWindow();
+  // };
 
   const createInfoWindowContent = (place) => {
+    // infoWindow 코드 window.을 써야만 하는 것 같음 / 잘 모름
     const isSaved = savedPlaces.some((savedPlace) => savedPlace.id === place.id);
     const buttonLabel = isSaved ? "삭제" : "저장";
     const buttonOnClick = isSaved ? `window.removePlace('${place.id}')` : `window.savePlace('${place}')`;
@@ -125,7 +133,9 @@ const MapComponent = ({ onSave, onLoad }) => {
     </div>
   `;
   };
+
   window.closeInfoWindow = () => {
+    // infoWindow 닫기 (실제 동작)
     infoWindows.forEach((infoWindow, idx) => {
       infoWindow.close();
     });
@@ -165,7 +175,7 @@ const MapComponent = ({ onSave, onLoad }) => {
             });
 
             window.kakao.maps.event.addListener(marker, "click", () => {
-              closeAllInfoWindows();
+              window.closeInfoWindow();
               setSelectedPlace({
                 address_name: place.address_name,
                 category_group_code: place.category_group_code,
@@ -187,7 +197,6 @@ const MapComponent = ({ onSave, onLoad }) => {
 
           setMarkers(newMarkers);
           setInfoWindows(newInfoWindows);
-          console.log(infoWindows);
         }
       });
     }
@@ -213,26 +222,30 @@ const MapComponent = ({ onSave, onLoad }) => {
   const handlePlaceClick = (place) => {
     setSelectedSavedPlace(place);
 
-    map.setCenter(place.position);
-    map.setLevel(5);
+    map.setCenter(place.position); // 지도 중심을 place.location 좌표로 
+    map.setLevel(5); // 지도의 zoom level 올라갈수록 작아지고  작아질수록 커짐
+    const marker = markers.find( // 소수점 10자리까지 비교 - 6~7자리만 해도 1.1cm의 정확도 
+      (marker) =>
+        marker.getPosition().getLat().toFixed(10) === place.position.getLat().toFixed(10) &&
+        marker.getPosition().getLng().toFixed(10) === place.position.getLng().toFixed(10)
+    );
 
-    const marker = markers.find(marker => marker.getPosition().equals(place.position));
-    const infoWindow = infoWindows[markers.indexOf(marker)];
-    
-    if (infoWindow) {
-      closeAllInfoWindows();
+    const infoWindow = infoWindows[markers.indexOf(marker)]; // 마커에 해당하는 infoWindow 찾아서
+
+    if (infoWindow) { // infoWindow 랜더링
+      window.closeInfoWindow();
       infoWindow.open(map, marker);
     }
   };
 
   const handleShowSavedPlaces = () => {
-    setShowOnlySavedPlaces(!showOnlySavedPlaces);
+    setShowOnlySavedPlaces(!showOnlySavedPlaces); // 이거 코드 약간 수정해야되는데 어차피 이 부분은 안들어갈거니까 괜춘
 
     if (!showOnlySavedPlaces) {
-      // Clear existing markers
+      // 마커 클리어 
       markers.forEach((marker) => marker.setMap(null));
 
-      // Show only saved places
+      // 저장된 장소에 마커 세팅 
       const savedMarkers = savedPlaces.map((place) => {
         return new window.kakao.maps.Marker({
           position: place.position,
@@ -240,18 +253,21 @@ const MapComponent = ({ onSave, onLoad }) => {
         });
       });
       setMarkers(savedMarkers);
+  
     } else {
       // Revert to showing all places
       handleSearch();
     }
   };
 
+  // 검색폼 편의성 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
+  // 저장한 장소목록에서 장소 삭제 
   const handleDeleteSavedPlace = () => {
     if (selectedSavedPlace) {
       const newSavedPlaces = savedPlaces.filter((place) => place.id !== selectedSavedPlace.id);
@@ -285,9 +301,10 @@ const MapComponent = ({ onSave, onLoad }) => {
             <li
               key={index}
               onClick={() => {
-                map.setCenter(new window.kakao.maps.LatLng(place.y, place.x));
-                map.setLevel(3);
-                setSelectedPlace({
+                const selectedPosition = new window.kakao.maps.LatLng(place.y, place.x); // 객체 생성이 포인트
+                // 위도, 경도 순서 
+
+                const placeData = {
                   address_name: place.address_name,
                   category_group_code: place.category_group_code,
                   category_group_name: place.category_group_name,
@@ -297,9 +314,17 @@ const MapComponent = ({ onSave, onLoad }) => {
                   place_name: place.place_name,
                   place_url: place.place_url,
                   road_address_name: place.road_address_name,
-                  position: new window.kakao.maps.LatLng(place.y, place.x),
-                });
-                setSelectedSavedPlace(selectedPlace);
+                  position: selectedPosition,
+                };
+
+                map.setCenter(selectedPosition);
+                map.setLevel(3);
+
+                setSelectedPlace(placeData);
+                // setSelectedSavedPlace 하는 이유는 어차피 useState라 일시적으로 사용할 거고
+                // 화면 오른쪽에 정보 띄어주려면 이거 써야함 안그러면 상태관리 약간 복잡해져서 이렇게 구현 
+                setSelectedSavedPlace(placeData);
+                handlePlaceClick(placeData);
               }}
               className={`p-2 cursor-pointer hover:bg-gray-100 rounded ${
                 selectedPlace && selectedPlace.id === place.id ? "bg-blue-100 border border-blue-500" : ""
