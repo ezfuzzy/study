@@ -26,9 +26,6 @@
       <SelectionState runConfigName="step05httprequest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MainActivity">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="step06coroutine">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
