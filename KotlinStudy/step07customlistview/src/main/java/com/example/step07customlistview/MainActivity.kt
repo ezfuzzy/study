@@ -1,12 +1,22 @@
 package com.example.step07customlistview
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,145 +27,115 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
-
 /*
-    [  json 문자열 사용하기 ]
-    [ ] => json array
-    {} => json object
+     [ json 문자열 사용하기 ]
+
+     [ ]  =>  JSONArray  객체로 변환
+     { }  =>  JSONObject  객체로 변환
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , OnItemLongClickListener{
+    //늦게 초기화 되는 필드 정의
+    lateinit var list:MutableList<MemberDto>
+    lateinit var adapter: MemberAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // model 객체
-        val list:MutableList<MemberDto> = mutableListOf()
+        //MutableList 객체 생성
+        list = mutableListOf()
 
-        // ListView에 연결할 어댑터객체 생성해서 연결하기
-        val adapter = MemberAdapter(this, R.layout.listview_cell, list)
-
+        //ListView 에 연결할 아답타 객체 생성해서
+        adapter = MemberAdapter(this, R.layout.listview_cell, list)
+        //ListView 에 연결하기
         val listView:ListView = findViewById(R.id.listView)
         listView.adapter = adapter
+        // ListView 에 아이템을 오랬동안 클릭하고 있을때 동작할 리스너 등록
+        listView.setOnItemLongClickListener(this)
 
+        //EditText 객체의 참조값
         val inputName:EditText = findViewById(R.id.inputName)
         val inputAddr:EditText = findViewById(R.id.inputAddr)
-
+        //버튼의 참조값 얻어와서 리스너 등록
         val addBtn:Button = findViewById(R.id.addBtn)
-
         addBtn.setOnClickListener{
+            //입력한 이름과 주소를 읽어와서
+            val name=inputName.text.toString()
+            val addr=inputAddr.text.toString()
+            val dto=MemberDto(0, name, addr)
+            //Post 방식으로 서버에 전송하기
             lifecycleScope.launch(Dispatchers.Main) {
-                addMember(inputName.text.toString(), inputAddr.text.toString())
+                //입력한 이름과 주소를 json 문자열로 만든다. (Map 혹은 Dto 를 넣어주면 자동으로 json 으로변경)
+                val json=Gson().toJson(dto)
+                //RestApiClient 유틸리티를 이용해서 서버에 전송하고 응답된 문자열 읽어오기
+                val result = RestApiClient.post("http://192.168.0.205:8888/api/members", json)
+                //응답된 문자열을 Toast 메세지로 출력해보기
+                Toast.makeText(this@MainActivity, result, Toast.LENGTH_SHORT).show()
+                //데이터를 추가한 이후에 다시 호출
+                refresh()
             }
-
-
         }
+        //onCreate() 메소드에서 한번 호출
+        refresh()
+    }
 
-        // json 문자열을 log에 출력
+    //ListView 를 refresh 하는 메소드
+    fun refresh(){
+        // http://192.168.0.205:8888/api/members 요청을 해서 응답되는 json 문자열을 Log 창에 출력해 보세요
         lifecycleScope.launch(Dispatchers.Main) {
-            val result = getMemeber()
-            Log.d("### result ### ", result)
-            // 응답받은 문자열의 형식이 [{},{},{}, ...] -> JSONArray 객체 생성
-            val array = JSONArray(result)
+            val result = RestApiClient.get("http://192.168.0.205:8888/api/members")
+            Log.d("MaiActivity", result)
+            //일단 모두 삭제한 다음 다시 데이터를 담는다.
+            list.clear()
 
-            for (i in 0 until array.length()){
-                val cur = array.getJSONObject(i)
-//                list.add(MemberDto(cur.getInt("num"), cur.getString("name"), cur.getString("addr")))
+            //응답받은 문자열의 형식이 [{},{},{}...] 이기 때문에 해당 문자열을 이용해서 JSONArray 객체를 생성
+            val array=JSONArray(result)
+            //반복문 돌면서
+            for(i in 0 until array.length()){
+                //i 번째 JSONObject 객체를 얻어와서
+                val tmp:JSONObject = array.getJSONObject(i)
+                //MemberDto 에 num, name, addr 을 담는다.
                 val mem = MemberDto().apply {
-                    num = cur.getInt("num")
-                    name = cur.getString("name")
-                    addr = cur.getString("addr")
+                    num=tmp.getInt("num")
+                    name=tmp.getString("name")
+                    addr=tmp.getString("addr")
                 }
+                //MutableList 에 누적시킨다.
                 list.add(mem)
             }
+            //반복문 돌고나서 Adapter 에 데이터가 수정되었다고 알린다. (UI 업데이트를 위해)
             adapter.notifyDataSetChanged()
         }
     }
 
-    suspend fun getMemeber():String {
-        val result = withContext(Dispatchers.IO){
+    override fun onItemLongClick(p0: AdapterView<*>?, p1: View?, index: Int, id: Long): Boolean {
+        // index 는 클릭한 셀의 인덱스, id 는 클릭한 셀의 primary key
 
-            val builder = StringBuilder()
-
-            try {
-                //요청 url 을 생성자의 인자로 전달하면서 URL 객체를 생성한다
-                val url = URL("http://192.168.0.205:8888/api/members")
-                //URLConnection 객체를 원래 type (자식 type) 으로 casting 해서 받는다.
-                val conn = url.openConnection() as HttpURLConnection
-                if (conn != null) {
-                    conn.connectTimeout = 20000 //응답을 기다리는 최대 대기 시간
-                    conn.requestMethod = "GET" // 요청 메소드 설정 (Default 는 GET)
-                    conn.useCaches = false //케쉬 사용 여부
-                    //응답 코드를 읽어온다.
-                    val responseCode = conn.responseCode
-                    if (responseCode == HttpURLConnection.HTTP_OK) { //정상 응답이라면 (200)
-                        //문자열을 읽어들일수 있는 객체의 참조값 얻어오기
-                        val br =
-                            BufferedReader(InputStreamReader(conn.inputStream))
-                        //반복문 돌면서
-                        while (true) {
-                            //문자열을 한줄씩 읽어 들인다.
-                            val line = br.readLine() ?: break
-                            //StringBuilder 객체에 누적 시키기
-                            builder.append(line)
-                        }
+        AlertDialog.Builder(this)
+            .setTitle("삭제 하시겠습니까?")
+            .setPositiveButton("네") { a, b ->
+                lifecycleScope.launch(Dispatchers.Main) {
+                    val result = RestApiClient.delete("http://192.168.0.205:8888/api/members/$id")
+                    // {"isSuccess":true} 형식의 json 문자열을 이용해서 객체 생성
+                    val obj=JSONObject(result)
+                    //작업의 성공여부를 얻어와서
+                    val isSuccess = obj.getBoolean("isSuccess")
+                    //만일 성공이면
+                    if(isSuccess){
+                        //새로고침
+                        refresh()
                     }
                 }
-            } catch (e: Exception) {
-                Log.e("MainActivity", e.message!!)
-            } //try~catch
-
-            builder.toString()
-        }
-        return result
-    }
-
-    suspend fun addMember(name:String, addr:String):String {
-
-        val result = withContext(Dispatchers.IO){
-
-            val builder = StringBuilder()
-
-            try {
-                //요청 url 을 생성자의 인자로 전달하면서 URL 객체를 생성한다
-                val url = URL("http://192.168.0.205:8888/api/members")
-                //URLConnection 객체를 원래 type (자식 type) 으로 casting 해서 받는다.
-                val conn = url.openConnection() as HttpURLConnection
-                if (conn != null) {
-                    conn.connectTimeout = 20000 //응답을 기다리는 최대 대기 시간
-                    conn.requestMethod = "POST" // 요청 메소드 설정 (Default 는 GET)
-                    conn.useCaches = false //케쉬 사용 여부
-                    conn.setRequestProperty("Content-Type", "application/json")
-                    //문자열을 출력하기 위한 객체
-                    val osw = OutputStreamWriter(conn.outputStream)
-                    osw.write("""
-                        { 
-                            "name" : $name,
-                            "addr" : $addr
-                        }
-                    """.trimIndent())
-                    osw.flush()
-
-                    //응답 코드를 읽어온다.
-                    val responseCode = conn.responseCode
-                    if (responseCode == HttpURLConnection.HTTP_OK) { //정상 응답이라면 (200)
-                        //문자열을 읽어들일수 있는 객체의 참조값 얻어오기
-                        val br =
-                            BufferedReader(InputStreamReader(conn.inputStream))
-                        //반복문 돌면서
-                        while (true) {
-                            //문자열을 한줄씩 읽어 들인다.
-                            val line = br.readLine() ?: break
-                            //StringBuilder 객체에 누적 시키기
-                            builder.append(line)
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e("MainActivity", e.message!!)
-            } //try~catch
-
-            builder.toString()
-        }
-        return result
+            }
+            .setNegativeButton("아니요", null)
+            .create()
+            .show()
+        return true
     }
 }
+
+
+
+
+
+
