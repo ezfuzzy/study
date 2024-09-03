@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import MapComponent from "./MapComponent";
+import React from "react";
+import CourseForm from "./CourseForm";
 
 const App = () => {
-  const [savedPlaces, setSavedPlaces] = useState([]);
-  const [map, setMap] = useState(null);
+  // const [savedPlaces, setSavedPlaces] = useState([]);
+  // const [map, setMap] = useState(null);
 
-  const handleSavePlace = (place) => {
-    setSavedPlaces([...savedPlaces, place]);
-  };
+  // const handleSavePlace = (place) => {
+  //   setSavedPlaces([...savedPlaces, place]);
+  // };
 
-  const handleMapLoad = (mapInstance) => {
-    setMap(mapInstance);
-  };
+  // const handleMapLoad = (mapInstance) => {
+  //   setMap(mapInstance);
+  // };
 
   return (
     <div>
-      <MapComponent onSave={handleSavePlace} onLoad={handleMapLoad} />
+      <CourseForm />
+      {/* <MapComponent onSave={handleSavePlace} onLoad={handleMapLoad} /> */}
     </div>
   );
 };
