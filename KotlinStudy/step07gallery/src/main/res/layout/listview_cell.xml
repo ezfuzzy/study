@@ -20,14 +20,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="작성자:김구라"
+            android:text="작성자:ezfz"
             android:id="@+id/writer"
             android:textStyle="bold"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="어쩌구 저쩌구...."
+            android:text="hong date"
             android:id="@+id/caption"
             android:textStyle="italic"
             android:maxLines="1"
