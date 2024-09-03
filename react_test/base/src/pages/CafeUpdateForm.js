@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, FloatingLabel } from "react-bootstrap";
-import { initEditor } from "../editor/SmartEditor";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { initEditor } from "../editor/SmartEditor";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
+import axios from "axios";
 
-function CafeForm(props) {
+function CafeUpdateForm(props) {
   const [editorTool, setEditorTool] = useState([]);
   const navigate = useNavigate();
   const inputTitle = useRef();
@@ -40,7 +40,7 @@ function CafeForm(props) {
               .post("/api/cafes", { title, content })
               .then((res) => console.log(res.data))
               .catch((error) => console.log(error));
-              navigate("/cafe")
+            navigate("/cafe");
           }}>
           save
         </Button>
@@ -49,4 +49,4 @@ function CafeForm(props) {
   );
 }
 
-export default CafeForm;
+export default CafeUpdateForm;

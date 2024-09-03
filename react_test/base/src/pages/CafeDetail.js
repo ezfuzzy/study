@@ -1,32 +1,57 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-
-import myCss from './css/cafe_detail.module.css'
-import binder from 'classnames/bind';
-const cx = binder.bind(myCss)
+import myCss from "./css/cafe_detail.module.css";
+import binder from "classnames/bind";
+import { useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
+import ConfirmModal from "../components/ConfirmModal";
+const cx = binder.bind(myCss);
 
 function CafeDetail(props) {
   const { num } = useParams();
+  const navigate = useNavigate();
+  const userName = useSelector((state) => state.userName);
   const [params, setParams] = useSearchParams();
-
   const [state, setState] = useState({});
+  const [confirmShow, setConfirmShow] = useState(false);
 
   useEffect(() => {
-    const query = new URLSearchParams(params).toString();
-
     axios
-      .get(`/api/cafes/${num}?${query}`)
+      .get(`/api/cafes/${num}?${new URLSearchParams(params).toString()}`)
       .then((res) => {
         console.log(res.data);
         setState(res.data.dto);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [num]);
+
+  const handelUpdate = () => {
+    navigate(`/cafe/${num}/update`);
+  };
+
+  const handelDelete = () => {
+    setConfirmShow(true);
+  };
+
+  const handleYes = () => {
+    axios
+      .delete(`/api/cafes/${num}`)
+      .then((res) => {
+        console.log(res.data);
+        navigate("/cafe");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleNo = () => {
+    setConfirmShow(false);
+  };
 
   return (
     <div>
+      <ConfirmModal show={confirmShow} message="삭제하시겠습니까?" yes={handleYes} no={handleNo} />
       <nav>
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -37,7 +62,25 @@ function CafeDetail(props) {
           </li>
           <li className="breadcrumb-item active">Detail</li>
         </ol>
+        {state.prevNum !== 0 ? (
+          <Link to={`/cafe/${state.prevNum}?${new URLSearchParams(params).toString()}`}>이전 글</Link>
+        ) : (
+          ""
+        )}
+        {state.nextNum !== 0 ? (
+          <Link to={`/cafe/${state.nextNum}?${new URLSearchParams(params).toString()}`}>다음 글</Link>
+        ) : (
+          ""
+        )}
         <h1>{state.title}</h1>
+        {state.writer === userName ? (
+          <>
+            <Button onClick={handelUpdate}>수정</Button>
+            <Button onClick={handelDelete}>삭제</Button>
+          </>
+        ) : (
+          ""
+        )}
         <table>
           <thead>
             <tr>

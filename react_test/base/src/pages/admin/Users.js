@@ -71,7 +71,7 @@ function Users(props) {
         </thead>
         <tbody>
           {users.map((item) => (
-            <tr key={item.num}>
+            <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.userName}</td>
               <td>{item.password}</td>
@@ -80,12 +80,12 @@ function Users(props) {
               <td>{item.regdate}</td>
               <td>{item.profile}</td>
               <td>
-                <Button variant="info" onClick={() => handleUpdate(item.num)}>
+                <Button variant="info" onClick={() => handleUpdate(item.id)}>
                   edit
                 </Button>
               </td>
               <td>
-                <Button variant="danger" onClick={() => handleDelete(item.num)}>
+                <Button variant="danger" onClick={() => handleDelete(item.id)}>
                   X
                 </Button>
               </td>
