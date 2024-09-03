@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 
-const MapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceIndex }) => {
+const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceIndex }) => {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -291,4 +291,4 @@ const MapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceIndex }) 
   );
 };
 
-export default MapComponent;
+export default CourseMapComponent;

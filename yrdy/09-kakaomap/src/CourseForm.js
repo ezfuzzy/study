@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MapComponent from "./CourseMapComponent";
+import CourseMapComponent from "./CourseMapComponent";
 
 const CourseForm = () => {
   const [title, setTitle] = useState("");
@@ -207,7 +207,7 @@ const CourseForm = () => {
       </div>
 
       <div>
-        <MapComponent
+        <CourseMapComponent
           onSave={handleSavePlace}
           onLoad={handleMapLoad}
           selectedDayIndex={selectedDayIndex}
