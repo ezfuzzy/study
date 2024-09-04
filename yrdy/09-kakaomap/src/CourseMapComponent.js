@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 
-const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceIndex }) => {
+const CourseMapComponent = ({ onSave, selectedDayIndex, selectedPlaceIndex, isSelectPlace }) => {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
-  const [savedPlaces, setSavedPlaces] = useState([]);
   const [markers, setMarkers] = useState([]);
   const [infoWindows, setInfoWindows] = useState([]);
 
@@ -22,7 +21,6 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
         level: 3,
       });
       setMap(map);
-      onLoad(map);
 
       window.kakao.maps.event.addListener(map, "click", () => {
         window.closeInfoWindow();
@@ -38,52 +36,7 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
     } else {
       initializeMap();
     }
-
-    const loadedPlaces = JSON.parse(localStorage.getItem("savedPlaces") || "[]");
-
-    const placesWithLatLng = loadedPlaces.map((place) => ({
-      ...place,
-      position: new window.kakao.maps.LatLng(place.position.Ma, place.position.La),
-    }));
-
-    setSavedPlaces(placesWithLatLng);
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("savedPlaces", JSON.stringify(savedPlaces));
-  }, [savedPlaces]);
-
-  useEffect(() => {
-    if (map && savedPlaces.length > 0) {
-      clearMarkers();
-      clearInfoWindows();
-
-      const newMarkers = [];
-      const newInfoWindows = [];
-
-      savedPlaces.forEach((place) => {
-        const marker = new window.kakao.maps.Marker({
-          position: place.position,
-          map: map,
-        });
-
-        const infoWindow = new window.kakao.maps.InfoWindow({
-          content: createInfoWindowContent(place),
-        });
-
-        window.kakao.maps.event.addListener(marker, "click", () => {
-          window.closeInfoWindow();
-          infoWindow.open(map, marker);
-        });
-
-        newMarkers.push(marker);
-        newInfoWindows.push(infoWindow);
-      });
-
-      setMarkers(newMarkers);
-      setInfoWindows(newInfoWindows);
-    }
-  }, [map, savedPlaces]);
 
   const clearMarkers = () => {
     markers.forEach((marker) => marker.setMap(null));
@@ -96,9 +49,8 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
   };
 
   const createInfoWindowContent = (place) => {
-    const isSaved = savedPlaces.some((savedPlace) => savedPlace.id === place.id);
-    const buttonLabel = isSaved ? "삭제" : "저장";
-    const buttonOnClick = isSaved ? `window.removePlace('${place.id}')` : `window.savePlace('${place}')`;
+    const buttonLabel = "저장";
+    const buttonOnClick = `window.savePlace('${place}')`;
 
     return `
     <div style="padding:10px;font-size:12px;display:flex;flex-direction:column;align-items:flex-start;width:150px;">
@@ -106,9 +58,7 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
         <strong>${place.place_name}</strong>
       </div>
       <div style="margin-bottom: 8px;">${place.address_name}</div>
-      <button onclick="${buttonOnClick}" style="width:100%;background-color:${
-      isSaved ? "red" : "green"
-    };color:white;padding:5px;border:none;border-radius:5px;">
+      <button onclick="${buttonOnClick}" style="width:100%;background-color:green;color:white;padding:5px;border:none;border-radius:5px;">
         ${buttonLabel}
       </button>
     </div>
@@ -120,13 +70,9 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
       infoWindow.close();
     });
   };
+
   window.savePlace = (ePlace) => {
     handleSave(ePlace);
-  };
-
-  window.removePlace = (id) => {
-    const newSavedPlaces = savedPlaces.filter((place) => place.id !== id);
-    setSavedPlaces(newSavedPlaces);
   };
 
   const handleSearch = () => {
@@ -183,25 +129,20 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
   };
 
   const handleSave = (ePlace) => {
-    console.log("handleSave");
-
-    if (ePlace) {
-      setSelectedPlace(ePlace);
-    }
-
-    if (selectedPlace) {
-      const isAlreadySaved = savedPlaces.some((place) => place.id === selectedPlace.id);
-      if (isAlreadySaved) {
-        alert("이미 저장된 장소입니다.");
-      } else {
-        const newPlace = {
-          ...selectedPlace,
-          dayIndex: selectedDayIndex,
-          placeIndex: selectedPlaceIndex,
-        };
-        onSave(newPlace); // CourseForm에 장소 데이터 전달
-        setSelectedPlace(null);
+    if (!isSelectPlace) {
+      alert("일정에서 장소 선택 버튼을 눌러주세요!");
+    } else {
+      if (ePlace) {
+        setSelectedPlace(ePlace);
       }
+
+      const newPlace = {
+        ...selectedPlace,
+        dayIndex: selectedDayIndex,
+        placeIndex: selectedPlaceIndex,
+      };
+      onSave(newPlace); // CourseForm에 장소 데이터 전달
+      setSelectedPlace(null);
     }
   };
 
@@ -240,7 +181,11 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
           onKeyDown={handleKeyPress}
           placeholder="장소를 검색하세요"
         />
-        <button onClick={handleSearch} className="text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-1.5 text-center">검색</button>
+        <button
+          onClick={handleSearch}
+          className="text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-1.5 text-center">
+          검색
+        </button>
 
         <ul>
           {places.map((place, index) => (
@@ -270,18 +215,6 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
 
                 handlePlaceClick(placeData);
               }}>
-              {place.place_name}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div>
-        <h2 className="border">저장된 장소 목록</h2>
-
-        <ul>
-          {savedPlaces.map((place, index) => (
-            <li key={index} onClick={() => handlePlaceClick(place)}>
               {place.place_name}
             </li>
           ))}

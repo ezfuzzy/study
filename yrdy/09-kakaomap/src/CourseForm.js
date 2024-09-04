@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import CourseMapComponent from "./CourseMapComponent";
 
 const CourseForm = () => {
@@ -7,13 +8,46 @@ const CourseForm = () => {
   const [city, setCity] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
-  const [days, setDays] = useState([{ places: [""] }]);
+  const [days, setDays] = useState([{ places: [""], dayMemo: "" }]);
+
+  const [postType, setPostType] = useState("");
 
   const [selectedDayIndex, setSelectedDayIndex] = useState(null);
   const [selectedPlaceIndex, setSelectedPlaceIndex] = useState(null);
   const [savedPlaces, setSavedPlaces] = useState([]);
 
-  const [onSelectPlace, setOnSelectPlace] = useState(false);
+  const [isSelectPlace, setIsSelectPlace] = useState(false);
+
+  useEffect(() => {}, []);
+  const handleSubmit = () => {
+    const formData = {
+      title,
+      country,
+      city,
+      tags,
+      days: days.map((day) => ({
+        ...day,
+        places: day.places.map((place) => ({
+          ...place,
+          position: {
+            latitude: place.position.Ma,
+            longitude: place.position.La,
+          },
+        })),
+      })),
+    };
+
+    console.log(formData);
+
+    axios
+      .post("/api/v1/posts", formData)
+      .then((res) => console.log(res.data))
+      .catch((error) => console.log(error));
+  };
+
+  const test1 = () => {
+    console.log(days);
+  };
 
   const handleTagInput = (e) => {
     const value = e.target.value;
@@ -30,7 +64,7 @@ const CourseForm = () => {
 
   const removeTag = (tagToRemove) => setTags(tags.filter((tag) => tag !== tagToRemove));
 
-  const addDay = () => setDays([...days, { places: [""] }]);
+  const addDay = () => setDays([...days, { places: [""], dayMemo: "" }]);
 
   const removeDay = (dayIndex) => {
     if (days.length > 1) {
@@ -44,12 +78,6 @@ const CourseForm = () => {
     setDays(newDays);
   };
 
-  const updatePlace = (dayIndex, placeIndex, value) => {
-    const newDays = [...days];
-    newDays[dayIndex].places[placeIndex] = value;
-    setDays(newDays);
-  };
-
   const removePlace = (dayIndex, placeIndex) => {
     const newDays = [...days];
     newDays[dayIndex].places.splice(placeIndex, 1);
@@ -59,28 +87,48 @@ const CourseForm = () => {
   const handlePlaceSelection = (dayIndex, placeIndex) => {
     setSelectedDayIndex(dayIndex);
     setSelectedPlaceIndex(placeIndex);
-    setOnSelectPlace(true);
+    setIsSelectPlace(true);
   };
 
   const handleSavePlace = (place) => {
-    const newDays = [...days];
-    newDays[place.dayIndex].places[place.placeIndex] = place.place_name;
-    setDays(newDays);
-    setSavedPlaces([...savedPlaces, place]);
-    setOnSelectPlace(false);
+    if (place && isSelectPlace) {
+      const newDays = [...days];
+      newDays[place.dayIndex].places[place.placeIndex] = place;
+      setDays(newDays);
+      setSavedPlaces([...savedPlaces, place]);
+      setIsSelectPlace(false);
+    }
   };
 
-  const handleMapLoad = (mapInstance) => {
-    // 필요 시 맵 인스턴스를 활용한 추가 로직
+  const handlePlaceMemoChange = (dayIndex, placeIndex, memo) => {
+    const newDays = [...days];
+    newDays[dayIndex].places[placeIndex] = {
+      ...newDays[dayIndex].places[placeIndex],
+      placeMemo: memo,
+    };
+    setDays(newDays);
+  };
+
+  const handleDayMemoChange = (dayIndex, memo) => {
+    const newDays = [...days];
+    newDays[dayIndex].dayMemo = memo;
+    setDays(newDays);
   };
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* 여행 코스 작성 폼 */}
+      {/* Travel course writing form */}
       <div className="flex flex-col w-1/2 p-6 overflow-auto">
         <div className="flex justify-between items-center mb-2">
           <h1 className="text-2xl font-bold mb-4">여행 코스 글쓰기</h1>
-          <button className="text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">
+          <button
+            onClick={test1}
+            className="text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">
+            print days
+          </button>
+          <button
+            className="text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
+            onClick={handleSubmit}>
             작성 완료
           </button>
         </div>
@@ -137,12 +185,8 @@ const CourseForm = () => {
             </div>
           </div>
         </div>
-        {onSelectPlace && (
-          <div className="text-blue-600 bold">
-            Day {selectedDayIndex + 1} : {selectedPlaceIndex + 1}번 장소 선택 중
-          </div>
-        )}
-        {/* 여행 계획 */}
+
+        {/* Travel plan */}
         <div className="space-y-6 mt-6">
           {days.map((day, dayIndex) => (
             <div key={dayIndex} className="border p-4 rounded-lg bg-white shadow">
@@ -157,38 +201,57 @@ const CourseForm = () => {
                   Day 삭제
                 </button>
               </div>
+              <div className="mb-4">
+                <label htmlFor={`dayMemo-${dayIndex}`} className="block font-semibold">
+                  Day Memo
+                </label>
+                <input
+                  className="border p-2 w-full"
+                  type="text"
+                  id={`dayMemo-${dayIndex}`}
+                  value={day.dayMemo || ""}
+                  onChange={(e) => handleDayMemoChange(dayIndex, e.target.value)}
+                />
+              </div>
               {day.places.map((place, placeIndex) => (
-                <div key={placeIndex} className="flex items-center space-x-2 mb-2">
-                  <span className="w-20">{placeIndex + 1}번 장소</span>
-                  <button
-                    type="button"
-                    className="text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
-                    onClick={() => handlePlaceSelection(dayIndex, placeIndex)}>
-                    장소 선택
-                  </button>
-                  <input
-                    value={place}
-                    onChange={(e) => updatePlace(dayIndex, placeIndex, e.target.value)}
-                    className="flex-grow border p-2"
-                    disabled
-                  />
-                  <button
-                    className={`text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center ${
-                      day.places.length === 1 ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                    onClick={() => removePlace(dayIndex, placeIndex)}
-                    disabled={day.places.length === 1}>
-                    삭제
-                  </button>
-                  <div className="flex flex-col">
-                    <label htmlFor={`locationMemo-${dayIndex}-${placeIndex}`} className="text-sm">
+                <div key={placeIndex}>
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="w-20">{placeIndex + 1}번 장소</span>
+                    <button
+                      type="button"
+                      className="text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
+                      onClick={() => handlePlaceSelection(dayIndex, placeIndex)}>
+                      장소 선택
+                    </button>
+                    <input value={place.place_name || ""} className="flex-grow border p-2" disabled />
+                    <button
+                      className={`text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center ${
+                        day.places.length === 1 ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                      onClick={() => removePlace(dayIndex, placeIndex)}
+                      disabled={day.places.length === 1}>
+                      삭제
+                    </button>
+                  </div>
+                  <div className="mb-2">
+                    {postType === "" && (
+                      <>
+                        <label htmlFor="inputImages" className="text-sm">
+                          이미지 추가
+                        </label>
+
+                        <input type="file" name="inputImages" id="inputImages" />
+                      </>
+                    )}
+                    <label htmlFor={`placeMemo-${dayIndex}-${placeIndex}`} className="text-sm">
                       장소 메모
                     </label>
                     <input
-                      className="border p-2"
+                      className="flex-grow border p-2 w-full"
                       type="text"
-                      name="locationMemo"
-                      id={`locationMemo-${dayIndex}-${placeIndex}`}
+                      id={`placeMemo-${dayIndex}-${placeIndex}`}
+                      value={place.placeMemo || ""}
+                      onChange={(e) => handlePlaceMemoChange(dayIndex, placeIndex, e.target.value)}
                     />
                   </div>
                 </div>
@@ -205,14 +268,17 @@ const CourseForm = () => {
           </button>
         </div>
       </div>
-
       <div>
+        {isSelectPlace && (
+          <div className="flex text-xl text-blue-600 font-bold bg-green-200 justify-center my-3">
+            Day {selectedDayIndex + 1} : {selectedPlaceIndex + 1}번 장소 선택 중
+          </div>
+        )}
         <CourseMapComponent
           onSave={handleSavePlace}
-          onLoad={handleMapLoad}
           selectedDayIndex={selectedDayIndex}
           selectedPlaceIndex={selectedPlaceIndex}
-          savedPlaces={savedPlaces}
+          isSelectPlace={isSelectPlace}
         />
       </div>
     </div>
