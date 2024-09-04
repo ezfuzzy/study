@@ -1,6 +1,10 @@
 package com.example.step07gallery
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -8,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     val list = mutableListOf<GalleryDto>()
     lateinit var adapter: GalleryAdapter
@@ -22,6 +26,8 @@ class MainActivity : AppCompatActivity() {
         listView.adapter = adapter
 
         refresh()
+
+        listView.setOnItemClickListener(this)
     }
 
     fun refresh() {
@@ -52,5 +58,22 @@ class MainActivity : AppCompatActivity() {
             // ui update
             adapter.notifyDataSetChanged()
         }
+    }
+
+    override fun onItemClick(p0: AdapterView<*>?, view: View?, index: Int, id: Long) {
+        /*
+            view - 클릭한 cell의 view 객체
+            index - 클릭한 cell의 인덱스
+            id - 클릭한 cell의 primary key
+         */
+        /*
+            class type을 만드는 방법
+            java - [classname].class
+            kotlin - [classname]::class.java
+         */
+        val intent = Intent(this, DetailActivity::class.java)
+
+        intent.putExtra("num",id)
+        startActivity(intent)
     }
 }
