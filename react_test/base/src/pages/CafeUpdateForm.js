@@ -1,20 +1,55 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { initEditor } from "../editor/SmartEditor";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import axios from "axios";
 
 function CafeUpdateForm(props) {
+  const { num } = useParams();
   const [editorTool, setEditorTool] = useState([]);
   const navigate = useNavigate();
+
   const inputTitle = useRef();
   const inputContent = useRef();
 
+  const [savedData, setSavedData] = useState({});
+
   useEffect(() => {
-    // initEditor()를 호출하면서 textarea의 id를 전달하면
-    // textarea가 smartEditor로 변경되면서 editor tool 객체가 리턴.
+    axios
+      .get(`/api/cafes/${num}/update`)
+      .then((res) => {
+        console.log(res.data);
+        setSavedData(res.data);
+
+        inputTitle.current.value = res.data.title;
+        inputContent.current.value = res.data.content;
+      })
+      .catch((error) => console.log(error));
+
     setEditorTool(initEditor("content")); // init ~ 해야 초기화 됨
   }, []);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    editorTool.exec();
+
+    const title = inputTitle.current.value;
+    const content = inputContent.current.value;
+
+    axios
+      .put(`/api/cafes/${num}`, { title, content })
+      .then((res) => {
+        console.log(res.data);
+        navigate(`/cafe/${num}`);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleCancel = () => {
+    inputTitle.current.value = savedData.title;
+    inputContent.current.value = savedData.content;
+    setEditorTool(initEditor("content"));
+  };
 
   return (
     <>
@@ -25,25 +60,16 @@ function CafeUpdateForm(props) {
         </FloatingLabel>
         <Form.Group className="mb-3" controlId="content">
           <Form.Label>content</Form.Label>
-          <Form.Control ref={inputContent} as="textarea" rows="20" />
+          <Form.Control ref={inputContent} as="textarea" style={{ height: "300px" }} />
         </Form.Group>
-        <Button
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            editorTool.exec();
-
-            const title = inputTitle.current.value;
-            const content = inputContent.current.value;
-
-            axios
-              .post("/api/cafes", { title, content })
-              .then((res) => console.log(res.data))
-              .catch((error) => console.log(error));
-            navigate("/cafe");
-          }}>
-          save
-        </Button>
+        <div className="flex justify-between">
+          <Button type="success" onClick={handleSubmit}>
+            save
+          </Button>
+          <Button onClick={handleCancel} variant="danger">
+            cancel
+          </Button>
+        </div>
       </Form>
     </>
   );

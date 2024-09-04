@@ -75,8 +75,12 @@ function CafeDetail(props) {
         <h1>{state.title}</h1>
         {state.writer === userName ? (
           <>
-            <Button onClick={handelUpdate}>수정</Button>
-            <Button onClick={handelDelete}>삭제</Button>
+            <Button onClick={handelUpdate} variant="success">
+              수정
+            </Button>
+            <Button onClick={handelDelete} variant="danger">
+              삭제
+            </Button>
           </>
         ) : (
           ""

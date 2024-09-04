@@ -66,7 +66,7 @@ function LoginModal(props) {
           <Form.Control onChange={handleChange} name="userName" type="text" placeholder="User Name..." />
         </FloatingLabel>
         <FloatingLabel controlId="password" label="Password" className="mb-3">
-          <Form.Control onChange={handleChange} name="password" type="text" placeholder="Password..." />
+          <Form.Control onChange={handleChange} name="password" type="password" placeholder="Password..." />
         </FloatingLabel>
         {isError && <Alert variant="danger">아이디 혹은 비밀번호가 틀려요</Alert>}
       </Modal.Body>

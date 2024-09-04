@@ -75,6 +75,11 @@ function initEditor(id = "content") {
       var elIFrame, nEditorWidth, nEditorHeight;
 
       try {
+        const f = document.querySelector("iframe");
+        if (f) {
+          f.remove();
+        }
+
         elIFrame = document.createElement("<iframe frameborder=0 scrolling=no>");
       } catch (e) {
         elIFrame = document.createElement("iframe");

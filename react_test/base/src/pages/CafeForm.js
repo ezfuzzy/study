@@ -25,7 +25,7 @@ function CafeForm(props) {
         </FloatingLabel>
         <Form.Group className="mb-3" controlId="content">
           <Form.Label>content</Form.Label>
-          <Form.Control ref={inputContent} as="textarea" rows="20" />
+          <Form.Control ref={inputContent} as="textarea" style={{ height: "300px" }} />
         </Form.Group>
         <Button
           type="submit"
@@ -38,9 +38,11 @@ function CafeForm(props) {
 
             axios
               .post("/api/cafes", { title, content })
-              .then((res) => console.log(res.data))
+              .then((res) => {
+                console.log(res.data);
+                navigate("/cafe");
+              })
               .catch((error) => console.log(error));
-              navigate("/cafe")
           }}>
           save
         </Button>
