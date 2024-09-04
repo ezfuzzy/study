@@ -229,8 +229,8 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
   };
 
   return (
-    <div className="flex flex-col w-1/2 h-full p-4">
-      <div ref={mapRef} className="flex-grow mb-4" style={{ minHeight: "300px" }}></div>
+    <div className="flex">
+      <div ref={mapRef} className="flex-grow mb-4" style={{ width: "500px", height: "500px" }}></div>
 
       <div>
         <input
@@ -240,7 +240,7 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
           onKeyDown={handleKeyPress}
           placeholder="장소를 검색하세요"
         />
-        <button onClick={handleSearch}>검색</button>
+        <button onClick={handleSearch} className="text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-1.5 text-center">검색</button>
 
         <ul>
           {places.map((place, index) => (
@@ -277,7 +277,7 @@ const CourseMapComponent = ({ onSave, onLoad, selectedDayIndex, selectedPlaceInd
       </div>
 
       <div>
-        <h2>저장된 장소 목록</h2>
+        <h2 className="border">저장된 장소 목록</h2>
 
         <ul>
           {savedPlaces.map((place, index) => (
