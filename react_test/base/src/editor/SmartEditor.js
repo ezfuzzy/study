@@ -205,6 +205,11 @@ function initEditor(id = "content") {
     this.getById[id].exec("UPDATE_CONTENTS_FIELD", []);
   };
 
+  // smartEditor의 내용을 새로운 내용으로 덮어쓰기
+  oEditors.setContents = function (contents) {
+    this.getById[id].setContents(contents);
+  };
+
   return oEditors;
 }
 

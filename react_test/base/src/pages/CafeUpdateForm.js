@@ -4,6 +4,7 @@ import { initEditor } from "../editor/SmartEditor";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import axios from "axios";
 
+
 function CafeUpdateForm(props) {
   const { num } = useParams();
   const [editorTool, setEditorTool] = useState([]);
@@ -27,6 +28,16 @@ function CafeUpdateForm(props) {
       .catch((error) => console.log(error));
 
     setEditorTool(initEditor("content")); // init ~ 해야 초기화 됨
+    const handelResize = () => {
+      setEditorTool(initEditor("content"));
+    };
+
+    window.addEventListener("resize", handelResize);
+
+    // 컴포넌트가 비활성화될때 실행
+    return () => {
+      window.removeEventListener("resize", handelResize);
+    };
   }, []);
 
   const handleSubmit = (event) => {
@@ -47,8 +58,7 @@ function CafeUpdateForm(props) {
 
   const handleCancel = () => {
     inputTitle.current.value = savedData.title;
-    inputContent.current.value = savedData.content;
-    setEditorTool(initEditor("content"));
+    editorTool.setContents(savedData.content);
   };
 
   return (

@@ -51,7 +51,6 @@ function CafeDetail(props) {
 
   return (
     <div>
-      <ConfirmModal show={confirmShow} message="삭제하시겠습니까?" yes={handleYes} no={handleNo} />
       <nav>
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -103,6 +102,14 @@ function CafeDetail(props) {
         </table>
         <div className={cx("content")} dangerouslySetInnerHTML={{ __html: state.content }}></div>
       </nav>
+      <ConfirmModal show={confirmShow} message="삭제하시겠습니까?" yes={handleYes} no={handleNo} />
+      <h3>댓글</h3>
+      <form action={`/api/cafes/${num}/comments`} method="post" className={cx("comment-form")}>
+        <input type="hidden" name="ref_group" defaultValue={state.num} />
+        <input type="hidden" name="target_id" defaultValue={state.writer} />
+        <textarea name="content"></textarea>
+        <button type="submit">등록</button>
+      </form>
     </div>
   );
 }
