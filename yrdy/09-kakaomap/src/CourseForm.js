@@ -7,7 +7,7 @@ const CourseForm = () => {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState([]);
+  const [postTags, setTags] = useState([]);
   const [days, setDays] = useState([{ places: [""], dayMemo: "" }]);
 
   const [postType, setPostType] = useState("");
@@ -19,34 +19,42 @@ const CourseForm = () => {
   const [isSelectPlace, setIsSelectPlace] = useState(false);
 
   useEffect(() => {}, []);
+  
   const handleSubmit = () => {
-    const formData = {
+    const tags = postTags.join(", ");
+    console.log(tags);
+
+    const post = {
       title,
       country,
       city,
       tags,
-      days: days.map((day) => ({
-        ...day,
-        places: day.places.map((place) => ({
-          ...place,
-          position: {
-            latitude: place.position.Ma,
-            longitude: place.position.La,
-          },
-        })),
-      })),
+      postData: days,
     };
 
-    console.log(formData);
+    console.log(post);
 
     axios
-      .post("/api/v1/posts", formData)
-      .then((res) => console.log(res.data))
+      .post("/api/v1/posts/course", post)
+      .then((res) => {
+        console.log(res.data);
+        console.log(res.data.postData);
+        console.log(res.data.type)
+      })
       .catch((error) => console.log(error));
   };
 
   const test1 = () => {
     console.log(days);
+    const jsonObject = {
+      title,
+      country,
+      city,
+      postTags,
+      days,
+    };
+    console.log(jsonObject);
+    //console.log(typeof JSON.stringify(formData));
   };
 
   const handleTagInput = (e) => {
@@ -55,14 +63,14 @@ const CourseForm = () => {
 
     if (value.endsWith(" ") && value.trim() !== "") {
       const newTag = value.trim();
-      if (newTag !== "#" && newTag.startsWith("#") && !tags.includes(newTag)) {
-        setTags([...tags, newTag]);
+      if (newTag !== "#" && newTag.startsWith("#") && !postTags.includes(newTag)) {
+        setTags([...postTags, newTag]);
         setTagInput("");
       }
     }
   };
 
-  const removeTag = (tagToRemove) => setTags(tags.filter((tag) => tag !== tagToRemove));
+  const removeTag = (tagToRemove) => setTags(postTags.filter((tag) => tag !== tagToRemove));
 
   const addDay = () => setDays([...days, { places: [""], dayMemo: "" }]);
 
@@ -174,7 +182,7 @@ const CourseForm = () => {
               className="border p-2 w-full"
             />
             <div className="flex flex-wrap gap-2 mt-2">
-              {tags.map((tag, index) => (
+              {postTags.map((tag, index) => (
                 <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full flex items-center">
                   {tag}
                   <button className="ml-1 p-0 h-4 w-4 text-red-500" onClick={() => removeTag(tag)}>
