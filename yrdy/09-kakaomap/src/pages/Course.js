@@ -7,7 +7,7 @@ function Course(props) {
 
   useEffect(() => {
     axios
-      .get("/api/v1/posts")
+      .get("/api/v1/posts/course")
       .then((res) => {
         console.log(res.data);
         setPostList(res.data);
