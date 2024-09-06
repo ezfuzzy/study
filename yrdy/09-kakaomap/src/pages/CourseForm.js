@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CourseMapComponent from "./CourseMapComponent";
+import { Link } from "react-router-dom";
 
 const CourseForm = () => {
   const [title, setTitle] = useState("");
@@ -19,7 +20,7 @@ const CourseForm = () => {
   const [isSelectPlace, setIsSelectPlace] = useState(false);
 
   useEffect(() => {}, []);
-  
+
   const handleSubmit = () => {
     const tags = postTags.join(", ");
     console.log(tags);
@@ -39,7 +40,7 @@ const CourseForm = () => {
       .then((res) => {
         console.log(res.data);
         console.log(res.data.postData);
-        console.log(res.data.type)
+        console.log(res.data.type);
       })
       .catch((error) => console.log(error));
   };
@@ -127,6 +128,13 @@ const CourseForm = () => {
     <div className="flex h-screen bg-gray-100">
       {/* Travel course writing form */}
       <div className="flex flex-col w-1/2 p-6 overflow-auto">
+        <div className="mb-5">
+          <Link
+            className="text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
+            to="/">
+            home
+          </Link>
+        </div>
         <div className="flex justify-between items-center mb-2">
           <h1 className="text-2xl font-bold mb-4">여행 코스 글쓰기</h1>
           <button
