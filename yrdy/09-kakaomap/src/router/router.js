@@ -6,8 +6,8 @@ import Course from "../pages/Course";
 
 const routes = [
   { path: "/", element: <Home /> },
-  { path: "/post", element: <Course /> },
-  { path: "/post/new", element: <CourseForm /> },
+  { path: "/post/course", element: <Course /> },
+  { path: "/post/course/new", element: <CourseForm /> },
 ];
 
 // create BrowserRouter

@@ -16,26 +16,31 @@ const CourseMapComponent = ({ onSave, selectedDayIndex, selectedPlaceIndex, isSe
         return;
       }
 
+      // 맵 생성
       const map = new window.kakao.maps.Map(mapRef.current, {
         center: new window.kakao.maps.LatLng(37.5665, 126.978),
         level: 3,
       });
       setMap(map);
 
+      // 클릭 이벤트 리스너 등록
       window.kakao.maps.event.addListener(map, "click", () => {
         window.closeInfoWindow();
         setSelectedPlace(null);
       });
     };
 
-    if (!window.kakao || !window.kakao.maps) {
-      const script = document.createElement("script");
-      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=de8bb4ac88880a204a617a3e3f74d387&libraries=services`;
-      script.onload = initializeMap;
-      document.head.appendChild(script);
-    } else {
-      initializeMap();
-    }
+    const script = document.createElement("script");
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=de8bb4ac88880a204a617a3e3f74d387&autoload=false&libraries=services`;
+    script.async = false; // 스크립트 비동기 로드
+    script.onload = () => {
+      window.kakao.maps.load(initializeMap); // API 로드 후 초기화 함수 실행
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
   }, []);
 
   const clearMarkers = () => {

@@ -102,9 +102,16 @@ const CourseForm = () => {
   const handleSavePlace = (place) => {
     if (place && isSelectPlace) {
       const newDays = [...days];
-      newDays[place.dayIndex].places[place.placeIndex] = place;
+
+      const currentPlace = newDays[place.dayIndex].places[place.placeIndex];
+      const updatedPlace = {
+        ...place,
+        placeMemo: currentPlace.placeMemo || "", // 기존 메모를 유지
+      };
+
+      newDays[place.dayIndex].places[place.placeIndex] = updatedPlace;
       setDays(newDays);
-      setSavedPlaces([...savedPlaces, place]);
+      setSavedPlaces([...savedPlaces, updatedPlace]);
       setIsSelectPlace(false);
     }
   };
@@ -133,6 +140,11 @@ const CourseForm = () => {
             className="text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
             to="/">
             home
+          </Link>
+          <Link
+            className="text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
+            to="/post/course">
+            course
           </Link>
         </div>
         <div className="flex justify-between items-center mb-2">
@@ -259,16 +271,18 @@ const CourseForm = () => {
                         <input type="file" name="inputImages" id="inputImages" />
                       </>
                     )}
-                    <label htmlFor={`placeMemo-${dayIndex}-${placeIndex}`} className="text-sm">
-                      장소 메모
-                    </label>
-                    <input
-                      className="flex-grow border p-2 w-full"
-                      type="text"
-                      id={`placeMemo-${dayIndex}-${placeIndex}`}
-                      value={place.placeMemo || ""}
-                      onChange={(e) => handlePlaceMemoChange(dayIndex, placeIndex, e.target.value)}
-                    />
+                    <div>
+                      <label htmlFor={`placeMemo-${dayIndex}-${placeIndex}`} className="text-sm">
+                        장소 메모
+                      </label>
+                      <input
+                        className="flex-grow border p-2 w-full"
+                        type="text"
+                        id={`placeMemo-${dayIndex}-${placeIndex}`}
+                        value={place.placeMemo || ""}
+                        onChange={(e) => handlePlaceMemoChange(dayIndex, placeIndex, e.target.value)}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -284,19 +298,27 @@ const CourseForm = () => {
           </button>
         </div>
       </div>
-      <div>
-        {isSelectPlace && (
-          <div className="flex text-xl text-blue-600 font-bold bg-green-200 justify-center my-3">
-            Day {selectedDayIndex + 1} : {selectedPlaceIndex + 1}번 장소 선택 중
+      {/* 모달 팝업 */}
+      {isSelectPlace && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-w-4xl">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">장소 선택</h2>
+              <button
+                onClick={() => setIsSelectPlace(false)} // 모달 닫기
+                className="text-red-600 font-bold text-lg">
+                &times;
+              </button>
+            </div>
+            <CourseMapComponent
+              onSave={handleSavePlace}
+              selectedDayIndex={selectedDayIndex}
+              selectedPlaceIndex={selectedPlaceIndex}
+              isSelectPlace={isSelectPlace}
+            />
           </div>
-        )}
-        <CourseMapComponent
-          onSave={handleSavePlace}
-          selectedDayIndex={selectedDayIndex}
-          selectedPlaceIndex={selectedPlaceIndex}
-          isSelectPlace={isSelectPlace}
-        />
-      </div>
+        </div>
+      )}
     </div>
   );
 };
