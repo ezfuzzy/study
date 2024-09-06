@@ -5,15 +5,12 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".BannerActivity"
     android:orientation="vertical">
 
-    <com.example.step09customview.MyView
+    <com.example.step09example.Banner
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
-    <com.example.step09customview.YourView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="match_parent"
+        android:id="@+id/banner" />
 
 </LinearLayout>
