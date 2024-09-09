@@ -18,6 +18,7 @@ function CafeDetail(props) {
 
   const [state, setState] = useState({});
   const [confirmShow, setConfirmShow] = useState(false);
+  const [commentList, setCommentList] = useState([]);
 
   useEffect(() => {
     axios
@@ -25,6 +26,7 @@ function CafeDetail(props) {
       .then((res) => {
         console.log(res.data);
         setState(res.data.dto);
+        setCommentList(res.data.commentList);
       })
       .catch((error) => console.log(error));
   }, [num]);
@@ -67,7 +69,14 @@ function CafeDetail(props) {
     //const json = Object.fromEntries(formData.entries)
 
     axios[method](action, formData)
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+        // commentList.splice(0, 0, res.data);
+        setCommentList([
+          res.data,
+          ...commentList
+        ]);
+      })
       .catch((error) => console.log(error));
   };
 
@@ -136,6 +145,23 @@ function CafeDetail(props) {
         <textarea name="content"></textarea>
         <button type="submit">등록</button>
       </form>
+      <div className={cx("comments")}>
+        <ul>
+          {commentList.map((item) => (
+            <li key={item.num}>
+              <dl>
+                <dt>
+                  <span>{item.writer}</span>
+                  <small>{item.regdate}</small>
+                </dt>
+                <dd>
+                  <pre>{item.content}</pre>
+                </dd>
+              </dl>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
