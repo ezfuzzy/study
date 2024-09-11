@@ -9,6 +9,8 @@ import { Button } from "react-bootstrap";
 import ConfirmModal from "../components/ConfirmModal";
 const cx = binder.bind(myCss);
 
+let commentIndex = 0;
+
 function CafeDetail(props) {
   const { num } = useParams();
   const navigate = useNavigate();
@@ -77,7 +79,9 @@ function CafeDetail(props) {
         const newComment = res.data;
         newComment.ref = createRef();
 
-        setCommentList([newComment, ...commentList]);
+        commentList.splice(commentIndex, 0, newComment);
+        setCommentList([...commentList]);
+        e.target.content.value = "";
       })
       .catch((error) => console.log(error));
   };
@@ -145,12 +149,29 @@ function CafeDetail(props) {
         <input type="hidden" name="ref_group" defaultValue={state.num} />
         <input type="hidden" name="target_id" defaultValue={state.writer} />
         <textarea name="content"></textarea>
-        <button type="submit">등록</button>
+        <Button variant="success" type="submit">
+          등록
+        </Button>
       </form>
       <div className={cx("comments")}>
         <ul>
-          {commentList.map((item) => (
-            <li key={item.num} ref={item.ref}>
+          {commentList.map((item, index) => (
+            <li key={item.num} ref={item.ref} className={cx({ indent: item.num !== item.comment_group })}>
+              <svg
+                style={{
+                  display: item.num !== item.comment_group ? "inline" : "none",
+                }}
+                className={cx("reply-icon")}
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16">
+                <path
+                  fillRule="evenodd"
+                  d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"
+                />
+              </svg>
               <dl>
                 <dt>
                   {item.profile === null ? (
@@ -202,7 +223,16 @@ function CafeDetail(props) {
                 <input type="hidden" name="target_id" defaultValue={item.writer} />
                 <input type="hidden" name="comment_group" defaultValue={item.comment_group} />
                 <textarea name="content"></textarea>
-                <button type="submit">등록</button>
+                <Button
+                  variant="success"
+                  type="submit"
+                  onClick={() => {
+                    item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "none";
+                    item.ref.current.querySelector(".answer-btn").innerText = "답글";
+                    commentIndex = index + 1;
+                  }}>
+                  등록
+                </Button>
               </form>
             </li>
           ))}
