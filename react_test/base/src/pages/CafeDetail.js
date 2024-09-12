@@ -22,6 +22,11 @@ function CafeDetail(props) {
   const [confirmShow, setConfirmShow] = useState(false);
   const [commentList, setCommentList] = useState([]);
 
+  //댓글 추가 로딩
+  const [pageNum, setPageNum] = useState(1);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     axios
       .get(`/api/cafes/${num}?${new URLSearchParams(params).toString()}`)
@@ -33,6 +38,7 @@ function CafeDetail(props) {
           return item;
         });
         setCommentList(list);
+        setTotalPageCount(res.data.totalPageCount);
       })
       .catch((error) => console.log(error));
   }, [num]);
@@ -84,6 +90,51 @@ function CafeDetail(props) {
         e.target.content.value = "";
       })
       .catch((error) => console.log(error));
+  };
+
+  const handleCommentDelete = (commentNum, ref) => {
+    axios
+      .delete(`/api/cafes/${num}/comments/${commentNum}/`)
+      .then((res) => {
+        ref.current.querySelector("dl").outerHTML = "<p>삭제된 댓글입니다</p>";
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleCommentEdit = (e) => {
+    e.preventDefault();
+    const action = e.target.action;
+    const formData = new FormData(e.target);
+    // const method = e.target.method;
+
+    axios
+      .patch(action, formData)
+      .then((res) => {
+        console.log(res.data);
+        const newCommentList = commentList.map((item) => {
+          if (item.num === res.data.num) {
+            item.content = res.data.content;
+          }
+          return item;
+        });
+        setCommentList(newCommentList);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleMoreComment = () => {
+    const isLast = pageNum >= totalPageCount;
+    if (isLast) {
+      return;
+    } else {
+      setIsLoading(true);
+      axios
+        .get(``)
+        .then((res) => {
+          setIsLoading(false);
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
@@ -172,48 +223,78 @@ function CafeDetail(props) {
                   d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"
                 />
               </svg>
-              <dl>
-                <dt>
-                  {item.profile === null ? (
-                    <svg
-                      className={cx("profile-image")}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      viewBox="0 0 16 16">
-                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                      <path
-                        fillRule="evenodd"
-                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-                      />
-                    </svg>
-                  ) : (
-                    <img className={cx("profile-image")} src={`/upload/images/${item.profile}`} alt="프로필 이미지" />
-                  )}
-                  <span>{item.writer}</span>
-                  {item.num !== item.comment_group ? <i>@{item.target_id}</i> : null}
-                  <small>{item.regdate}</small>
-                  <Button
-                    variant="outline-success"
-                    size="sm"
-                    className="answer-btn"
-                    onClick={(e) => {
-                      if (e.target.innerText === "답글") {
-                        e.target.innerText = "취소";
-                        item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "flex";
-                      } else {
-                        e.target.innerText = "답글";
-                        item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "none";
-                      }
-                    }}>
-                    답글
-                  </Button>
-                </dt>
-                <dd>
-                  <pre>{item.content}</pre>
-                </dd>
-              </dl>
+              {item.deleted === "yes" ? (
+                <o>삭제된 댓글입니다.</o>
+              ) : (
+                <dl>
+                  <dt>
+                    {item.profile === null ? (
+                      <svg
+                        className={cx("profile-image")}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                        />
+                      </svg>
+                    ) : (
+                      <img className={cx("profile-image")} src={`/upload/images/${item.profile}`} alt="프로필 이미지" />
+                    )}
+                    <span>{item.writer}</span>
+                    {item.num !== item.comment_group ? <i>@{item.target_id}</i> : null}
+                    <small>{item.regdate}</small>
+                    <Button
+                      variant="outline-success"
+                      size="sm"
+                      className="answer-btn"
+                      onClick={(e) => {
+                        if (e.target.innerText === "답글") {
+                          e.target.innerText = "취소";
+                          item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "flex";
+                        } else {
+                          e.target.innerText = "답글";
+                          item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "none";
+                        }
+                      }}>
+                      답글
+                    </Button>
+                    {item.writer === userName && (
+                      <>
+                        <Button
+                          className="update-btn mx-3"
+                          variant="outline-warning"
+                          size="sm"
+                          onClick={(e) => {
+                            const text = e.target.innerText;
+                            if (text === "수정") {
+                              e.target.innerText = "수정취소";
+                              item.ref.current.querySelector("." + cx("update-form")).style.display = "flex";
+                            } else {
+                              e.target.innerText = "수정";
+                              item.ref.current.querySelector("." + cx("update-form")).style.display = "none";
+                            }
+                          }}>
+                          수정
+                        </Button>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => handleCommentDelete(item.num, item.ref)}>
+                          삭제
+                        </Button>
+                      </>
+                    )}
+                  </dt>
+                  <dd>
+                    <pre>{item.content}</pre>
+                  </dd>
+                </dl>
+              )}
               <form
                 action={`/api/cafes/${num}/comments`}
                 className={cx("re-insert-form")}
@@ -222,7 +303,7 @@ function CafeDetail(props) {
                 <input type="hidden" name="ref_group" defaultValue={state.num} />
                 <input type="hidden" name="target_id" defaultValue={item.writer} />
                 <input type="hidden" name="comment_group" defaultValue={item.comment_group} />
-                <textarea name="content"></textarea>
+                <textarea name="content" defaultValue={item.content}></textarea>
                 <Button
                   variant="success"
                   type="submit"
@@ -234,9 +315,32 @@ function CafeDetail(props) {
                   등록
                 </Button>
               </form>
+              {item.writer === userName && (
+                <form
+                  className={cx("update-form")}
+                  action={`/api/cafes/${num}/comments/${item.num}`}
+                  method="patch"
+                  onSubmit={handleCommentEdit}>
+                  <input type="hidden" name="num" defaultValue={item.num} />
+                  <textarea name="content" defaultValue={item.content}></textarea>
+                  <button
+                    type="submit"
+                    onClick={() => {
+                      item.ref.current.querySelector("." + cx("update-form")).style.display = "none";
+                      item.ref.current.querySelector("." + cx("update-btn")).innerText = "수정";
+                    }}>
+                    수정확인
+                  </button>
+                </form>
+              )}
             </li>
           ))}
         </ul>
+      </div>
+      <div className="d-grid col-md-6 mx-auto mb-5">
+        <Button disabled={isLoading} variant="success" onClick={handleMoreComment}>
+          {isLoading ? <span className="spinner-border spinner-grow-lg"></span> : <span>댓글 더보기</span>}
+        </Button>
       </div>
     </div>
   );
