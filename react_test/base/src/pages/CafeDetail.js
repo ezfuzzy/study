@@ -128,9 +128,19 @@ function CafeDetail(props) {
       return;
     } else {
       setIsLoading(true);
+      const page = pageNum + 1;
+      setPageNum(pageNum + 1);
+
       axios
-        .get(``)
+        .get(`/api/cafes/${num}/comments?pageNum=${page}`)
         .then((res) => {
+          console.log(res.data);
+          const list = res.data.commentList.map((item) => {
+            item.ref = createRef();
+            return item;
+          });
+          setCommentList([...commentList, ...list]);
+          setTotalPageCount(res.data.totalPageCount);
           setIsLoading(false);
         })
         .catch((error) => console.log(error));
