@@ -1,151 +1,151 @@
-import axios from "axios";
-import React, { createRef, useEffect, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import axios from "axios"
+import React, { createRef, useEffect, useState } from "react"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 
-import myCss from "./css/cafe_detail.module.css";
-import binder from "classnames/bind";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "react-bootstrap";
-import ConfirmModal from "../components/ConfirmModal";
-const cx = binder.bind(myCss);
+import myCss from "./css/cafe_detail.module.css"
+import binder from "classnames/bind"
+import { useDispatch, useSelector } from "react-redux"
+import { Button } from "react-bootstrap"
+import ConfirmModal from "../components/ConfirmModal"
+const cx = binder.bind(myCss)
 
-let commentIndex = 0;
+let commentIndex = 0
 
 function CafeDetail(props) {
-  const { num } = useParams();
-  const navigate = useNavigate();
-  const userName = useSelector((state) => state.userName);
-  const [params, setParams] = useSearchParams();
-  const dispatch = useDispatch();
+  const { num } = useParams()
+  const navigate = useNavigate()
+  const userName = useSelector((state) => state.userName)
+  const [params, setParams] = useSearchParams()
+  const dispatch = useDispatch()
 
-  const [state, setState] = useState({});
-  const [confirmShow, setConfirmShow] = useState(false);
-  const [commentList, setCommentList] = useState([]);
+  const [state, setState] = useState({})
+  const [confirmShow, setConfirmShow] = useState(false)
+  const [commentList, setCommentList] = useState([])
 
   //댓글 추가 로딩
-  const [pageNum, setPageNum] = useState(1);
-  const [totalPageCount, setTotalPageCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [pageNum, setPageNum] = useState(1)
+  const [totalPageCount, setTotalPageCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     axios
       .get(`/api/cafes/${num}?${new URLSearchParams(params).toString()}`)
       .then((res) => {
-        console.log(res.data);
-        setState(res.data.dto);
+        console.log(res.data)
+        setState(res.data.dto)
         const list = res.data.commentList.map((item) => {
-          item.ref = createRef();
-          return item;
-        });
-        setCommentList(list);
-        setTotalPageCount(res.data.totalPageCount);
+          item.ref = createRef()
+          return item
+        })
+        setCommentList(list)
+        setTotalPageCount(res.data.totalPageCount)
       })
-      .catch((error) => console.log(error));
-  }, [num]);
+      .catch((error) => console.log(error))
+  }, [num])
 
   const handelUpdate = () => {
-    navigate(`/cafe/${num}/update`);
-  };
+    navigate(`/cafe/${num}/update`)
+  }
 
   const handelDelete = () => {
-    setConfirmShow(true);
-  };
+    setConfirmShow(true)
+  }
 
   const handleYes = () => {
     axios
       .delete(`/api/cafes/${num}`)
       .then((res) => {
-        console.log(res.data);
-        navigate("/cafe");
+        console.log(res.data)
+        navigate("/cafe")
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error))
+  }
 
   const handleNo = () => {
-    setConfirmShow(false);
-  };
+    setConfirmShow(false)
+  }
 
   const handleCommentSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!userName) {
-      const payload = { show: true, message: "로그인한 사용자만 댓글을 작성할 수 있습니다." };
-      dispatch({ type: "LOGIN_MODAL", payload });
-      return;
+      const payload = { show: true, message: "로그인한 사용자만 댓글을 작성할 수 있습니다." }
+      dispatch({ type: "LOGIN_MODAL", payload })
+      return
     }
 
-    const action = e.target.action;
-    const method = e.target.method;
-    const formData = new FormData(e.target);
+    const action = e.target.action
+    const method = e.target.method
+    const formData = new FormData(e.target)
 
     //const json = Object.fromEntries(formData.entries)
 
     axios[method](action, formData)
       .then((res) => {
-        const newComment = res.data;
-        newComment.ref = createRef();
+        const newComment = res.data
+        newComment.ref = createRef()
 
-        commentList.splice(commentIndex, 0, newComment);
-        setCommentList([...commentList]);
-        e.target.content.value = "";
+        commentList.splice(commentIndex, 0, newComment)
+        setCommentList([...commentList])
+        e.target.content.value = ""
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error))
+  }
 
   const handleCommentDelete = (commentNum, ref) => {
     axios
       .delete(`/api/cafes/${num}/comments/${commentNum}/`)
       .then((res) => {
-        ref.current.querySelector("dl").outerHTML = "<p>삭제된 댓글입니다</p>";
+        ref.current.querySelector("dl").outerHTML = "<p>삭제된 댓글입니다</p>"
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error))
+  }
 
   const handleCommentEdit = (e) => {
-    e.preventDefault();
-    const action = e.target.action;
-    const formData = new FormData(e.target);
+    e.preventDefault()
+    const action = e.target.action
+    const formData = new FormData(e.target)
     // const method = e.target.method;
 
     axios
       .patch(action, formData)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data)
         const newCommentList = commentList.map((item) => {
           if (item.num === res.data.num) {
-            item.content = res.data.content;
+            item.content = res.data.content
           }
-          return item;
-        });
-        setCommentList(newCommentList);
+          return item
+        })
+        setCommentList(newCommentList)
       })
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error))
+  }
 
   const handleMoreComment = () => {
-    const isLast = pageNum >= totalPageCount;
+    const isLast = pageNum >= totalPageCount
     if (isLast) {
-      return;
+      return
     } else {
-      setIsLoading(true);
-      const page = pageNum + 1;
-      setPageNum(pageNum + 1);
+      setIsLoading(true)
+      const page = pageNum + 1
+      setPageNum(pageNum + 1)
 
       axios
         .get(`/api/cafes/${num}/comments?pageNum=${page}`)
         .then((res) => {
-          console.log(res.data);
+          console.log(res.data)
           const list = res.data.commentList.map((item) => {
-            item.ref = createRef();
-            return item;
-          });
-          setCommentList([...commentList, ...list]);
-          setTotalPageCount(res.data.totalPageCount);
-          setIsLoading(false);
+            item.ref = createRef()
+            return item
+          })
+          setCommentList([...commentList, ...list])
+          setTotalPageCount(res.data.totalPageCount)
+          setIsLoading(false)
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error))
     }
-  };
+  }
 
   return (
     <div>
@@ -214,6 +214,7 @@ function CafeDetail(props) {
           등록
         </Button>
       </form>
+      {/* 댓글 목록 출력  */}
       <div className={cx("comments")}>
         <ul>
           {commentList.map((item, index) => (
@@ -264,11 +265,11 @@ function CafeDetail(props) {
                       className="answer-btn"
                       onClick={(e) => {
                         if (e.target.innerText === "답글") {
-                          e.target.innerText = "취소";
-                          item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "flex";
+                          e.target.innerText = "취소"
+                          item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "flex"
                         } else {
-                          e.target.innerText = "답글";
-                          item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "none";
+                          e.target.innerText = "답글"
+                          item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "none"
                         }
                       }}>
                       답글
@@ -280,13 +281,13 @@ function CafeDetail(props) {
                           variant="outline-warning"
                           size="sm"
                           onClick={(e) => {
-                            const text = e.target.innerText;
+                            const text = e.target.innerText
                             if (text === "수정") {
-                              e.target.innerText = "수정취소";
-                              item.ref.current.querySelector("." + cx("update-form")).style.display = "flex";
+                              e.target.innerText = "수정취소"
+                              item.ref.current.querySelector("." + cx("update-form")).style.display = "flex"
                             } else {
-                              e.target.innerText = "수정";
-                              item.ref.current.querySelector("." + cx("update-form")).style.display = "none";
+                              e.target.innerText = "수정"
+                              item.ref.current.querySelector("." + cx("update-form")).style.display = "none"
                             }
                           }}>
                           수정
@@ -318,9 +319,9 @@ function CafeDetail(props) {
                   variant="success"
                   type="submit"
                   onClick={() => {
-                    item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "none";
-                    item.ref.current.querySelector(".answer-btn").innerText = "답글";
-                    commentIndex = index + 1;
+                    item.ref.current.querySelector("." + cx("re-insert-form")).style.display = "none"
+                    item.ref.current.querySelector(".answer-btn").innerText = "답글"
+                    commentIndex = index + 1
                   }}>
                   등록
                 </Button>
@@ -336,8 +337,8 @@ function CafeDetail(props) {
                   <button
                     type="submit"
                     onClick={() => {
-                      item.ref.current.querySelector("." + cx("update-form")).style.display = "none";
-                      item.ref.current.querySelector("." + cx("update-btn")).innerText = "수정";
+                      item.ref.current.querySelector("." + cx("update-form")).style.display = "none"
+                      item.ref.current.querySelector("." + cx("update-btn")).innerText = "수정"
                     }}>
                     수정확인
                   </button>
@@ -353,7 +354,7 @@ function CafeDetail(props) {
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
-export default CafeDetail;
+export default CafeDetail

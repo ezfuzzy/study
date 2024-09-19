@@ -83,3 +83,15 @@
 .comments dt small {
   margin-right: auto;
 }
+
+/* 댓글의 경계선 + padding top  */
+.comments li {
+  border-bottom: solid 1px #cecece;
+  padding-top: 5px;
+}
+
+/* 삭제된 댓글에 여백 추가  */
+.comments li p {
+  padding-top: 10px;
+  margin-bottom: 50px;
+}
