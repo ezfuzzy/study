@@ -16,5 +16,10 @@
         android:layout_height="wrap_content"
         android:text="Start Dragon Flight" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sound button"
+        android:id="@+id/playBtn"/>
 
 </LinearLayout>

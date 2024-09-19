@@ -13,18 +13,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SoundManager sm = new SoundManager(this);
-        sm.addSound(1, R.raw.birddie);
-        sm.addSound(2, R.raw.laser1);
-        sm.addSound(3, R.raw.shoot1);
-
-        Button startBtn = findViewById(R.id.startBtn);
-        startBtn.setOnClickListener(view -> {
-            sm.playSound(3);
+        //시작 버튼
+        Button startBtn=findViewById(R.id.startBtn);
+        //버튼을 눌렀을때 리스너 등록하기
+        startBtn.setOnClickListener(view->{
+            //GameActivity 시작하기
             startActivity(new Intent(this, GameActivity.class));
         });
 
+        //소리를 재생할 준비를 한다.
+        SoundManager sm=new SoundManager(this);
+        sm.addSound(1, R.raw.birddie);
+        sm.addSound(2, R.raw.laser1);
+        sm.addSound( 3, R.raw.shoot1);
 
+        Button playBtn=findViewById(R.id.playBtn);
+        playBtn.setOnClickListener(view -> {
+            sm.playSound(2);
+        });
 
     }
 }
