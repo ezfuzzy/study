@@ -51,8 +51,11 @@ public class GameView extends View {
     int[] enemyX=new int[5];
     //랜덤한 숫자를 얻어낼 Random 객체
     Random ran=new Random();
-    // 적기 1 set가 만들어졌으면 생성 쿨타임 적용
-    int postCount = 0;
+    //적기가 1 SET 만들어진 이후에 일정 주기 이후에 다시 만들어 지도록 count 값 관리하기
+    int postCount=0;
+
+    SoundManager soundManager;
+
 
     public GameView(Context context) {
         super(context);
@@ -61,6 +64,11 @@ public class GameView extends View {
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
+
+    public void setSoundManager(SoundManager soundManager) {
+        this.soundManager = soundManager;
+    }
+
     //화면을 주기적으로 갱신하기 위한 Handler 객체
     Handler handler=new Handler(){
         @Override
@@ -101,23 +109,23 @@ public class GameView extends View {
         dragonImgs[3]=dragonImg2;
 
         //미사일 이미지 로딩
-        Bitmap missImg1=BitmapFactory.decodeResource(getResources(),
+        Bitmap missileImg1=BitmapFactory.decodeResource(getResources(),
                 R.drawable.mi1);
-        Bitmap missImg2=BitmapFactory.decodeResource(getResources(),
+        Bitmap missileImg2=BitmapFactory.decodeResource(getResources(),
                 R.drawable.mi2);
-        Bitmap missImg3=BitmapFactory.decodeResource(getResources(),
+        Bitmap missileImg3=BitmapFactory.decodeResource(getResources(),
                 R.drawable.mi3);
         //미사일 이미지 크기 조절
-        missImg1=Bitmap.createScaledBitmap(missImg1,
+        missileImg1=Bitmap.createScaledBitmap(missileImg1,
                 missileSize, missileSize, false);
-        missImg2=Bitmap.createScaledBitmap(missImg2,
+        missileImg2=Bitmap.createScaledBitmap(missileImg2,
                 missileSize, missileSize, false);
-        missImg3=Bitmap.createScaledBitmap(missImg3,
+        missileImg3=Bitmap.createScaledBitmap(missileImg3,
                 missileSize, missileSize, false);
         //미사일 이미지를 배열에 넣어두기
-        missileImgs[0]=missImg1;
-        missileImgs[1]=missImg2;
-        missileImgs[2]=missImg3;
+        missileImgs[0]=missileImg1;
+        missileImgs[1]=missileImg2;
+        missileImgs[2]=missileImg3;
 
         //적기 이미지 로딩
         Bitmap enemyImg1=BitmapFactory
@@ -144,8 +152,8 @@ public class GameView extends View {
         enemyImgs[1][0]=enemyImg3; //1행 0열 gold1
         enemyImgs[1][1]=enemyImg4; //1행 1열 gold2
         //적기의 x 좌표를 구해서 배열에 저장한다.
-        for(int i=0; i<5; i++){
-            enemyX[i] = i*unitSize + unitSize/2;
+        for(int i=0; i<5; i++) {
+            enemyX[i] = i * unitSize + unitSize / 2;
         }
 
         //Handler 객체에 메세지를 보내서 지속적으로 View 가 다시 그려지도록 한다.
@@ -200,57 +208,61 @@ public class GameView extends View {
         checkStrike();
     }// onDraw()
 
-    //미사일 관련 로직을 처리하는 메소드
-    public void missileService(){
-        if(count%5==0){
-            //미사일 객체 추가하기
-            missileList.add(new Missile(dragonX, dragonY));
-        }
-        //미사일 움직이기
-        for(Missile tmp:missileList){
-            // 미사일의 y 좌표를 미사일의 속도 만큼 감소 시키기
-            tmp.y -= missileSpeed;
-            // 만일 위쪽으로 화면을 벗어 났다면
-            if(tmp.y < -missileSize/2){
-                tmp.isDead=true; //배열에서 제거 될수 있도록 true 로 바꿔준다.
-            }
-        }
-        //미사일 객체를 모두 체크해서 배열에서 제거할 객체는 제거하기(단 반복문을 역순으로 돌아야 한다)
-        for(int i=missileList.size()-1; i>=0; i--){
-            //i번째 Missile 객체를 얻어와서
-            Missile tmp=missileList.get(i);
-            //만일 제거할 미사일 객체라면
-            if(tmp.isDead){
-                //List 에서 i 번째 아이템을 제거 한다.
-                missileList.remove(i);
+    //적기와 미사일의 충돌 검사 하기
+    public void checkStrike(){
+        //반복문 돌면서 미사일 객체를 하나씩 참조하면서
+        for(int i=0; i<missileList.size(); i++){
+            //i번째 미사일 객체
+            Missile m=missileList.get(i);
+            //반복문 돌면서 적기 객체도 하나씩 참조해서
+            for(int j=0; j<enemyList.size(); j++){
+                //j번째 적기 객체
+                Enemy e=enemyList.get(j);
+                // i 번째 미사일의 좌표가 j번째 적기의 4각형 영역안에 있는지 여부를 알아내서
+                boolean isStrike =  m.x > e.x-unitSize/2 &&
+                        m.x < e.x+unitSize/2 &&
+                        m.y > e.y-unitSize/2 &&
+                        m.y < e.y+unitSize/2 ;
+                if(isStrike){
+                    soundManager.playSound(GameActivity.SOUND_SHOOT);
+                    //적기(j번째)의 에너지를 줄이고
+                    e.energy -= 50;
+                    //해당 미사일(i번째)이 제거되도록 한다
+                    m.isDead = true;
+                    //만약 적기의 에너지가 0 이하라면 제거 되도록한다.
+                    if(e.energy <= 0){
+                        soundManager.playSound(GameActivity.SOUND_BIRDDIE);
+                        e.isDead=true;
+                        
+                    }
+                }
             }
         }
     }
 
-    public void enemyService() {
+    //적기 관련 처리
+    public void enemyService(){
 
-        //테스트로 적기 5개를 만들어서 적기 List 에 넣어보기
-
-        int ranNum = ran.nextInt(60);
-        if(ranNum == 10 && postCount >= 25) {
+        //임의의 시점에 적기 5개가 만들어 지도록 한다.
+        int ranNum=ran.nextInt(30);
+        if(ranNum == 10 && postCount > 20){
+            postCount=0;
             for(int i=0; i<5; i++){
                 //적기 객체를 만들어서
                 Enemy e = new Enemy();
                 e.x = enemyX[i]; //미리 계산한 x 좌표를 5개의 적기에 순서대로 넣어준다
                 e.y = unitSize/2;
                 e.type = ran.nextInt(2);
-                e.energy = 100;
+                e.energy = 50 + e.type*50 ; // 0번 type 은 50, 1번 type 은 50+50 의 에너지를 부여하기
                 e.imageIndex = 0;
                 //적기 List 에 추가하기
                 enemyList.add(e);
             }
-            postCount = 0;
         }
-
 
         //적기 움직이기
         for(Enemy tmp:enemyList){
-            tmp.y += missileSpeed/4;
+            tmp.y += missileSpeed/2;
             //만일 아래쪽으로 화면을 벗어 났다면
             if(tmp.y > height+unitSize/2){
                 tmp.isDead=true;//배열에서 제거 될수 있도록 표시한다.
@@ -276,17 +288,31 @@ public class GameView extends View {
         }
     }
 
-    public void checkStrike() {
-        for(int i=0; i < missileList.size(); i++) {
-            Missile m = missileList.get(i);
-            for (int j = 0; j < enemyList.size(); j++) {
-                Enemy e = enemyList.get(i);
-
-                if()
+    //미사일 관련 로직을 처리하는 메소드
+    public void missileService(){
+        if(count%5==0){
+            //미사일 객체 추가하기
+            missileList.add(new Missile(dragonX, dragonY));
+        }
+        //미사일 움직이기
+        for(Missile tmp:missileList){
+            // 미사일의 y 좌표를 미사일의 속도 만큼 감소 시키기
+            tmp.y -= missileSpeed;
+            // 만일 위쪽으로 화면을 벗어 났다면
+            if(tmp.y < -missileSize/2){
+                tmp.isDead=true; //배열에서 제거 될수 있도록 true 로 바꿔준다.
             }
         }
-
-
+        //미사일 객체를 모두 체크해서 배열에서 제거할 객체는 제거하기(단 반복문을 역순으로 돌아야 한다)
+        for(int i=missileList.size()-1; i>=0; i--){
+            //i번째 Missile 객체를 얻어와서
+            Missile tmp=missileList.get(i);
+            //만일 제거할 미사일 객체라면
+            if(tmp.isDead){
+                //List 에서 i 번째 아이템을 제거 한다.
+                missileList.remove(i);
+            }
+        }
     }
 
     //View 가 차지하는 크기 정보가 전달되는 메소드
@@ -321,15 +347,3 @@ public class GameView extends View {
         return true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
