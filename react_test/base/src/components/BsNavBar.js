@@ -2,7 +2,7 @@
 
 import { Button, Container, Nav, Navbar } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
-import { NavLink, useNavigate } from "react-router-dom"
+import { Link, NavLink, useNavigate } from "react-router-dom"
 import AlertModal from "./AlertModal"
 import { useState } from "react"
 
@@ -65,16 +65,19 @@ function BsNavBar() {
             {userName ? (
               <>
                 <Nav>
-                  <Nav.Link>{userName}</Nav.Link>
+                  <Nav.Link as={Link} to="/user/detail">
+                    {userName}
+                  </Nav.Link>
                   <span className="navbar-text mx-3">Signed in</span>
                 </Nav>
-                <Button variant="info" onClick={handleLogout}>
+                <Button size="sm" variant="info" onClick={handleLogout}>
                   Logout
                 </Button>
               </>
             ) : (
               <>
                 <Button
+                  size="sm"
                   variant="warning mx-3"
                   onClick={() => {
                     //로그인 모달을 띄우는 action 을 dispatch 한다
@@ -89,7 +92,7 @@ function BsNavBar() {
                   }}>
                   Sign in
                 </Button>
-                <Button variant="outline-warning" onClick={() => navigate("/user/new")}>
+                <Button size="sm" variant="outline-warning" onClick={() => navigate("/user/new")}>
                   Sign up
                 </Button>
               </>

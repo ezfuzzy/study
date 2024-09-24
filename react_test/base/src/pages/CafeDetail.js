@@ -314,7 +314,7 @@ function CafeDetail(props) {
                 <input type="hidden" name="ref_group" defaultValue={state.num} />
                 <input type="hidden" name="target_id" defaultValue={item.writer} />
                 <input type="hidden" name="comment_group" defaultValue={item.comment_group} />
-                <textarea name="content" defaultValue={item.content}></textarea>
+                <textarea name="content"></textarea>
                 <Button
                   variant="success"
                   type="submit"

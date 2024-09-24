@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom"
+import ProtectedRoute from "../components/ProtectedRoute" // 인증 여부를 체크하는 컴포넌트
 import App from "../App"
 import Home from "../pages/Home"
 import Member from "../pages/Member"
@@ -7,7 +8,6 @@ import MemberUpdateForm from "../pages/MemberUpdateForm"
 import Post from "../pages/Post"
 import Gallery from "../pages/Gallery"
 import GalleryForm from "../pages/GalleryForm"
-import ProtectedRoute from "../components/ProtectedRoute"
 import THome from "../pages/tripDuo/THome"
 import GalleryDetail from "../pages/GalleryDetail"
 import Cafe from "../pages/Cafe"
@@ -17,9 +17,18 @@ import Users from "../pages/admin/Users"
 import CafeDetail from "../pages/CafeDetail"
 import CafeUpdateForm from "../pages/CafeUpdateForm"
 import UserForm from "../pages/UserForm"
+import UserDetail from "../pages/UserDetail"
 
-// route 정보를 배열에 저장
-// :num -> const {num} = useParams() 로 얻어낼 수 있는데 이때 여기에 작성한 변수 명을 따라간다
+// 로그인이 필요한 경로들을 묶어서 처리
+const protectedRoutes = [
+  { path: "/gallery/new", element: <GalleryForm /> },
+  { path: "/cafe/new", element: <CafeForm /> },
+  { path: "/cafe/:num/update", element: <CafeUpdateForm /> },
+  { path: "/admin", element: <DashBoard /> },
+  { path: "/admin/users", element: <Users /> },
+  { path: "/user/detail", element: <UserDetail /> },
+]
+
 const routes = [
   { path: "/", element: <Home /> },
   { path: "/members", element: <Member /> },
@@ -27,45 +36,10 @@ const routes = [
   { path: "/members/:num/update", element: <MemberUpdateForm /> },
   { path: "/posts", element: <Post /> },
   { path: "/gallery", element: <Gallery /> },
-  {
-    path: "/gallery/new",
-    element: (
-      <ProtectedRoute>
-        <GalleryForm />
-      </ProtectedRoute>
-    ),
-  },
   { path: "/gallery/:num", element: <GalleryDetail /> },
   { path: "/cafe", element: <Cafe /> },
-  {
-    path: "/cafe/new",
-    element: (
-      <ProtectedRoute>
-        <CafeForm />
-      </ProtectedRoute>
-    ),
-  },
   { path: "/cafe/:num", element: <CafeDetail /> },
-  { path: "/cafe/:num/update", element: <CafeUpdateForm /> },
   { path: "/user/new", element: <UserForm /> },
-
-  // ### admin page ###
-  {
-    path: "/admin",
-    element: (
-      <ProtectedRoute>
-        <DashBoard />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/users",
-    element: (
-      <ProtectedRoute>
-        <Users />
-      </ProtectedRoute>
-    ),
-  },
 
   // ### tripDuo ###
   { path: "/tripDuo", element: <THome /> },
@@ -76,13 +50,21 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: routes.map((route) => {
-      return {
-        index: route.path === "/", // 자식의 path가 "/"먄 index 페이지
-        path: route.path === "/" ? undefined : route.path, // path에 "/" 2개 표시 방지
-        element: route.element, // 어떤 컴포넌트를 활성화할 것인지
-      }
-    }),
+    children: [
+      ...routes.map((route) => ({
+        index: route.path === "/",
+        path: route.path === "/" ? undefined : route.path,
+        element: route.element,
+      })),
+      // Protected routes
+      {
+        element: <ProtectedRoute />, // 로그인을 요구하는 모든 경로를 ProtectedRoute로 감싸기
+        children: protectedRoutes.map((route) => ({
+          path: route.path,
+          element: route.element,
+        })),
+      },
+    ],
   },
 ])
 

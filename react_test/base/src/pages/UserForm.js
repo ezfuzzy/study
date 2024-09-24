@@ -1,13 +1,18 @@
-import { logRoles } from "@testing-library/react"
 import axios from "axios"
 import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
+import AlertModal from "../components/AlertModal"
+import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 
 const reg_userName = /^[a-z].{4,9}$/
 const reg_password = /[\W]/
 const reg_email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 function UserForm(props) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
@@ -28,6 +33,8 @@ function UserForm(props) {
     email: null,
   })
 
+  const [alertShow, setAlertShow] = useState()
+
   const handleChange = (e) => {
     const { name, value } = e.target
 
@@ -40,8 +47,8 @@ function UserForm(props) {
       [name]: value,
     })
     console.log(formData)
-    console.log(isValid)
-    console.log(isDirty)
+    console.log("isValid : ", isValid)
+    console.log("isDirty : ", isDirty)
 
     validate(e.target.name, e.target.value)
   }
@@ -49,13 +56,13 @@ function UserForm(props) {
   const validate = (name, value) => {
     if (name === "userName") {
       axios
-        .get(`/user/check_username/${value}`)
+        .get(`/api/user/check_username/${value}`)
         .then((res) => {
           console.log(res.data)
 
           setValid({
             ...isValid,
-            [name]: reg_userName.test(value) && res.data.caUse,
+            [name]: reg_userName.test(value) && res.data.canUse,
           })
         })
         .catch((error) => {
@@ -79,10 +86,35 @@ function UserForm(props) {
     }
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    axios
+      .post("/api/user", formData)
+      .then((res) => {
+        if (res.data.isSuccess) {
+          setAlertShow(true)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  const handleYes = () => {
+    navigate("/")
+    const action = {
+      type: "LOGIN_MODAL",
+      payload: {show: true, message: "가입한 아이디로 로그인 하세요"}
+    }
+    dispatch(action)
+  }
+
   return (
     <>
+      <AlertModal show={alertShow} message={`${formData.userName}님 환영합니다 :)`} yes={handleYes} />
       <h1>Sign up</h1>
-      <Form>
+      <Form onSubmit={handleSubmit} noValidate>
         <Form.Group controlId="id" className="mb-3">
           <Form.Label>userName</Form.Label>
           <Form.Control
@@ -133,6 +165,7 @@ function UserForm(props) {
           <Form.Control.Feedback type="invalid">이메일 형식에 맞게 작성해주세요.</Form.Control.Feedback>
         </Form.Group>
         <Button
+          type="submit"
           disabled={!isValid.userName || !isValid.password || !isValid.password2 || !isValid.email}
           variant="primary">
           가입
