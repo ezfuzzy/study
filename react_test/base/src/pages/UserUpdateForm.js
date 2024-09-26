@@ -1,6 +1,7 @@
 import axios from "axios"
 import React, { useEffect, useRef, useState } from "react"
 import { Button, Form } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 const dropZoneStyle = {
   minHeight: "300px",
@@ -30,10 +31,13 @@ const profileStyleForSvg = {
   display: "none",
 }
 
+let savedImageSrc
+
 function UserUpdateForm(props) {
+  const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState({})
   const [imageSrc, setImageSrc] = useState(null)
-  let savedImageSrc
+
   const imageInput = useRef()
   const dropZone = useRef()
   const personSvg = useRef()
@@ -45,6 +49,8 @@ function UserUpdateForm(props) {
         setUserInfo(res.data)
 
         if (res.data.profile) {
+          console.log(res.data.profile)
+
           setImageSrc(`/upload/images/${res.data.profile}`)
           savedImageSrc = `/upload/images/${res.data.profile}`
         } else {
@@ -62,6 +68,8 @@ function UserUpdateForm(props) {
 
   const handleChange = (e) => {
     const file = e.target.files[0]
+    console.log(file)
+
     if (file !== undefined) {
       const reader = new FileReader()
       reader.readAsDataURL(file)
@@ -98,15 +106,17 @@ function UserUpdateForm(props) {
   }
 
   const handleSubmit = (e) => {
+    e.preventDefault()
     const formData = new FormData(e.target)
     axios
-      .patch("/user", formData, {
+      .patch("/api/user", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
         console.log(res.data)
+        navigate("/user/detail")
       })
       .catch((error) => {
         console.log(error)
@@ -116,7 +126,7 @@ function UserUpdateForm(props) {
   return (
     <>
       <h1>회원 정보 수정</h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>사용자명</Form.Label>
           <Form.Control name="userName" defaultValue={userInfo.userName} readOnly />
@@ -136,7 +146,7 @@ function UserUpdateForm(props) {
             accept="image/*"
           />
         </Form.Group>
-        <div>
+        <div className="mb-3">
           <a
             href="about:blank"
             onClick={(e) => {
@@ -148,7 +158,7 @@ function UserUpdateForm(props) {
             </div>
           </a>
         </div>
-        <Button onClick={handleSubmit} type="submit" size="sm" variant="success" className="m-3">
+        <Button type="submit" size="sm" variant="success" className="m-3">
           confirm
         </Button>
         <Button onClick={handleReset} type="reset" size="sm" variant="danger">

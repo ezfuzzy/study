@@ -19,6 +19,7 @@ import CafeUpdateForm from "../pages/CafeUpdateForm"
 import UserForm from "../pages/UserForm"
 import UserDetail from "../pages/UserDetail"
 import UserUpdateForm from "../pages/UserUpdateForm"
+import UserPwdUpdateForm from "../pages/UserPwdUpdateForm"
 
 // 로그인이 필요한 경로들을 묶어서 처리
 const protectedRoutes = [
@@ -29,6 +30,7 @@ const protectedRoutes = [
   { path: "/admin/users", element: <Users /> },
   { path: "/user/detail", element: <UserDetail /> },
   { path: "/user/edit", element: <UserUpdateForm /> },
+  { path: "/user/password/edit", element: <UserPwdUpdateForm /> },
 ]
 
 const routes = [
