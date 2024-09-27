@@ -153,7 +153,7 @@ function UserForm(props) {
           </Form.Group>
         </Form.Group>
         <Form.Group controlId="email" className="mb-3">
-          <Form.Label>password</Form.Label>
+          <Form.Label>email</Form.Label>
           <Form.Control
             onChange={handleChange}
             isValid={isValid.email}

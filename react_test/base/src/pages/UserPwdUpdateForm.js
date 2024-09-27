@@ -1,10 +1,15 @@
 import axios from "axios"
 import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
-const reg_password = /[\W]+/
+const reg_password = /[\W]/
 
 function UserPwdUpdateForm(props) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const [formData, setFormData] = useState({
     password: "",
     newPassword: "",
@@ -35,42 +40,68 @@ function UserPwdUpdateForm(props) {
       ...formData,
       [name]: value,
     })
+
     validate(name, value)
   }
 
   const validate = (name, value) => {
     if (name === "password") {
       axios
-        .get(`/api/user/check_password/${formData.password}`)
+        .get(`/api/user/check_password/${value}`)
         .then((res) => {
-          console.log(res.data)
+          setValid({
+            ...isValid,
+            [name]: res.data,
+          })
         })
         .catch((error) => {
           console.log(error)
         })
-
+    } else if (name === "newPassword") {
       setValid({
         ...isValid,
         [name]: reg_password.test(value),
       })
-    } else if (name === "password2") {
+    } else if (name === "newPassword2") {
       setValid({
         ...isValid,
-        [name]: formData.password === value,
+        [name]: formData.newPassword === value,
       })
     }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    axios
+      .patch("/api/user/password", formData)
+      .then((res) => {
+        console.log(res.data)
+
+        localStorage.removeItem("token") // 로그아웃
+        navigate("/")
+        const payload = {
+          show: true,
+          message: "비밀번호가 변경되었습니다. 다시 로그인 해주세요",
+        }
+        dispatch({ type: "LOGIN_MODAL", payload })
+
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   return (
     <>
       <h1>비밀번호 수정</h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>기존 비밀번호</Form.Label>
           <Form.Control
             isValid={isValid.password}
             isInvalid={!isValid.password && isDirty.password}
-            onChange={handleChange}
+            onBlur={handleChange}
             type="password"
             name="password"
           />
@@ -96,7 +127,7 @@ function UserPwdUpdateForm(props) {
             name="newPassword2"
           />
         </Form.Group>
-        <Button disabled={!isValid.password || !isValid.newPassword || !isValid.newPassword2} variant="success">
+        <Button type="submit" disabled={!isValid.password || !isValid.newPassword || !isValid.newPassword2} variant="success">
           변경
         </Button>
       </Form>

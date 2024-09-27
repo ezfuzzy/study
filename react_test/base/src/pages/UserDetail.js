@@ -17,6 +17,7 @@ function UserDetail(props) {
       .get("/api/user")
       .then((res) => {
         setUserInfo(res.data)
+        console.log(res.data)
       })
       .catch((error) => {
         console.log(error)
@@ -39,7 +40,7 @@ function UserDetail(props) {
         </thead>
         <tbody>
           <tr>
-            <td>아이디</td>
+            <td>아이디(username)</td>
             <td>{userInfo.userName}</td>
           </tr>
           <tr>
@@ -51,6 +52,10 @@ function UserDetail(props) {
             <td>{userInfo.email}</td>
           </tr>
           <tr>
+            <td>가입일</td>
+            <td>{userInfo.regdate}</td>
+          </tr>
+          <tr>
             <td>비밀번호</td>
             <td>
               <Link to="/user/password/edit">수정하기</Link>
@@ -59,7 +64,7 @@ function UserDetail(props) {
           <tr>
             <td style={{ verticalAlign: "middle" }}>프로필 이미지</td>
             <td>
-              {userInfo.profile === undefined ? (
+              {userInfo.profile === undefined || userInfo.profile === null ? (
                 <svg
                   style={profileStyle}
                   xmlns="http://www.w3.org/2000/svg"
