@@ -35,6 +35,7 @@ const protectedRoutes = [
 
 const routes = [
   { path: "/", element: <Home /> },
+  { path: "/index.html", element: <Home /> },
   { path: "/members", element: <Member /> },
   { path: "/members/new", element: <MemberAddForm /> },
   { path: "/members/:num/update", element: <MemberUpdateForm /> },

@@ -15,6 +15,7 @@ function BsNavBar() {
 
   //"로그아웃 되었습니다" 모달을 띄울지 여부
   const [alertShow, setAlertShow] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   const handleLogout = () => {
     //localStorage 에서 token 을 삭제한다
@@ -25,6 +26,8 @@ function BsNavBar() {
     navigate("/")
     // 알림 모달 띄우기
     setAlertShow(true)
+    // 메뉴 닫기
+    setExpanded(false)
   }
 
   const handleYes = () => {
@@ -35,37 +38,37 @@ function BsNavBar() {
   return (
     <>
       <AlertModal show={alertShow} message={"로그 아웃 되었습니다"} yes={handleYes} />
-      <Navbar expand="md" className="bg-success mb-2">
+      <Navbar expand="md" className="bg-success mb-2" expanded={expanded} onToggle={() => setExpanded(!expanded)}>
         <Container>
-          <Navbar.Brand as={NavLink} to="/">
+          <Navbar.Brand as={NavLink} to="/" onClick={() => setExpanded(false)}>
             Acorn
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="one" />
           <Navbar.Collapse id="one">
             <Nav className="me-auto">
-              <Nav.Link as={NavLink} to="/tripDuo">
+              <Nav.Link as={NavLink} to="/tripDuo" onClick={() => setExpanded(false)}>
                 TripDuo
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/members">
+              <Nav.Link as={NavLink} to="/members" onClick={() => setExpanded(false)}>
                 Member
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/posts">
+              <Nav.Link as={NavLink} to="/posts" onClick={() => setExpanded(false)}>
                 Post
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/gallery">
+              <Nav.Link as={NavLink} to="/gallery" onClick={() => setExpanded(false)}>
                 Gallery
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/cafe">
+              <Nav.Link as={NavLink} to="/cafe" onClick={() => setExpanded(false)}>
                 Cafe
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/admin">
+              <Nav.Link as={NavLink} to="/admin" onClick={() => setExpanded(false)}>
                 Admin_DashBoard
               </Nav.Link>
             </Nav>
             {userName ? (
               <>
                 <Nav>
-                  <Nav.Link as={Link} to="/user/detail">
+                  <Nav.Link as={Link} to="/user/detail" onClick={() => setExpanded(false)}>
                     {userName}
                   </Nav.Link>
                   <span className="navbar-text mx-3">Signed in</span>
@@ -89,10 +92,14 @@ function BsNavBar() {
                       },
                     }
                     dispatch(action)
+                    setExpanded(false)
                   }}>
                   Sign in
                 </Button>
-                <Button size="sm" variant="outline-warning" onClick={() => navigate("/user/new")}>
+                <Button size="sm" variant="outline-warning" onClick={() => {
+                  navigate("/user/new")
+                  setExpanded(false)
+                }}>
                   Sign up
                 </Button>
               </>

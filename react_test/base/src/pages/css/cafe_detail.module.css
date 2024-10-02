@@ -78,6 +78,7 @@
 .comments dt {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 /* 댓글 기능 버튼을 우측 끝에 배치하기 위해 */
 .comments dt small {
