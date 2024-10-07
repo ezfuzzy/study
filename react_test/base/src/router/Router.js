@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter, createHashRouter } from "react-router-dom"
 import ProtectedRoute from "../components/ProtectedRoute" // 인증 여부를 체크하는 컴포넌트
 import App from "../App"
 import Home from "../pages/Home"
@@ -20,6 +20,7 @@ import UserForm from "../pages/UserForm"
 import UserDetail from "../pages/UserDetail"
 import UserUpdateForm from "../pages/UserUpdateForm"
 import UserPwdUpdateForm from "../pages/UserPwdUpdateForm"
+import NotFound from "../pages/NotFound"
 
 // 로그인이 필요한 경로들을 묶어서 처리
 const protectedRoutes = [
@@ -45,13 +46,13 @@ const routes = [
   { path: "/cafe", element: <Cafe /> },
   { path: "/cafe/:num", element: <CafeDetail /> },
   { path: "/user/new", element: <UserForm /> },
-
+  { path: "*", element: <NotFound /> },
   // ### tripDuo ###
   { path: "/tripDuo", element: <THome /> },
 ]
 
 // create BrowserRouter
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <App />,

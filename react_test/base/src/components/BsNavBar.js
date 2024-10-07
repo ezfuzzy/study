@@ -4,7 +4,9 @@ import { Button, Container, Nav, Navbar } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, NavLink, useNavigate } from "react-router-dom"
 import AlertModal from "./AlertModal"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { decodeToken } from "jsontokens"
 
 function BsNavBar() {
   //로그인된 사용자명이 있는지 store 에서 읽어와 본다.
@@ -17,6 +19,27 @@ function BsNavBar() {
   const [alertShow, setAlertShow] = useState(false)
   const [expanded, setExpanded] = useState(false)
 
+  const [remainTime, setRemainTime] = useState(0)
+
+  useEffect(() => {
+    const updateRemainTime = () => {
+      if (localStorage.token) {
+        const result = decodeToken(localStorage.token.substring(7))
+        const expTime = result.payload.exp * 1000
+        const now = new Date().getTime()
+        setRemainTime(Math.floor((expTime - now) / 1000)) // 초 단위로 변환
+      }
+    }
+
+    updateRemainTime() // 컴포넌트가 처음 렌더링될 때 즉시 호출
+
+    const intervalId = setInterval(() => {
+      setRemainTime((prevTime) => Math.max(prevTime - 1, 0))
+    }, 1000)
+
+    return () => clearInterval(intervalId)
+  }, [localStorage.token])
+
   const handleLogout = () => {
     //localStorage 에서 token 을 삭제한다
     delete localStorage.token
@@ -28,6 +51,7 @@ function BsNavBar() {
     setAlertShow(true)
     // 메뉴 닫기
     setExpanded(false)
+    delete axios.defaults.headers.common["Authorization"]
   }
 
   const handleYes = () => {
@@ -38,7 +62,12 @@ function BsNavBar() {
   return (
     <>
       <AlertModal show={alertShow} message={"로그 아웃 되었습니다"} yes={handleYes} />
-      <Navbar expand="md" className="bg-success mb-2" expanded={expanded} onToggle={() => setExpanded(!expanded)}>
+      <Navbar
+        fixed="top"
+        expand="md"
+        className="bg-success mb-2"
+        expanded={expanded}
+        onToggle={() => setExpanded(!expanded)}>
         <Container>
           <Navbar.Brand as={NavLink} to="/" onClick={() => setExpanded(false)}>
             Acorn
@@ -67,6 +96,7 @@ function BsNavBar() {
             </Nav>
             {userName ? (
               <>
+                {remainTime}
                 <Nav>
                   <Nav.Link as={Link} to="/user/detail" onClick={() => setExpanded(false)}>
                     {userName}
@@ -96,10 +126,13 @@ function BsNavBar() {
                   }}>
                   Sign in
                 </Button>
-                <Button size="sm" variant="outline-warning" onClick={() => {
-                  navigate("/user/new")
-                  setExpanded(false)
-                }}>
+                <Button
+                  size="sm"
+                  variant="outline-warning"
+                  onClick={() => {
+                    navigate("/user/new")
+                    setExpanded(false)
+                  }}>
                   Sign up
                 </Button>
               </>

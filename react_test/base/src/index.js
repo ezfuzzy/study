@@ -30,6 +30,7 @@ if (localStorage.token) {
     userName = result.payload.sub;
     //axios 의 header 에 인증정보를 기본으로 가지고 갈수 있도록 설정
     axios.defaults.headers.common["Authorization"] = localStorage.token;
+    
   } else {
     //만료된 토큰은 삭제한다
     delete localStorage.token;
