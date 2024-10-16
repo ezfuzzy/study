@@ -62,12 +62,7 @@ function BsNavBar() {
   return (
     <>
       <AlertModal show={alertShow} message={"로그 아웃 되었습니다"} yes={handleYes} />
-      <Navbar
-        fixed="top"
-        expand="md"
-        className="bg-success mb-2"
-        expanded={expanded}
-        onToggle={() => setExpanded(!expanded)}>
+      <Navbar expand="md" className="bg-success mb-2" expanded={expanded} onToggle={() => setExpanded(!expanded)}>
         <Container>
           <Navbar.Brand as={NavLink} to="/" onClick={() => setExpanded(false)}>
             Acorn
